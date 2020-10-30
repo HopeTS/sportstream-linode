@@ -1,0 +1,132 @@
+#Default {
+    @include page;
+    padding-top: 0;
+    font-family: $sansSerif;
+}
+
+
+.Default__header {
+    background-color: $primaryColor;
+
+}
+
+
+.Default__headerContent {
+    @include innerContent;
+    padding-top: 70px;
+    padding-bottom: 32px;
+
+    h1 {
+        font-size: 2.8em;
+        color: $offWhite;
+        margin: 0;
+    }
+
+    p {
+        color: lighten($primaryColor, 22%);
+    }
+
+    a {
+        text-decoration: underline;
+        color: lighten($primaryColor, 22%);
+    }
+
+
+    @media #{$tablet_breakpoint} {
+        width: 400px;
+
+        h1 {
+            font-size: 3em;
+        }
+    }
+
+    @media #{$desktop_breakpoint} {
+        width: 600px;
+
+        h1 {
+            font-size: 3.2em;
+        }
+    }
+}
+
+
+.Default__tagline {
+    text-align: center;
+    font-size: 1.2em;
+    color: $primaryColor_dark;
+}
+
+
+.Default__links {
+
+}
+
+
+.Default__link {
+    display: inline-block;
+    
+    &:not(:last-child) {
+        margin-bottom: 1em;
+    }
+}
+
+
+.Default__content {
+    article {
+        padding: 20px;
+        text-align: center;
+
+        p {
+            font-size: 1.2em;
+        }
+        
+        ul {
+            margin: 0 auto;
+            list-style-type: none;
+            font-size: $mFont;
+            padding-left: 0;
+        }
+    }
+
+    @media #{$tablet_breakpoint} {
+        article {
+            width: 80%;
+            margin: 0 auto;
+
+            p {
+                font-size: $mFont;
+            }
+        }
+    }
+
+    @media #{$desktop_breakpoint} {
+        article {
+            max-width: 1000px;
+            margin: 0 auto;    
+        }
+    }
+}
+
+
+.Default__link {
+    padding: 8px;
+    text-decoration: none;
+    background: $primaryColor;
+    color: $offWhite;
+    font-weight: bold;
+    font-size: $mFont;
+    margin: 0 4px;
+    transition: 200ms;
+
+    &:active, &:hover {
+        background: $offWhite;
+        color: $primaryColor;
+    }
+}
+
+
+.Default__donate {
+    p {
+        font-size: $sFont !important;
+    }
+}

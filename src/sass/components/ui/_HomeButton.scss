@@ -1,0 +1,54 @@
+#HomeButton {
+    position: fixed;
+    top: 8px;
+    left: 10px;
+    border-radius: 50%;
+    z-index: 8;
+}
+
+
+.HomeButton__logo {
+    img {
+        width: 40px;
+        height: auto;
+        margin: 3px 4.5px;
+        animation: spin;
+        -webkit-animation: spin;
+        animation-iteration-count: infinite;
+        animation-duration: 5s;
+        animation-timing-function: linear;
+    }
+
+    @media #{$desktop_breakpoint} {
+        img {
+            width: 30px;
+            height: auto;
+            margin: 3px 4.5px;    
+        }
+    
+        &:hover {
+            img {
+                animation-duration: 2s;
+            }
+        }
+    }
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
