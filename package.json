@@ -6,8 +6,9 @@
   "scripts": {
     "start": "node server/server.js",
     "start:dev": "concurrently --kill-others \"npm run build:dev_Nodemon\" \"npm run build:dev_Webpack\"",
+    "start:prod": "npm run build:prod & env-cmd production node server/server.js",
     "build:dev": "webpack",
-    "build:dev_Nodemon": "nodemon server/server.js -e js,css,html,hbs",
+    "build:dev_Nodemon": "env-cmd development nodemon server/server.js -e js,css,html,hbs",
     "build:dev_Webpack": "webpack --watch",
     "build:prod": "webpack -p --env production",
     "test": "jest --config=jest.config.json",

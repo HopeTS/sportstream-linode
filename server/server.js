@@ -13,11 +13,12 @@ const mainRouter = require('./routers/app');
 
 
 /* Environment variables */
-const port = process.env.PORT || 3000;
-const dev = !process.env.PORT;
+const port = process.env.PORT;
+const env = process.env.NAME;
+
 console.log(
-    chalk.blue('Environment Variables:\n'),
-    chalk.green(`Port: ${port}\n Dev: ${dev}`)
+    chalk.bold('Environment:'),
+    chalk.green(process.env.NAME)
 );
 
 
@@ -28,13 +29,37 @@ app.use(express.json());
 app.use(mainRouter);
 
 
-console.log(
-    chalk.blue(`Running server in ${dev ? "dev" : "prod"} environment`)
-);
+/* Run server */
+if (env === 'development') {  // Dev environment
+    http.createServer(app).listen(port, () => {
+        console.log(chalk.bold.underline.green('Development server is up!'));
+        console.log(
+            chalk.bold('Port:'),
+            chalk.green(process.env.PORT)
+        );
+    });
+}
 
-// Run server
-http.createServer(app).listen(port, () => {
-	console.log(
-        chalk.bold.green(`Server is up on port ${port}`)
+else if (env === 'production') {      // Prod environment
+    const httpsOptions = {
+        cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
+        key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
+    };
+
+    https.createServer(httpsOptions, app).listen(port, () => {
+        console.log(chalk.bold.underline.green('Production server is up'));
+        console.log(
+            chalk.bold('Port:'),
+            chalk.green(process.env.PORT)
+        );
+    });
+}
+
+else {
+    console.log(
+        chalk.red(
+            chalk.bold('Error: invalid environment'),
+            'did you forget to add an environment name?'
+        )
     );
-});
+}
