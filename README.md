@@ -31,15 +31,15 @@ ___Note___: This server can only be deployed on a linux-based operating system. 
 
 3.  **Install ffmpeg**
     -   ffmpeg is needed to run the RTMP server that is needed to livestream. You can install it with
-    ```bash
-    apt install ffmpeg
-    ```
+        ```bash
+        apt install ffmpeg
+        ```
 
 4.  **Install server dependencies**
     -   You can install dependencies from the root of the project with
-    ```node
-    npm install
-    ```
+        ```node
+        npm install
+        ```
 
 ---
 ## Commands: 
