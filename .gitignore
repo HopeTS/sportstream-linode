@@ -15,11 +15,12 @@ node_modules/
 # Source maps
 *.map
 
-# Bundle output
+# React/SASS bundle output
 public/dist/bundle.css
 public/dist/bundle.js
 
-# Firebase
-/.firebase/
-.firebaserc
-firebase.json
+# SSL certificates
+server/ssl/*.crt
+server/ssl/*.key
+server/ssl/*.srl
+server/ssl/*.csr
