@@ -79,10 +79,8 @@ else if (env === 'production') {
 }
 
 else {
-    console.log(
-        chalk.red(
-            chalk.bold('Error: invalid environment'),
-            'did you forget to add an environment name?'
-        )
-    );
+    console.log(chalk.red(
+    chalk.bold('Error: invalid environment'),
+        'did you forget to add an environment name?'        
+    ));
 }
