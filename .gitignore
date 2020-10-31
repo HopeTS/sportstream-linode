@@ -24,3 +24,13 @@ server/ssl/*.crt
 server/ssl/*.key
 server/ssl/*.srl
 server/ssl/*.csr
+
+# MongoDB database
+server/database/db/*.wt
+server/database/db/mongod.lock
+server/database/db/storage.bson
+server/database/db/WiredTiger
+server/database/db/WiredTiger.lock
+server/database/db/WiredTiger.turtle
+server/database/db/diagnostic.data
+server/database/db/journal
