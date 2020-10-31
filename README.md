@@ -7,39 +7,39 @@ ___Note___: This server can only be deployed on a linux-based operating system. 
 1.  **Enable SSL certification script**
     -   This server enforces HTTPS for webpages.
     -   Navigate to the certificate directory with 
-        ```bash
-        cd ./server/ssl
-        ```
+    ```bash
+    cd ./server/ssl
+    ```
     -   In the bash shell, enter
-        ```bash
-        chmod +x ./generate-certificates.sh 
-        ```
+    ```bash
+    chmod +x ./generate-certificates.sh 
+    ```
     -   Then, if no SSL certificates have been generated, enter
-        ```bash
-        ./generate-certificates.sh
-        ```
+    ```bash
+    ./generate-certificates.sh
+    ```
 
 2.  **Install Node.js and npm**
     -   In Ubuntu distributions, you can install nodejs with
-        ```bash
-        apt install nodejs
-        ```
+    ```bash
+    apt install nodejs
+    ```
     -   In Ubuntu distributions, you can install npm with
-        ```bash
-        apt install npm
-        ```
+    ```bash
+    apt install npm
+    ```
 
 3.  **Install ffmpeg**
     -   ffmpeg is needed to run the RTMP server that is needed to livestream. You can install it with
-        ```bash
-        apt install ffmpeg
-        ```
+    ```bash
+    apt install ffmpeg
+    ```
 
 4.  **Install server dependencies**
     -   You can install dependencies from the root of the project with
-        ```node
-        npm install
-        ```
+    ```node
+    npm install
+    ```
 
 ---
 ## Commands: 
