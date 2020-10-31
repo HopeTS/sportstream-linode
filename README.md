@@ -1,5 +1,5 @@
 # Sportstream (Linode) :rocket:
-This is the minimum viable product for SportStream,deployed on linode
+This is the minimum viable product for SportStream, deployed on linode
 
 ## First time setup and configuration
 ___Note___: This server can only be deployed on a linux-based operating system. Eventually, it will be encapsulated in a docker container but currently it is not.
