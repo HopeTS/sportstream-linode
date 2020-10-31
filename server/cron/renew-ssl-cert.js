@@ -2,7 +2,6 @@ const cron = require('node-cron');
 const chalk = require('chalk');
 const path = require('path');
 const exec = require('child_process').exec;
-let shell = require('shelljs');
 
 
 class RenewSSLCert {
@@ -28,7 +27,7 @@ class RenewSSLCert {
                 ));
             }
 
-            chalk.green('SSL Certificate renewed.');
+            console.log(chalk.green('SSL Certificate renewed.'));
         })
     }
 
