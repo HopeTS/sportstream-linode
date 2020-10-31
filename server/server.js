@@ -10,6 +10,11 @@ const chalk = require('chalk');
 /* Local files */
 const publicPath = path.join(__dirname, '../public');
 const mainRouter = require('./routers/app');
+const RenewSSLCert = require('./cron/renew-ssl-cert');
+
+
+/* Cron jobs */
+const ssl_cron = new RenewSSLCert;
 
 
 /* Environment variables */
@@ -30,8 +35,10 @@ app.use(mainRouter);
 
 
 /* Run server */
-if (env === 'development') {  // Dev environment
-    http.createServer(app).listen(port, () => {
+if (env === 'development') {
+    ssl_cron.start();
+
+    http.createServer(app).listen(port, () => {        
         console.log(chalk.bold.underline.green('Development server is up!'));
         console.log(
             chalk.bold('Port:'),
@@ -40,7 +47,7 @@ if (env === 'development') {  // Dev environment
     });
 }
 
-else if (env === 'production') {      // Prod environment
+else if (env === 'production') {
     const httpsOptions = {
         cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
         key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
