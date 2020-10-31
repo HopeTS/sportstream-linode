@@ -10,7 +10,9 @@ const chalk = require('chalk');
 /* Local files */
 const publicPath = path.join(__dirname, '../public');
 const mainRouter = require('./routers/app');
+const config = require('./config/default');
 const RenewSSLCert = require('./cron/renew-ssl-cert');
+const MongoD = require('./database/mongod');
 
 
 /* Cron jobs */
@@ -18,13 +20,10 @@ const ssl_cron = new RenewSSLCert;
 
 
 /* Environment variables */
-const port = process.env.PORT;
+const http_port = config.http.port;
 const env = process.env.NAME;
 
-console.log(
-    chalk.bold('Environment:'),
-    chalk.green(process.env.NAME)
-);
+console.log(chalk.bold('Environment:'), chalk.green(process.env.NAME));
 
 
 /* Configure express */
@@ -34,15 +33,18 @@ app.use(express.json());
 app.use(mainRouter);
 
 
+/* Connect to MongoDB */
+mongod = new MongoD(config.mongodb);
+mongod.create_connection();
+
+
 /* Run server */
 if (env === 'development') {
-    ssl_cron.start();
-
-    http.createServer(app).listen(port, () => {        
+    http.createServer(app).listen(http_port, () => {        
         console.log(chalk.bold.underline.green('Development server is up!'));
         console.log(
             chalk.bold('Port:'),
-            chalk.green(process.env.PORT)
+            chalk.green(http_port)
         );
     });
 }
@@ -53,11 +55,13 @@ else if (env === 'production') {
         key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
     };
 
-    https.createServer(httpsOptions, app).listen(port, () => {
+    ssl_cron.start();
+
+    https.createServer(httpsOptions, app).listen(http_port, () => {
         console.log(chalk.bold.underline.green('Production server is up'));
         console.log(
             chalk.bold('Port:'),
-            chalk.green(process.env.PORT)
+            chalk.green(http_port)
         );
     });
 }
