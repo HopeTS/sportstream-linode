@@ -19,7 +19,7 @@ ___Note___: This server can only be deployed on a linux-based operating system. 
     ./generate-certificates.sh
     ```
 
-2.  **Install Node.js and npm**
+1.  **Install Node.js and npm**
     -   In Ubuntu distributions, you can install nodejs with
     ```bash
     apt install nodejs
@@ -29,13 +29,19 @@ ___Note___: This server can only be deployed on a linux-based operating system. 
     apt install npm
     ```
 
-3.  **Install ffmpeg**
+1.  **Install ffmpeg**
     -   ffmpeg is needed to run the RTMP server that is needed to livestream. You can install it with
     ```bash
     apt install ffmpeg
     ```
 
-4.  **Install server dependencies**
+1.  **Install MongoDB**
+    -   MongoDB is the database this project uses. You can install it with
+    ```bash
+    apt install mongodb
+    ```
+
+1.  **Install server dependencies**
     -   You can install dependencies from the root of the project with
     ```node
     npm install
