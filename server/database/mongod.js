@@ -13,7 +13,7 @@ class MongoD {
     }
 
     create_connection() {
-        console.log(chalk.green('Initializing MongoDB'));
+        console.log(chalk.dim.green('Initializing MongoDB'));
         const command = `mongod --dbpath=${this.dbpath} --port=${this.port}`;
         const rootDir = path.resolve(process.cwd());
 
@@ -29,7 +29,7 @@ class MongoD {
             }
 
             // This won't run unless connection terminates
-            console.log(chalk.green('MongoDB closing.'));
+            console.log(chalk.red('MongoDB closing.'));
         });
     }
 }

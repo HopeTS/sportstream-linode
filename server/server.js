@@ -1,3 +1,7 @@
+/*
+ *  Main server / entry point
+ */
+
 /* Packages */
 const express = require('express');
 const https = require('https');
@@ -23,7 +27,7 @@ const mongodb_port = config.mongodb.port;
 const mongodb_path = config.mongodb.path;
 const env = process.env.NAME;
 
-console.log(chalk.bold('Environment:'), chalk.green(process.env.NAME));
+console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 
 
 /* Connect to MongoDB */
@@ -31,12 +35,12 @@ mongod = new MongoD(config.mongodb);
 mongod.create_connection();
 mongoose.connect(
     `mongodb://localhost:${mongodb_port}/sportstream-linode`,
-    {useNewUrlParser: true}
+    {useNewUrlParser: true, useUnifiedTopology: true}
 );
 const db = mongoose.connection;
 db.once('open', () => {
-    console.log(chalk.green('Mongoose has connected to MongoDB'))
-})
+    console.log(chalk.green.dim('Mongoose has connected to MongoDB'))
+});
 
 
 /* Cron jobs */
@@ -53,10 +57,10 @@ app.use(mainRouter);
 /* Run server */
 if (env === 'development') {
     http.createServer(app).listen(http_port, () => {        
-        console.log(chalk.bold.underline.green('Development server is up!'));
+        console.log(chalk.underline.green('Development HTTP server has connected.'));
         console.log(
             chalk.bold('Port:'),
-            chalk.green(http_port)
+            chalk.blue(http_port)
         );
     });
 }
@@ -70,7 +74,7 @@ else if (env === 'production') {
     ssl_cron.start();
 
     https.createServer(httpsOptions, app).listen(http_port, () => {
-        console.log(chalk.bold.underline.green('Production server is up'));
+        console.log(chalk.underline.green('Production HTTPS server has connected.'));
         console.log(
             chalk.bold('Port:'),
             chalk.green(http_port)
