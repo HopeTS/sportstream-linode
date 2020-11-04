@@ -50,12 +50,6 @@ app.use(express.static(publicPath));
 app.use(express.json());
 app.use(mainRouter);
 
-if (process.env.NAME === 'production') {
-    /* Create HTTP redirect */
-    const http_app = express();
-    http_app.use(mainRouter);    
-}
-
 
 /* Run server */
 if (env === 'development') {
@@ -83,7 +77,10 @@ else if (env === 'production') {
             chalk.green(http_port)
         );
     });
-
+    
+    /* Create HTTP redirect */
+    const http_app = express();
+    http_app.use(mainRouter);    
     http_app.listen(8080);
 }
 
