@@ -5,12 +5,11 @@ const chalk = require('chalk');
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
 const wildcardRoute = path.join(publicPath, '404.html');
-const http2https = require('../middleware/http2https');
 
 const router = new express.Router();
 
 
-router.get('/', http2https, (req, res) => {
+router.get('/', (req, res) => {
     try {
         console.log(`Received a${req.secure ? " secure": "n insecure"} request`);
         return res.sendFile(appRoute);
@@ -25,7 +24,7 @@ router.get('/', http2https, (req, res) => {
     }
 });
 
-router.get('/*', http2https, (req, res) => {
+router.get('/*', (req, res) => {
     try {
         return res.sendFile(appRoute);
 

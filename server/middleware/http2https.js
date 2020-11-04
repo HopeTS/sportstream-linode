@@ -11,7 +11,7 @@ const http2https = (req, res, next) => {
         return next();
     } else {
         console.log('Redirecting insecure route...')
-        res.redirect(`https://${req.url}`);
+        return res.redirect(`https://${req.hostname}${req.url}`);
     }
 }
 
