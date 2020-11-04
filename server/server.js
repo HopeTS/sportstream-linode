@@ -44,6 +44,7 @@ const ssl_cron = new RenewSSLCert;
 /* Configure express */
 const app = express();
 app.use(express.static(publicPath));
+app.use(http2https);
 app.use(express.json());
 app.use(mainRouter);
 
@@ -70,15 +71,6 @@ else if (config.name === 'production') {
     https.createServer(httpsOptions, app).listen(config.http.port, () => {
         console.log(chalk.underline.green('Production HTTPS server has connected.'));
         console.log(chalk.bold('Port:'), chalk.blue(config.http.port));
-    });
-
-    /* Create HTTP redirect */
-    const http_app = express();
-    http_app.use(http2https);
-    http_app.use(mainRouter);    
-    http.createServer(http_app).listen(8080, () => {
-        console.log(chalk.underline.green('HTTP redirect server has connected.'))
-        console.log(chalk.bold('Port:'), chalk.blue(8080));
     });
 }
 
