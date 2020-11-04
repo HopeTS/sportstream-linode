@@ -11,6 +11,7 @@ const http2https = (req, res, next) => {
     }
 
     res.redirect(`https://${req.hostname}${req.url}`);
+    next();
 }
 
 module.exports = http2https;
