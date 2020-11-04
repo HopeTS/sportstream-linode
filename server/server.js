@@ -34,12 +34,10 @@ mongoose.connect(
     {useNewUrlParser: true, useUnifiedTopology: true}
 );
 
-setTimeout(() => {
-    const db = mongoose.connection;
-    db.once('open', () => {
-        console.log(chalk.green.dim('Mongoose has connected to MongoDB'))
-    });    
-}, 2000);
+const db = mongoose.connection;
+db.once('open', () => {
+    console.log(chalk.green.dim('Mongoose has connected to MongoDB'))
+});    
 
 
 /* Cron jobs */
@@ -51,6 +49,12 @@ const app = express();
 app.use(express.static(publicPath));
 app.use(express.json());
 app.use(mainRouter);
+
+if (process.env.NAME === 'production') {
+    /* Create HTTP redirect */
+    const http_app = express();
+    http_app.use(mainRouter);    
+}
 
 
 /* Run server */
@@ -80,9 +84,7 @@ else if (env === 'production') {
         );
     });
 
-    // Create HTTP redirect
-    const http = express();
-    http.listen(8080);
+    http_app.listen(8080);
 }
 
 else {
