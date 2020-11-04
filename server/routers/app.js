@@ -1,21 +1,16 @@
-/* Packages */
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
 
-
-/* Local files */
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
 const wildcardRoute = path.join(publicPath, '404.html');
+const http2https = require('../middleware/http2https');
 
-
-/* Router config */
 const router = new express.Router();
 
 
-/* Routes */
-router.get('/', (req, res) => {
+router.get('/', http2https, (req, res) => {
     try {
         return res.sendFile(appRoute);
     
@@ -29,7 +24,7 @@ router.get('/', (req, res) => {
     }
 });
 
-router.get('/*', (req, res) => {
+router.get('/*', http2https, (req, res) => {
     try {
         return res.sendFile(appRoute);
 
