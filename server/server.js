@@ -12,25 +12,22 @@ const mongoose = require('mongoose');
 
 const publicPath = path.join(__dirname, '../public');
 const mainRouter = require('./routers/app');
+const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 
 const RenewSSLCert = require('./cron/renew-ssl-cert');
 const MongoD = require('./database/mongod');
 
 
-const http_port = config.http.port;
-const mongodb_port = config.mongodb.port;
-const mongodb_path = config.mongodb.path;
-const env = process.env.NAME;
 
-console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
+console.log(chalk.bold('Environment:'), chalk.blue(config.name));
 
 
 /* Connect to MongoDB */
 mongod = new MongoD(config.mongodb);
 mongod.create_connection();
 mongoose.connect(
-    `mongodb://localhost:${mongodb_port}/sportstream-linode`,
+    `mongodb://localhost:${config.mongodb.port}/sportstream-linode`,
     {useNewUrlParser: true, useUnifiedTopology: true}
 );
 
@@ -52,17 +49,17 @@ app.use(mainRouter);
 
 
 /* Run server */
-if (env === 'development') {
-    http.createServer(app).listen(http_port, () => {        
+if (config.name === 'development') {
+    http.createServer(app).listen(config.http.port, () => {        
         console.log(chalk.underline.green('Development HTTP server has connected.'));
         console.log(
             chalk.bold('Port:'),
-            chalk.blue(http_port)
+            chalk.blue(config.http.port)
         );
     });
 }
 
-else if (env === 'production') {
+else if (config.name === 'production') {
     const httpsOptions = {
         cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
         key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
@@ -70,18 +67,19 @@ else if (env === 'production') {
 
     ssl_cron.start();   //Automatic SSL cert renewal
 
-    https.createServer(httpsOptions, app).listen(http_port, () => {
+    https.createServer(httpsOptions, app).listen(config.http.port, () => {
         console.log(chalk.underline.green('Production HTTPS server has connected.'));
-        console.log(
-            chalk.bold('Port:'),
-            chalk.green(http_port)
-        );
+        console.log(chalk.bold('Port:'), chalk.blue(config.http.port));
     });
-    
+
     /* Create HTTP redirect */
     const http_app = express();
+    http_app.use(http2https);
     http_app.use(mainRouter);    
-    http_app.listen(8080);
+    http.createServer(http_app).listen(8080, () => {
+        console.log(chalk.underline.green('HTTP redirect server has connected.'))
+        console.log(chalk.bold('Port:'), chalk.blue(8080));
+    });
 }
 
 else {

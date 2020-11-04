@@ -3,6 +3,7 @@
  */
 
 const config = {
+    name: process.env.NAME,
     http: {
         port: process.env.HTTP_PORT,
         media_root: './server/media',
@@ -21,7 +22,7 @@ const config = {
     mongodb: {
         dbpath: './server/database/db',
         port: '27017',
-    },
+    }
 };
 
 module.exports = config;
