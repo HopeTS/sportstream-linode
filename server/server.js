@@ -73,9 +73,9 @@ else if (config.name === 'production') {
         console.log(chalk.bold('Port:'), chalk.blue(config.http.port));
     });
 
-    app.listen(8080, () => {
+    http.createServer(app).listen(80, () => {
         console.log(chalk.underline.green('HTTP port up for secure redirection'));
-    })
+    });
 }
 
 else {
