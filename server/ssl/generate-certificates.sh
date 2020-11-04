@@ -2,7 +2,7 @@
 
 # set values for certificate DNs
 # note: CN is set to different values in the sections below
-ORG="DabbleCast"
+ORG="Castamatch"
 
 # set values that the commands will share
 VALID_DAYS=30
@@ -19,14 +19,14 @@ KEY_BITS=2048
 
 echo
 echo "Create CA certificate..."
-CN="DabbleCast CA"
+CN="Castamatch CA"
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:$KEY_BITS -out $CA_KEY
 openssl req -new -x509 -days $VALID_DAYS -key $CA_KEY -subj "/CN=$CN/O=$ORG" -out $CA_CERT
 echo "Done."
 
 echo
 echo "Creating Server certificate..."
-CN="DabbleCast server"
+CN="Castamatch server"
 openssl genpkey -algorithm RSA -pkeyopt rsa_keygen_bits:$KEY_BITS -out $SERVER_KEY
 openssl req -new -key $SERVER_KEY -subj "/CN=$CN/O=$ORG" -out $SERVER_CSR
 openssl x509 -days $VALID_DAYS -req -in $SERVER_CSR -CAcreateserial -CA $CA_CERT -CAkey $CA_KEY -out $SERVER_CERT
