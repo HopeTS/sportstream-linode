@@ -12,6 +12,7 @@ const router = new express.Router();
 
 router.get('/', http2https, (req, res) => {
     try {
+        console.log(`Received a${req.secure ? " secure": "n insecure"} request`);
         return res.sendFile(appRoute);
     
     } catch(e) {
