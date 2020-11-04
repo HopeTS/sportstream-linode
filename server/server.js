@@ -72,6 +72,10 @@ else if (config.name === 'production') {
         console.log(chalk.underline.green('Production HTTPS server has connected.'));
         console.log(chalk.bold('Port:'), chalk.blue(config.http.port));
     });
+
+    app.listen(8080, () => {
+        console.log(chalk.underline.green('HTTP port up for secure redirection'));
+    })
 }
 
 else {
