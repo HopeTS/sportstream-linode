@@ -34,7 +34,7 @@ export class Home extends React.Component {
                 </section>
 
                 <section className="Home__content">
-                    
+                    Coming soon...
                 </section>
             </div>
         );
