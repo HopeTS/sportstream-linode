@@ -43,6 +43,7 @@ const ssl_cron = new RenewSSLCert;
 
 /* Configure express */
 const app = express();
+app.use(http2https);
 app.use(express.static(publicPath));
 app.use(express.json());
 app.use(mainRouter);
