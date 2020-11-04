@@ -2,7 +2,6 @@
  *  Main server / entry point
  */
 
-/* Packages */
 const express = require('express');
 const https = require('https');
 const http = require('http');
@@ -11,8 +10,6 @@ const fs = require('fs');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 
-
-/* Local files */
 const publicPath = path.join(__dirname, '../public');
 const mainRouter = require('./routers/app');
 const config = require('./config/default');
@@ -21,7 +18,6 @@ const RenewSSLCert = require('./cron/renew-ssl-cert');
 const MongoD = require('./database/mongod');
 
 
-/* Environment variables */
 const http_port = config.http.port;
 const mongodb_port = config.mongodb.port;
 const mongodb_path = config.mongodb.path;
@@ -37,10 +33,13 @@ mongoose.connect(
     `mongodb://localhost:${mongodb_port}/sportstream-linode`,
     {useNewUrlParser: true, useUnifiedTopology: true}
 );
-const db = mongoose.connection;
-db.once('open', () => {
-    console.log(chalk.green.dim('Mongoose has connected to MongoDB'))
-});
+
+setTimeout(() => {
+    const db = mongoose.connection;
+    db.once('open', () => {
+        console.log(chalk.green.dim('Mongoose has connected to MongoDB'))
+    });    
+}, 2000);
 
 
 /* Cron jobs */
@@ -71,7 +70,7 @@ else if (env === 'production') {
         key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
     };
 
-    ssl_cron.start();
+    ssl_cron.start();   //Automatic SSL cert renewal
 
     https.createServer(httpsOptions, app).listen(http_port, () => {
         console.log(chalk.underline.green('Production HTTPS server has connected.'));
@@ -80,6 +79,10 @@ else if (env === 'production') {
             chalk.green(http_port)
         );
     });
+
+    // Create HTTP redirect
+    const http = express();
+    http.listen(8080);
 }
 
 else {
