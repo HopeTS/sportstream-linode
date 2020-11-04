@@ -3,15 +3,17 @@
  */
 
 const http2https = (req, res, next) => {
-    if (process.env.NAME !== 'production') {
-        console.log(chalk.blue('Skipping SSL redirect.'));
-        return next();
-    } else if (req.secure) {
-        console.log('Request is secure.')
-        return next();
-    } else {
-        console.log('Redirecting insecure route...')
-        return res.redirect(`https://${req.hostname}${req.url}`);
+    try {
+        if (process.env.NAME !== 'production') {
+            console.log(chalk.blue('Skipping SSL redirect.'));
+            return next();
+        } else if (req.secure) {
+            return next();
+        } else {
+            return res.redirect(`https://${req.hostname}${req.url}`);
+        }    
+    } catch(e) {
+        console.log(chalk.bold.red('Error in HTTPS redirection: '), e);
     }
 }
 
