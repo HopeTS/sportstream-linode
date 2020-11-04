@@ -13,7 +13,7 @@
     "build:prod": "webpack -p --env production",
     "test": "jest --config=jest.config.json",
     "test:watch": "npm run test -- --watch",
-    "generate-cert": "chmod +x ./server/ssl/generate-certificates.sh & ./server/ssl/generate-certificates.sh"
+    "generate-cert": "sudo chmod +x ./server/ssl/generate-certificates.sh & ./server/ssl/generate-certificates.sh"
   },
   "repository": {
     "type": "git",
