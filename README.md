@@ -1,10 +1,24 @@
 # Sportstream (Linode) :rocket:
-This is the minimum viable product for SportStream, deployed on linode
+> This is the minimum viable product for SportStream, deployed on linode
 
 ## First time setup and configuration
-___Note___: This server can only be deployed on a linux-based operating system. Eventually, it will be encapsulated in a docker container but currently it is not.
+> ___Note___: This server can only be deployed on a linux-based operating system. Eventually, it will be encapsulated in a docker container but currently it is not.
 
-1.  **Enable SSL certification script**
+1. **Install Certbot**
+    -   This is used to generate SSL certificates
+    -   First, install the prerequisites and ensure you can run certbot with these bash commands
+    ```bash
+    sudo snap install core
+    sudo snap refresh core
+    sudo snap install --classic certbot
+    sudo ln -s /snap/bin/certbot /usr/bin/certbot
+    ```
+    -   Create the certificates with this
+    ```bash
+    sudo certbot certonly --webroot
+    ```
+
+1.  **Enable SSL certification script** (Deprecated)
     -   This server enforces HTTPS for webpages.
     -   Navigate to the certificate directory with 
     ```bash

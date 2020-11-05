@@ -14,13 +14,11 @@ const publicPath = path.join(__dirname, '../public');
 const mainRouter = require('./routers/app');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
-
-const RenewSSLCert = require('./cron/renew-ssl-cert');
 const MongoD = require('./database/mongod');
 
 
 
-console.log(chalk.bold('Environment:'), chalk.blue(config.name));
+console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 
 
 /* Connect to MongoDB */
@@ -37,10 +35,6 @@ db.once('open', () => {
 });    
 
 
-/* Cron jobs */
-const ssl_cron = new RenewSSLCert;
-
-
 /* Configure express */
 const app = express();
 app.use(http2https);
@@ -50,7 +44,7 @@ app.use(mainRouter);
 
 
 /* Run server */
-if (config.name === 'development') {
+if (process.env.NAME === 'development') {
     http.createServer(app).listen(config.http.port, () => {        
         console.log(chalk.underline.green('Development HTTP server has connected.'));
         console.log(
@@ -60,7 +54,7 @@ if (config.name === 'development') {
     });
 }
 
-else if (config.name === 'production') {
+else if (process.env.NAME === 'https_production') {
     const httpsOptions = {
         cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
         key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
@@ -68,13 +62,21 @@ else if (config.name === 'production') {
 
     ssl_cron.start();   //Automatic SSL cert renewal
 
-    https.createServer(httpsOptions, app).listen(config.http.port, () => {
-        console.log(chalk.underline.green('Production HTTPS server has connected.'));
-        console.log(chalk.bold('Port:'), chalk.blue(config.http.port));
+    https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
+        console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
+        console.log(chalk.bold('HTTPS Port:'), chalk.blue(process.env.HTTPS_PORT));
     });
 
-    http.createServer(app).listen(80, () => {
-        console.log(chalk.underline.green('HTTP port up for secure redirection'));
+    http.createServer(app).listen(process.env.HTTP_PORT, () => {
+        console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
+        console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
+    });
+}
+
+else if (process.env.NAME === 'http_production') {
+    http.createServer(app).listen(process.env.HTTP_PORT, () => {
+        console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
+        console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
     });
 }
 
