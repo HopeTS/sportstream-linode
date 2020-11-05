@@ -55,7 +55,13 @@ if (process.env.NAME === 'development') {
 }
 
 else if (process.env.NAME === 'https_production') {
-    https.createServer(app).listen(process.env.HTTPS_PORT, () => {
+    const httpsOptions = {
+        privateKey: fs.readFileSync(path.join(process.env.SSL_DIR, 'privkey.pem')),
+        certificate: fs.readFileSync(path.join(process.env.SSL_DIR, 'cert.pem')),
+        ca: fs.readFileSync(path.join(process.env.SSL_DIR, 'chain.pem'))
+    };
+
+    https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
         console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
         console.log(chalk.bold('HTTPS Port:'), chalk.blue(process.env.HTTPS_PORT));
     });
