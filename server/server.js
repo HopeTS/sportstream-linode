@@ -55,14 +55,7 @@ if (process.env.NAME === 'development') {
 }
 
 else if (process.env.NAME === 'https_production') {
-    const httpsOptions = {
-        cert: fs.readFileSync(path.join(__dirname, 'ssl', 'server.crt')),
-        key: fs.readFileSync(path.join(__dirname, 'ssl', 'server.key')),
-    };
-
-    ssl_cron.start();   //Automatic SSL cert renewal
-
-    https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
+    https.createServer(app).listen(process.env.HTTPS_PORT, () => {
         console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
         console.log(chalk.bold('HTTPS Port:'), chalk.blue(process.env.HTTPS_PORT));
     });
