@@ -56,12 +56,10 @@ if (process.env.NAME === 'development') {
 
 else if (process.env.NAME === 'https_production') {
     const httpsOptions = {
-        privateKey: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8'),
-        certificate: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8'),
+        key: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8'),
+        cert: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8'),
         ca: fs.readFileSync(`${process.env.SSL_DIR}chain.pem`, 'utf8')
     };
-
-    console.log(httpsOptions.privateKey);
 
     https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
         console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
