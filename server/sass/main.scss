@@ -11,6 +11,7 @@
 /* Mixins */
 @import
     './mixins/innerContent',
+    './mixins/form',
     './mixins/page';
 
 
@@ -38,4 +39,6 @@
 /* Page Components */
 @import 
     './components/pages/Home',
+    './components/pages/Register',
+    './components/pages/Login',
     './components/pages/Wildcard';

@@ -9,9 +9,11 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 const publicPath = path.join(__dirname, '../public');
-const mainRouter = require('./routers/app');
+const clientRouter = require('./routers/client');
+const authRouter = require('./routers/auth');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
@@ -40,16 +42,19 @@ const app = express();
 app.use(http2https);
 app.use(express.static(publicPath));
 app.use(express.json());
-app.use(mainRouter);
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
+app.use(clientRouter);
+app.use(authRouter);
 
 
 /* Run server */
 if (process.env.NAME === 'development') {
-    http.createServer(app).listen(config.http.port, () => {        
+    http.createServer(app).listen(process.env.HTTP_PORT, () => {        
         console.log(chalk.underline.green('Development HTTP server has connected.'));
         console.log(
             chalk.bold('Port:'),
-            chalk.blue(config.http.port)
+            chalk.blue(process.env.HTTP_PORT)
         );
     });
 }

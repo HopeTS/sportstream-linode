@@ -11,7 +11,34 @@ const router = new express.Router();
 
 router.get('/', (req, res) => {
     try {
-        console.log(`Received a${req.secure ? " secure": "n insecure"} request`);
+        return res.sendFile(appRoute);
+    
+    } catch(e) {
+        res.send();
+        console.log(
+            chalk.red('An error occured: '),
+            '\n',
+            `${e}`
+        );
+    }
+});
+
+router.get('/login', (req, res) => {
+    try {
+        return res.sendFile(appRoute);
+    
+    } catch(e) {
+        res.send();
+        console.log(
+            chalk.red('An error occured: '),
+            '\n',
+            `${e}`
+        );
+    }
+});
+
+router.get('/register', (req, res) => {
+    try {
         return res.sendFile(appRoute);
     
     } catch(e) {

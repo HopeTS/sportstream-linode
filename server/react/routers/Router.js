@@ -11,6 +11,8 @@ import Footer from '../components/common/Footer';
 
 /* Pages/Routes */
 import Home from '../components/pages/Home';
+import Login from '../components/pages/Login';
+import Register from '../components/pages/Register';
 import Wildcard from '../components/pages/Wildcard';
 
 
@@ -61,6 +63,18 @@ export class Router extends React.Component {
                         <Route 
                             path="/"
                             component={Home}
+                            exact
+                        />
+
+                        <Route 
+                            path="/login"
+                            component={Login}
+                            exact
+                        />
+
+                        <Route 
+                            path="/register"
+                            component={Register}
                             exact
                         />
 
