@@ -2,8 +2,6 @@
     @media #{$desktop_breakpoint} {
         display: none;
     }
-
-    display: none;
 }
 
 .MobileNavigation__button {
@@ -13,13 +11,18 @@
     right: 12px;
     font-size: 2.5em;
     z-index: 8;
-    color: var(--white);
+    color: var(--link-color);
+
+    &[data-navmenu-mobile=true] {
+        color: var(--white);
+    }
 }
 
 .MobileNavigation__menu {
     position: fixed;
     top: 0;
     right: 0;
+    background: var(--button-color);
 
     &[data-active=false] {
         opacity: 0;

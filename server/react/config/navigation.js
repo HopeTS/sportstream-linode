@@ -10,16 +10,8 @@ export default [
         text: "Home",
         internal: true
     }, {
-        href: "/StyleGuide",
-        text: "Style Guide",
+        href: "/watch",
+        text: "Watch",
         internal: true
-    }, {
-        text: "Meet the Dev",
-        href: "https://bergers.dev",
-        internal: false
-    }, {
-        text: "View on GitHub",
-        href: "https://github.com/RobbyB97/JavascriptReactBoilerplate",
-        internal: false
     }
 ]
