@@ -18,22 +18,20 @@ const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
 
-
-
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
-
 
 /* Connect to MongoDB */
 mongod = new MongoD(config.mongodb);
 mongod.create_connection();
 mongoose.connect(
-    `mongodb://localhost:${config.mongodb.port}/sportstream-linode`,
+    `mongodb://localhost:${config.mongodb.port}/castamatch`,
     {useNewUrlParser: true, useUnifiedTopology: true}
 );
 
 const db = mongoose.connection;
 db.once('open', () => {
-    console.log(chalk.green.dim('Mongoose has connected to MongoDB'))
+    console.log(chalk.green('Mongoose has connected to MongoDB'));
+    console.log(chalk.bold('MongoDB port: '), chalk.blue(config.mongodb.port));
 });    
 
 
@@ -53,7 +51,7 @@ if (process.env.NAME === 'development') {
     http.createServer(app).listen(process.env.HTTP_PORT, () => {        
         console.log(chalk.underline.green('Development HTTP server has connected.'));
         console.log(
-            chalk.bold('Port:'),
+            chalk.bold('HTTP Port:'),
             chalk.blue(process.env.HTTP_PORT)
         );
     });
