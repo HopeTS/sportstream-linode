@@ -1,7 +1,7 @@
 .MobileNavigationLink {
     list-style-type: none;
     padding: 0;
-    background: $shadow_light;
+    background: var(--shadow-light);
     min-height: 3em;
     
     &:not(:last-child) {
@@ -12,7 +12,7 @@
 
 .MobileNavigationLink__link {
     text-decoration: none;
-    color: $offWhite;
+    color: var(--white);
     font-size: 1.5em;
     text-align: left;
     float: left;
@@ -29,24 +29,23 @@
     width: calc(3em + 3px);
     margin: 0;
     padding: 0;
-    color: $offWhite;
+    color: var(--white);
     border: 0;
     background: transparent;
 
     &[data-active=false] {
-        border-left: 3px solid $shadow;
+        border-left: 3px solid var(--shadow);
     }
 
     &[data-active=true] {
         transform: rotate(180deg);
-        border-right: 3px solid $shadow;
+        border-right: 3px solid var(--shadow);
     }
 
     &:active, &:focus {
         outline: 0px;
     }
 }
-
 
 .MobileNavigationLink__sublink_list {
     list-style-type: none;
@@ -62,11 +61,10 @@
 
     &[data-active=true] {
         height: auto;
-        background-color: $shadow;
-        color: $offWhite;
+        background-color: var(--shadow);
+        color: var(--white);
     }
 }
-
 
 .MobileNavigationLink__sublink {
     float: left;
@@ -75,7 +73,7 @@
     width: 100%;
     
     &:not(:last-child) {
-        border-bottom: 1px solid $shadow;
+        border-bottom: 1px solid var(--white);
     }
 }
 
@@ -85,7 +83,7 @@
     padding: 10px;
     padding-left: 30px;
     text-decoration: none;
-    color: $offWhite;
+    color: var(--white);
     font-size: 1.5em;
     text-align: left;
     float: left;

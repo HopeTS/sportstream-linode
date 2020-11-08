@@ -1,6 +1,6 @@
 html {
-    font-family: $sansSerif;
-    background: $backgroundColor;
+    font-family: var(--sans-serif);
+    background: var(--background-color);
 
     &[data-mobile_nav=false] {
         overflow: unset;
@@ -19,11 +19,11 @@ html {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    color: $headerColor;
+    color: var(--header-color);
 }
 
 p {
-    color: $textColor;
+    color: var(--text-color);
 }
 
 i {}
@@ -47,7 +47,7 @@ code {}
 cite {}
 
 a {
-    color: $linkColor;
+    color: var(--link-color);
 }
 
 button {}
@@ -58,4 +58,45 @@ ol {
 
 ul {
     li {}
+}
+
+form {
+    width: 280px;
+    margin: 1em auto;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    background: #f0f0f0;
+
+    > div {
+        width: calc(280px - 2em);
+        margin: auto;
+        margin-top: 8px;
+
+        &:first-child {
+            margin-top: 1em;
+        }
+
+        input {
+            width: calc(100% - 8px);
+            display: block;
+        }
+    }
+
+    button {
+        border: 0;
+        background-color: var(--button-color);
+        color: var(--white);
+        font-size: 1.5em;
+        font-weight: bold;
+        padding: 8px;
+        width: calc(280px - 2em);
+        margin: 8px auto;
+        margin-top: 1em;
+
+    }
+}
+
+input {
+
 }

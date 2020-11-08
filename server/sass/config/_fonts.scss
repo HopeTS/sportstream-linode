@@ -1,9 +1,14 @@
-/* Font sizes */
-$sFont: 1rem;
-$mFont: 1.4rem;
-$lFont: 2rem;
-$xlFont: 2.5rem;
+/*
+ *  Default font variables
+ */
 
+:root {
+    // Font sizes
+    --small-font: 1rem;
+    --medium-font: 1.4rem;
+    --large-font: 2rem;
+    --xl-font: 2.5rem;
 
-/* Font families */
-$sansSerif: "Montserrat", sans-serif;
+    // Font families
+    --sans-serif: "Montserrat", sans-serif;
+}

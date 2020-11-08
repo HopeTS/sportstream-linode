@@ -12,9 +12,8 @@
     }
 }
 
-
 .DesktopNavigationLink__link {
-    color: $offWhite;
+    color: var(--white);
     text-decoration: none;
     transition: 100ms;
     display: block;
@@ -26,7 +25,7 @@
     opacity: 0.6;
 
     &.current {
-        border-bottom: 2px solid $offWhite;
+        border-bottom: 2px solid var(--white);
         opacity: 1;
     }
 }
@@ -35,7 +34,7 @@
 .DesktopNavigationLink__sublink_list {
     list-style-type: none;
     overflow: hidden;
-    background: $shadow;
+    background: var(--shadow);
     padding: 0;
     height: 0;
     z-index: 8;
@@ -44,20 +43,20 @@
 
 .DesktopNavigationLink__sublink {
     &:not(:last-child) {
-        border-bottom: 1px solid $primaryColor_light;
+        border-bottom: 1px solid var(--link-color);
     }
 }
 
 
 .DesktopNavigationLink__sublink_link {
-    color: $offWhite;
+    color: var(--white);
     text-decoration: none;
     display: block;
     padding: 8px;
     text-align: center;
-    font-size: $sFont;
+    font-size: var(--small-font);
     
     &:hover {
-        background: $shadow_thick;
+        background: var(--shadow-thick);
     }
 }
