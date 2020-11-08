@@ -1,8 +1,8 @@
 {
-    "short_name": "Boilerplate",
-    "name": "React Redux Boilerplate (JavaScript Edition)",
+    "short_name": "Castamatch",
+    "name": "Castamatch - Live and on demand",
     "start_url": "/",
-    "background_color": "#000000",
-    "theme_color": "#000000",
+    "background_color": "#080808",
+    "theme_color": "#5f00ff",
     "display": "standalone"
 }
