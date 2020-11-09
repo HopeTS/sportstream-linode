@@ -10,6 +10,7 @@ const fs = require('fs');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const session = require('express-sesssion');
 
 const publicPath = path.join(__dirname, '../public');
 const clientRouter = require('./routers/client');
@@ -34,7 +35,6 @@ db.once('open', () => {
     console.log(chalk.bold('MongoDB port: '), chalk.blue(config.mongodb.port));
 });    
 
-
 /* Configure express */
 const app = express();
 app.use(http2https);
@@ -44,7 +44,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(clientRouter);
 app.use(authRouter);
-
+app.use(session({
+    secret: "sdkngoih38yghgdsgh845ret34t",
+    resave: true,
+    saveUnititialized: true
+}));
 
 /* Run server */
 if (process.env.NAME === 'development') {
