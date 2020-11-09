@@ -60,7 +60,7 @@ export class Login extends React.Component {
                 type: this.state.type
             },
             withCredentials: true,
-            url: 'http://localhost:3000/login',
+            url: `${window.location.origin}/login`,
         }).then((res) => console.log(res))
     }
 

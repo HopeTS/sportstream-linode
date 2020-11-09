@@ -69,7 +69,7 @@ export class Register extends React.Component {
                 type: this.state.type
             },
             withCredentials: true,
-            url: 'http://localhost:3000/register',
+            url: `${window.location.origin}/register`,
         }).then((res) => console.log(res))
     }
 
