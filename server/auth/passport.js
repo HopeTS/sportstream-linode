@@ -1,71 +1,22 @@
-const passport = require('passport');
+const User = require('../database/schema/User').User;
+const bcrypt = require('bcrypt-nodejs');
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('../database/schema/Schema').User;
-const shortid = require('shortid');
 
-passport.serializeUser( (user, cb) => {
-    cb(null, user);
-});
-
-passport.deserializeUser( (obj, cb) => {
-    cb(null, obj);
-});
-
-passport.use('localRegister', new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    accountTypeField: 'account_type',
-    passReqToCallback: true
-},
-(req, email, password, done) => {
-    User.findOne({$or: [{email: email}, {username: req.body.username}]},  (err, user) => {
-        if (err)
-            return done(err);
-        if (user) {
-            if (user.email === email) {
-                req.flash('email', 'Email is already taken');
-            }
-            if (user.username === req.body.username) {
-                req.flash('username', 'Username is already taken');
-            }
-
-            return done(null, false);
-        } else {
-            let user = new User();
-            user.name = req.body.name;
-            user.account_type = req.body.account_type;
-            user.email = email;
-            user.password = user.generateHash(password);
-            user.stream_key = shortid.generate();
-            user.save( (err) => {
-                if (err)
-                    throw err;
-                return done(null, user);
+module.exports = function(passport) {
+    passport.use(
+        new LocalStrategy((username, password, done) => {
+            User.findOne({username: username}, (err, user) => {
+                if (err) throw err;
+                if (!user) return done(null, false);
+                bcrypt.compare(password, uesr.password, (err, result) => {
+                    if (err) throw err;
+                    if (result === true) {
+                        return done(null, user);
+                    } else {
+                        return done(null, false);
+                    }
+                });
             });
-        }
-    });
-}));
-
-passport.use('localLogin', new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true
-},
-(req, email, password, done) => {
-
-    User.findOne({'email': email}, (err, user) => {
-        if (err)
-            return done(err);
-
-        if (!user)
-            return done(null, false, req.flash('email', 'Email doesn\'t exist.'));
-
-        if (!user.validPassword(password))
-            return done(null, false, req.flash('password', 'Oops! Wrong password.'));
-
-        return done(null, user);
-    });
-}));
-
-
-module.exports = passport;
+        })
+    );
+}
