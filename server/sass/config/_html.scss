@@ -78,7 +78,14 @@ form {
         }
 
         input {
-            width: calc(100% - 8px);
+            padding: 4px;
+            width: calc(100% - 16px);
+            display: block;
+        }
+
+        select {
+            padding: 4px;
+            width: calc(100% - 4px);
             display: block;
         }
     }
@@ -95,8 +102,4 @@ form {
         margin-top: 1em;
         cursor: pointer;
     }
-}
-
-input {
-
 }
