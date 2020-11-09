@@ -3,7 +3,7 @@
 }
 
 .Login__form {
-
+    @include form;
 }
 
 .Login__register {
