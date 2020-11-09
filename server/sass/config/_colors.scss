@@ -14,9 +14,10 @@
     --white: #e8e8e8;
 
     // Theme colors
+    --primary-color: #5d00ff;
+    --background-color: #f8f8f8;
     --header-color: #080808;
     --text-color: #080808;
-    --link-color: #5d00ff;
-    --button-color: #5d00ff;
-    --background-color: #f8f8f8;
+    --link-color: var(--primary-color);
+    --button-color: var(--primary-color);
 }
