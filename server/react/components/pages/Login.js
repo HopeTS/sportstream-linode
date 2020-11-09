@@ -40,8 +40,7 @@ export class Login extends React.Component {
                     <button className="Login__button" type="submit">submit</button>
                     <div>
                         <p className="Login__register">
-                            Don't have an account? 
-                            <NavLink to="/register">Register now.</NavLink>
+                            Don't have an account? <NavLink to="/register">Register now.</NavLink>
                         </p>
                     </div>
                 </form>

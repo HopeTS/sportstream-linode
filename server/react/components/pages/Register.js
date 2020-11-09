@@ -44,8 +44,7 @@ export class Register extends React.Component {
                     <button className="Register__button" type="submit">submit</button>
                     <div>
                         <p className="Register__login">
-                            Already have an account? 
-                            <NavLink to="/login">Sign in.</NavLink>
+                            Already have an account? <NavLink to="/login">Sign in.</NavLink>
                         </p>
                     </div>
                 </form>
