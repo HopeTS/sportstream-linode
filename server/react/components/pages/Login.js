@@ -1,6 +1,7 @@
 /* Packages */
 import React from 'react';
 import {connect} from 'react-redux';
+import {NavLink} from 'react-router-dom';
 
 
 /* Actions */
@@ -37,6 +38,12 @@ export class Login extends React.Component {
                         <input type="password" id="password" name="password" required/>
                     </div>
                     <button className="Login__button" type="submit">submit</button>
+                    <div>
+                        <p className="Login__register">
+                            Don't have an account? 
+                            <NavLink to="/register">Register now.</NavLink>
+                        </p>
+                    </div>
                 </form>
             </div>
         );
