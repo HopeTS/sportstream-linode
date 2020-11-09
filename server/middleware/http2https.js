@@ -6,7 +6,6 @@ const chalk = require('chalk');
 const http2https = (req, res, next) => {
     try {
         if (process.env.NAME !== 'https_production') {
-            console.log(chalk.blue('Skipping SSL redirect.'));
             return next();
         } else if (req.secure) {
             return next();
