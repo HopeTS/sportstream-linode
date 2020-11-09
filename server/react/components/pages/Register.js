@@ -33,15 +33,28 @@ export class Register extends React.Component {
                         <label htmlFor="name">Name</label>
                         <input type="text" id="name" name="name" required/>
                     </div>
+
                     <div className="Register__field">
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" required/>
                     </div>
+
+                    <div className="Register__account-type">
+                        <label htmlFor="account_type">I am a... </label>
+                        
+                        <select name="account_type" id="account_type">
+                            <option value="business">Business</option>
+                            <option value="user">Athlete/Parent</option>
+                        </select>
+                    </div>
+
                     <div className="Register__field">
                         <label>Password</label>
                         <input type="password" id="password" name="password" required/>
                     </div>
+
                     <button className="Register__button" type="submit">submit</button>
+
                     <div>
                         <p className="Register__login">
                             Already have an account? <NavLink to="/login">Sign in.</NavLink>

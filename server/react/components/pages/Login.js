@@ -33,11 +33,22 @@ export class Login extends React.Component {
                         <label htmlFor="email">Email</label>
                         <input type="email" id="email" name="email" required/>
                     </div>
+
                     <div className="Login__field">
-                        <label>Password</label>
+                        <label htmlFor="password">Password</label>
                         <input type="password" id="password" name="password" required/>
                     </div>
+
+                    <div className="Login__account-type">
+                        <label htmlFor="account_type">I am a...</label>
+                        <select name="account_type" id="account_type">
+                            <option value="business">Business</option>
+                            <option value="user">Athlete/Parent</option>
+                        </select>
+                    </div>
+
                     <button className="Login__button" type="submit">submit</button>
+
                     <div>
                         <p className="Login__register">
                             Don't have an account? <NavLink to="/register">Register now.</NavLink>
