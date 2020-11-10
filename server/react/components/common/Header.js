@@ -1,18 +1,15 @@
-/* Packages */
 import React from 'react';
 import {connect} from 'react-redux';
 
-
-/* Components */
 import Navigation from '../ui/Navigation';
+import AccountCard from './auth/AccountCard';
 
-
-/* Component */
 export class Header extends React.Component {
     render() {
         return (
             <header id="Header">
                 <Navigation />
+                <AccountCard />
 
                 <img 
                     className="Header__forkMe"
@@ -24,8 +21,6 @@ export class Header extends React.Component {
     };
 };
 
-
-/* Connect to store */
 const mapStateToProps = (state) => {
     return {
         page_ID: state.page.id

@@ -1,14 +1,9 @@
-/* Packages */
 import React from 'react';
 import { NavHashLink as NavLink } from 'react-router-hash-link';
 import {connect} from 'react-redux';
 
-
-/* Actions */
 import {navMenu_Mobile__Toggle} from '../../../redux/actions/ui';
 
-
-/* Component */
 export class MobileNavigationLink extends React.Component {
     constructor(props) {
         super(props);
@@ -17,13 +12,11 @@ export class MobileNavigationLink extends React.Component {
         };
     };
 
-
     sublink_Menu__Toggle = () => {
         this.setState({
             sublink_Menu: !this.state.sublink_Menu
         });
     };
-
 
     navMenu_Mobile__Toggle = () => {
         /* Disable scrolling */
@@ -33,7 +26,6 @@ export class MobileNavigationLink extends React.Component {
         /* Dispatch */
         this.props.navMenu_Mobile__Toggle();
     };
-
 
     render() {
         return (
@@ -119,13 +111,10 @@ export class MobileNavigationLink extends React.Component {
     };
 };
 
-
-/* Connect to store */
 const mapDispatchToProps = (dispatch) => ({
     navMenu_Mobile__Toggle: () => {
         dispatch(navMenu_Mobile__Toggle());
     }
 });
-
 
 export default connect(undefined, mapDispatchToProps)(MobileNavigationLink);

@@ -1,0 +1,33 @@
+#AccountCard {
+    position: fixed;
+    right: 70px;
+    top: 5px;
+    height: 47px;
+    background: var(--white);
+    padding: 4px;
+    width: 140px;
+    z-index: 100;
+    transition: 200ms;
+
+    &[data-mobile_nav=true] {
+        background: var(--primary-color);
+
+        .AccountCard__noAuth {
+            background: var(--shadow-light);
+            height: calc(100% - 8px);
+        } 
+        
+        .AccountCard__auth {
+            background: var(--shadow);
+        }
+
+        a {
+            color: var(--white);
+        }
+    }
+}
+
+.AccountCard__noAuth {
+    text-align: center;
+    padding-top: 12px;
+}

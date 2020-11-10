@@ -13,9 +13,5 @@ export default [
         href: "/watch",
         text: "Watch",
         internal: true
-    }, {
-        href: "/login",
-        text: "Sign in",
-        internal: true
     }
 ]

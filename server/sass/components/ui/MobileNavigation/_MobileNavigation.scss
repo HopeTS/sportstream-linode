@@ -22,7 +22,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    background: var(--button-color);
+    background: var(--primary-color);
 
     &[data-active=false] {
         opacity: 0;
