@@ -20,7 +20,8 @@ const config = {
     mongodb: {
         dbpath: './server/database/db',
         port: '27018',
-    }
+    },
+    secret: 'sdkngoih38yghgdsgh845ret34t',
 };
 
 module.exports = config;

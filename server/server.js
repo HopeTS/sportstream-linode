@@ -10,7 +10,11 @@ const fs = require('fs');
 const chalk = require('chalk');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const session = require('express-sesssion');
+const session = require('express-session');
+const cors = require('cors');
+const passport = require('passport');
+const passportLocal = require('passport-local').Strategy;
+const cookieParser = require('cookie-parser');
 
 const publicPath = path.join(__dirname, '../public');
 const clientRouter = require('./routers/client');
@@ -42,13 +46,21 @@ app.use(express.static(publicPath));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
-app.use(clientRouter);
-app.use(authRouter);
+app.use(cookieParser(config.secret));
 app.use(session({
-    secret: "sdkngoih38yghgdsgh845ret34t",
+    secret: config.secret,
     resave: true,
     saveUnititialized: true
 }));
+app.use(cors({
+    origin: process.env.CORS_ORIGIN,
+    credentials: true
+}))
+app.use(passport.initialize());
+app.use(passport.session());
+require('./auth/passport')(passport);
+app.use(clientRouter);
+app.use(authRouter);
 
 /* Run server */
 if (process.env.NAME === 'development') {
