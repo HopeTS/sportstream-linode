@@ -59,6 +59,7 @@ app.use(cors({
 app.use(passport.initialize());
 app.use(passport.session());
 require('./auth/passport')(passport);
+
 app.use(clientRouter);
 app.use(authRouter);
 

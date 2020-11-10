@@ -53,11 +53,10 @@ export class Login extends React.Component {
 
     login = () => {
         axios({
-            method: "post",
+            method: "POST",
             data: {
                 email: this.state.email,
-                password: this.state.password,
-                type: this.state.type
+                password: this.state.password
             },
             withCredentials: true,
             url: `${window.location.origin}/login`,
