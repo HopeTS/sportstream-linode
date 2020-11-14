@@ -1,9 +1,16 @@
+/*
+ *  A server cron job to automatically renew SSL certificate every Sunday
+ */
+
+
+/* External packages */
 const cron = require('node-cron');
 const chalk = require('chalk');
 const path = require('path');
 const exec = require('child_process').exec;
 
 
+/* Cron job */
 class RenewSSLCert {
     constructor() {
         this.schedule = "5 8 * * Sun";    // Every Sunday

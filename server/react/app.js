@@ -1,3 +1,8 @@
+/*
+ *  Root element of React app
+ */
+
+ 
 /* Packages */
 import React from 'react';
 import ReactDOM from 'react-dom';

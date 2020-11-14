@@ -1,8 +1,19 @@
-const User = require("../database/schema/Schema").User;
+/*
+ *  Master Passportjs configuration file
+ */
+
+
+/* External packages */
 const bcrypt = require("bcryptjs");
 const localStrategy = require("passport-local").Strategy;
 
-module.exports = function (passport) {
+
+/* Internal packages */
+const User = require("../database/schema/Schema").User;
+
+
+/* Local strategy */
+module.exports = function(passport) {
     passport.use(
 
         new localStrategy({

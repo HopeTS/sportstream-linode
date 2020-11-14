@@ -2,6 +2,8 @@
  *  Main server / entry point
  */
 
+ 
+/* External packages */
 const express = require('express');
 const https = require('https');
 const http = require('http');
@@ -13,9 +15,10 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
-const passportLocal = require('passport-local').Strategy;
 const cookieParser = require('cookie-parser');
 
+
+/* Internal packages */
 const publicPath = path.join(__dirname, '../public');
 const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');

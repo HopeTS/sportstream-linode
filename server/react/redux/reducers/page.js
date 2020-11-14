@@ -1,7 +1,12 @@
+/*
+ *  Reducer for handling page information in Redux
+ */
+
+
+/* Reducer */
 const PageDefaultState = {
     id: null
 };
-
 
 export default (state = PageDefaultState, action) => {
     switch(action.type) {

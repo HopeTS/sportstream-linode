@@ -1,3 +1,8 @@
+/*
+ *  Router handling authentication endpoints
+ */
+
+/* External packages */
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
@@ -5,17 +10,22 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 
+
+/* Internal packages */
 const http2https = require('../middleware/http2https');
-const publicPath = path.join(__dirname, '../../public/');
-const appRoute = path.join(publicPath, 'index.html');
-const wildcardRoute = path.join(publicPath, '404.html');
 const User = require('../database/schema/Schema').User;
 
 
+/* Paths */
+const publicPath = path.join(__dirname, '../../public/');
+const appRoute = path.join(publicPath, 'index.html');
+const wildcardRoute = path.join(publicPath, '404.html');
+
+
+/* Router */
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
-
 
 router.get('/login', (req, res) => {
     try {
