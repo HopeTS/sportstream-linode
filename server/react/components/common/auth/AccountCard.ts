@@ -31,7 +31,7 @@ export class AccountCard extends React.Component {
             <div id="AccountCard" data-mobile_nav={this.props.mobile_nav}>
                 {this.state.auth ?
                     <div className="AccountCard__auth">
-
+                        Hi
                     </div>
                     :
                     <NavLink to="/login" onClick={this.mobile_nav}>

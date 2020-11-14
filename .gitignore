@@ -34,3 +34,6 @@ server/database/db/WiredTiger.lock
 server/database/db/WiredTiger.turtle
 server/database/db/diagnostic.data
 server/database/db/journal
+
+# Ignore TS-compiled JS
+./src/*.js

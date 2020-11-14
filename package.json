@@ -12,6 +12,7 @@
     "build:dev_Nodemon": "env-cmd development nodemon server/server.js -e js,css,html,hbs",
     "build:dev_Webpack": "webpack --watch",
     "build:prod": "webpack -p --env production",
+    "build:ts": "tsc -w",
     "test": "jest --config=jest.config.json",
     "test:watch": "npm run test -- --watch"
   },
@@ -63,6 +64,7 @@
     "nodemon": "^1.19.1",
     "normalize.css": "^7.0.0",
     "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "passport-local": "^1.0.0",
     "raf": "^3.3.2",
     "react": "^16.13.1",
@@ -76,6 +78,7 @@
     "shelljs": "^0.8.4",
     "shortid": "^2.2.16",
     "style-loader": "^0.18.2",
+    "typescript": "^4.0.5",
     "uuid": "^3.1.0",
     "validator": "^11.0.0",
     "webpack": "^3.1.0"
