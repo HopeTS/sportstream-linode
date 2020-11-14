@@ -10,9 +10,9 @@ const chalk = require('chalk');
 
 
 /* Paths */
-const publicPath = path.join(__dirname, '../../public/');
-const appRoute = path.join(publicPath, 'index.html');
-const wildcardRoute = path.join(publicPath, '404.html');
+//let publicPath = path.join(__dirname, '../../public/');
+//let appRoute = path.join(publicPath, 'index.html');
+//let wildcardRoute = path.join(publicPath, '404.html');
 
 
 /* Router */

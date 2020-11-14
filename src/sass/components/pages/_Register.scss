@@ -1,0 +1,12 @@
+#Register {
+    @include page;
+}
+
+.Register__form {
+    @include form;
+}
+
+.Register__login {
+    font-size: var(--xs-font);
+    text-align: center;
+}

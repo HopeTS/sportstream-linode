@@ -1,35 +1,36 @@
+namespace Castamatch {
 /*
  *  Main server / entry point
  */
 
- 
+
 /* External packages */
-const express = require('express');
-const https = require('https');
-const http = require('http');
-const path = require('path');
-const fs = require('fs');
-const chalk = require('chalk');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const session = require('express-session');
-const cors = require('cors');
-const passport = require('passport');
-const cookieParser = require('cookie-parser');
+//const express = require('express');
+//const https = require('https');
+//const http = require('http');
+//const path = require('path');
+//const fs = require('fs');
+//const chalk = require('chalk');
+//const mongoose = require('mongoose');
+//const bodyParser = require('body-parser');
+//const session = require('express-session');
+//const cors = require('cors');
+//const passport = require('passport');
+//const cookieParser = require('cookie-parser');
 
 
 /* Internal packages */
 const publicPath = path.join(__dirname, '../public');
 const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');
-const http2https = require('./middleware/http2https');
-const config = require('./config/default');
-const MongoD = require('./database/mongod');
+//let http2https = require('./middleware/http2https');
+let config = require('./config/default');
+let MongoD = require('./database/mongod');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 
 /* Connect to MongoDB */
-mongod = new MongoD(config.mongodb);
+const mongod = new MongoD(config.mongodb);
 mongod.create_connection();
 mongoose.connect(
     `mongodb://localhost:${config.mongodb.port}/castamatch`,
@@ -107,4 +108,6 @@ else {
     chalk.bold('Error: invalid environment'),
         'did you forget to add an environment name?'        
     ));
+}
+
 }

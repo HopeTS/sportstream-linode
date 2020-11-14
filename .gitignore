@@ -20,10 +20,10 @@ public/dist/bundle.css
 public/dist/bundle.js
 
 # SSL certificates
-server/ssl/*.crt
-server/ssl/*.key
-server/ssl/*.srl
-server/ssl/*.csr
+src/ssl/*.crt
+src/ssl/*.key
+src/ssl/*.srl
+src/ssl/*.csr
 
 # MongoDB database
 server/database/db/*.wt

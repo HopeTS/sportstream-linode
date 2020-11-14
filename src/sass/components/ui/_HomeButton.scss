@@ -1,0 +1,30 @@
+#HomeButton {
+    position: fixed;
+    top: 8px;
+    left: 10px;
+    border-radius: 50%;
+    z-index: 8;
+    display: none;
+}
+
+.HomeButton__logo {
+    img {
+        width: 40px;
+        height: auto;
+        margin: 3px 4.5px;
+    }
+
+    @media #{$desktop_breakpoint} {
+        img {
+            width: 30px;
+            height: auto;
+            margin: 3px 4.5px;    
+        }
+    
+        &:hover {
+            img {
+                animation-duration: 2s;
+            }
+        }
+    }
+}

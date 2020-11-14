@@ -1,10 +1,14 @@
+//import passport, { PassportStatic } from "passport";
+
+namespace Castamatch {
 /*
  *  Master Passportjs configuration file
  */
 
 
 /* External packages */
-const bcrypt = require("bcryptjs");
+//import 'bcryptjs';
+//const bcrypt = require("bcryptjs");
 const localStrategy = require("passport-local").Strategy;
 
 
@@ -13,13 +17,17 @@ const User = require("../database/schema/Schema").User;
 
 
 /* Local strategy */
-module.exports = function(passport) {
+export function(passport: any) {
     passport.use(
 
         new localStrategy({
             usernameField: 'email',
             passwordField: 'password'
-        }, (username, password, done) => {
+        }, (
+            username: string, 
+            password: string, 
+            done: any
+        ) => {
             User.findOne({ email: username }, (err, user) => {
                 if (err) throw err;
                 if (!user) return done(null, false);
@@ -49,3 +57,6 @@ module.exports = function(passport) {
         });
     });
 };
+
+/* EOF */
+}

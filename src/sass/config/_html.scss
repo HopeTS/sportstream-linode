@@ -1,0 +1,105 @@
+html {
+    font-family: var(--sans-serif);
+    background: var(--background-color);
+
+    &[data-mobile_nav=false] {
+        overflow: unset;
+        overflow-x: hidden;
+    }
+    
+    &[data-mobile_nav=true] {
+        overflow: hidden;
+    }
+
+    @media #{$tablet_breakpoint} {
+        &[data-mobile_nav=false], &[data-mobile_nav=true] {
+            overflow: unset;
+        }
+    }
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--header-color);
+}
+
+p {
+    color: var(--text-color);
+}
+
+i {}
+
+em {}
+
+b {}
+
+mark {}
+
+span {}
+
+small {}
+
+strong {}
+
+u {}
+
+code {}
+
+cite {}
+
+a {
+    color: var(--link-color);
+}
+
+button {}
+
+ol {
+    li {}
+}
+
+ul {
+    li {}
+}
+
+form {
+    width: 280px;
+    margin: 1em auto;
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    background: #f0f0f0;
+
+    > div {
+        width: calc(280px - 2em);
+        margin: auto;
+        margin-top: 8px;
+
+        &:first-child {
+            margin-top: 1em;
+        }
+
+        input {
+            padding: 4px;
+            width: calc(100% - 16px);
+            display: block;
+        }
+
+        select {
+            padding: 4px;
+            width: calc(100% - 4px);
+            display: block;
+        }
+    }
+
+    button {
+        border: 0;
+        background-color: var(--button-color);
+        color: var(--white);
+        font-size: 1.5em;
+        font-weight: bold;
+        padding: 8px;
+        width: calc(280px - 2em);
+        margin: 8px auto;
+        margin-top: 1em;
+        cursor: pointer;
+    }
+}

@@ -11,7 +11,10 @@ const exec = require('child_process').exec;
 
 /* MongoDB connection object */
 class MongoD {
-    constructor({ dbpath, port }) {
+    constructor(
+        private dbpath: string, 
+        private port: string 
+    ) {
         this.dbpath = dbpath;
         this.port = port;
     }
@@ -23,9 +26,11 @@ class MongoD {
 
         exec(command, {cwd: rootDir}, (error, stdout, stderr) => {
             if (error) {
-                new Error(console.log(
-                    `${chalk.bold.red('MongoDB error:')} ${chalk.red(error)}`
-                ));
+                new Error(
+                    console.log(
+                        `${chalk.bold.red('MongoDB error:')} ${chalk.red(error)}`
+                    )
+                );
 
                 return console.log(chalk.bold.red(
                     'Aborting connection to MongoDB'
@@ -38,4 +43,4 @@ class MongoD {
     }
 }
 
-module.exports = MongoD;
+export {MongoD};

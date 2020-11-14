@@ -1,0 +1,23 @@
+/*
+ *  Default color variables
+ */
+
+ :root {
+    // Gradient shadows
+    --shadow: rgba(0, 0, 0, 0.3);
+    --shadow-light: rgba(0, 0, 0, 0.1);
+    --shadow-thick: rgba(0, 0, 0, 0.5);
+
+    // Grayscale
+    --black: #080808;
+    --gray: #414141;
+    --white: #e8e8e8;
+
+    // Theme colors
+    --primary-color: #5d00ff;
+    --background-color: #f8f8f8;
+    --header-color: #080808;
+    --text-color: #080808;
+    --link-color: var(--primary-color);
+    --button-color: var(--primary-color);
+}

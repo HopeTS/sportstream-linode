@@ -1,0 +1,4 @@
+@mixin page {
+    padding-top: 70px;
+    min-height: calc(100vh - 100px);    // 100vh - (top padding + footer height) 
+}

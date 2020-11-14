@@ -3,21 +3,21 @@
  */
 
 /* External packages */
-const express = require('express');
-const path = require('path');
-const chalk = require('chalk');
-const passport = require('passport');
+//const express = require('express');
+//const path = require('path');
+//const chalk = require('chalk');
+//const passport = require('passport');
 const bcrypt = require('bcryptjs');
-const bodyParser = require('body-parser');
+//const bodyParser = require('body-parser');
 
 
 /* Internal packages */
-const http2https = require('../middleware/http2https');
+//const http2https = require('../middleware/http2https');
 const User = require('../database/schema/Schema').User;
 
 
 /* Paths */
-const publicPath = path.join(__dirname, '../../public/');
+//const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
 const wildcardRoute = path.join(publicPath, '404.html');
 

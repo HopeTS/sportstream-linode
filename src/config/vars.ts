@@ -1,8 +1,10 @@
+namespace Castamatch {
 /* 
  * Server configuration
  */
 
-const config = {
+
+export const config = {
     http: {
         media_root: './server/media',
         allow_origin: '*',
@@ -24,4 +26,6 @@ const config = {
     secret: 'sdkngoih38yghgdsgh845ret34t',
 };
 
-module.exports = config;
+/* EOF */
+}
+
