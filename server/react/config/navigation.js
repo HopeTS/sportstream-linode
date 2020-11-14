@@ -1,8 +1,7 @@
 /*
-    This array contains all the links displayed in the mobile and desktop
-    navigation ui components.
-
-*/
+ *    This array contains all the links displayed in the mobile and desktop
+ *    navigation ui components.
+ */
 
 export default [
     {

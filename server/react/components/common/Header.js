@@ -1,9 +1,14 @@
+/* External packages */
 import React from 'react';
 import {connect} from 'react-redux';
 
+
+/* Internal packages */
 import Navigation from '../ui/Navigation';
 import AccountCard from './auth/AccountCard';
 
+
+/* Component */
 export class Header extends React.Component {
     render() {
         return (
@@ -21,6 +26,8 @@ export class Header extends React.Component {
     };
 };
 
+
+/* Connect to store */
 const mapStateToProps = (state) => {
     return {
         page_ID: state.page.id

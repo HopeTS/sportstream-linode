@@ -1,6 +1,9 @@
+/* External packages */
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
+
+/* Schema */
 const UserSchema = new Schema({
     name: String,
     email: String,

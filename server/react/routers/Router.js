@@ -1,4 +1,9 @@
-/* Packages */
+/*
+ *  Router component
+ */
+
+
+/* External packages */
 import React from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
@@ -26,7 +31,6 @@ export class Router extends React.Component {
         };
     };
 
-
     componentWillMount() {
         const $pageLoader = document.querySelector('.page-loader');
 
@@ -46,7 +50,6 @@ export class Router extends React.Component {
             });
         }, 300);
     };
-
 
     render() {
         return (

@@ -1,7 +1,12 @@
+/*
+ *  Reducer for handling UI information in Redux
+ */
+
+
+/* Reducer */
 const UIDefaultState = {
     navMenu_Mobile: false
 };
-
 
 export default (state = UIDefaultState, action) => {
     switch(action.type) {

@@ -1,13 +1,22 @@
+/*
+ *  Router handling static content endpoints
+ */
+
+ 
+/* External packages */
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
 
+
+/* Paths */
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
 const wildcardRoute = path.join(publicPath, '404.html');
 
-const router = new express.Router();
 
+/* Router */
+const router = new express.Router();
 
 router.get('/', (req, res) => {
     try {
