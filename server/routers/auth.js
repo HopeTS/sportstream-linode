@@ -11,9 +11,11 @@ const appRoute = path.join(publicPath, 'index.html');
 const wildcardRoute = path.join(publicPath, '404.html');
 const User = require('../database/schema/Schema').User;
 
+
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+
 
 router.get('/login', (req, res) => {
     try {
@@ -29,18 +31,28 @@ router.get('/login', (req, res) => {
     }
 });
 
-router.post("/login", (req, res, next) => {
+router.post('/login', (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
-      if (err) throw err;
-      if (!user) res.status(404).send("No User Exists");
-      else {
-        req.logIn(user, (err) => {
-          if (err) throw err;
-          res.send("Successfully Authenticated");
-          console.log(req.user);
-        });
-      }
+
+        // Error handling
+        if (err) throw err;
+        if (!user) res.status(404).send("No User Exists");
+
+        // Sign in
+        else {
+            req.logIn(user, (err) => {
+                if (err) throw err;
+                res.cookie('user', user.id, {maxAge: 2592000000 }); // 1 Month
+                res.send("Successfully Authenticated");
+                console.log(req.user);
+            });
+        }
     })(req, res, next);
+});
+
+router.get('logout', (req, res) => {
+    res.clearCookie('userid');
+    res.send();
 });
 
 router.get('/register', (req, res) => {
