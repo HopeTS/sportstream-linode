@@ -17,7 +17,7 @@ export class Register extends React.Component {
             name: '',
             email: '',
             password: '',
-            type: '',
+            type: 'business',
         };
     };
 

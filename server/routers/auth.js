@@ -54,7 +54,6 @@ router.post('/login', (req, res, next) => {
                 if (err) throw err;
                 res.cookie('user', user.id, {maxAge: 2592000000 }); // 1 Month
                 res.send("Successfully Authenticated");
-                console.log(req.user);
             });
         }
     })(req, res, next);
@@ -83,7 +82,6 @@ router.post('/register',
     (req, res) => {
         try {
             console.log(`Received a${req.secure ? " secure": "n insecure"} /register request`);
-            console.log(req)
             User.findOne({email: req.body.email}, async (err, doc) => {
                 if (err) throw err;
                 if (doc) res.send("User already exists!");
@@ -98,7 +96,6 @@ router.post('/register',
                         password: hashedPassword,
                     });
                     await newUser.save();
-                    console.log(newUser)
                 }
             })
         } catch(e) {

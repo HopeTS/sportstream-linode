@@ -73,7 +73,7 @@ export class Login extends React.Component {
                             type="email" 
                             id="email" 
                             name="email" 
-                            onChange={(e) => this.setEmail(e.target.value)}
+                            onChange={(e) => this.setEmail(e)}
                             required
                         />
                     </div>
@@ -90,10 +90,10 @@ export class Login extends React.Component {
                     </div>
 
                     <div className="Login__account-type">
-                        <label htmlFor="account_type">I am a...</label>
+                        <label htmlFor="type">I am a...</label>
                         <select 
-                            name="account_type" 
-                            id="account_type"
+                            name="type" 
+                            id="type"
                             onChange={(e) => this.setType(e.target.value)}
                         >
                             <option value="business">Business</option>
