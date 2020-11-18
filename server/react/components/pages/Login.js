@@ -44,13 +44,6 @@ export class Login extends React.Component {
         });
     }
 
-    setType = (type) => {
-        this.setState({
-            ...this.state,
-            type: type
-        });
-    }
-
     login = () => {
         axios({
             method: "POST",
@@ -87,18 +80,6 @@ export class Login extends React.Component {
                             onChange={(e) => this.setPassword(e.target.value)}
                             required
                         />
-                    </div>
-
-                    <div className="Login__account-type">
-                        <label htmlFor="type">I am a...</label>
-                        <select 
-                            name="type" 
-                            id="type"
-                            onChange={(e) => this.setType(e.target.value)}
-                        >
-                            <option value="business">Business</option>
-                            <option value="user">Athlete/Parent</option>
-                        </select>
                     </div>
 
                     <button 
