@@ -99,7 +99,7 @@ router.post('/register',
                 }
             })
         } catch(e) {
-            res.send();
+            res.status(500).send();
             console.log(
                 chalk.red('An error occured: '),
                 '\n',
@@ -109,9 +109,31 @@ router.post('/register',
     }
 );
 
-router.get('/user', (req, res) => {
-    res.send(req.user);
-})
+// Logging in from cookie too risky for now
+/*
+router.post('/user', (req, res) => {
+    try {
+        await User.findOne({_id: req.user}, async (err, doc) => {
 
+            // Error handling
+            if (err) throw err;
+            if (!doc) return res.status(404).send();
+
+            // Sign in
+            else {
+                req.logIn(user)
+            }
+        });
+
+    } catch(e) {
+        res.status(500).send();
+        console.log(
+            chalk.red('An error occured: '),
+            '\n',
+            `${e}`
+        );
+    }
+})
+*/
 
 module.exports = router;
