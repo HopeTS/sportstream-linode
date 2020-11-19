@@ -21,6 +21,11 @@ import Register from '../components/pages/Register';
 import Wildcard from '../components/pages/Wildcard';
 
 
+/* Actions */
+import {login} from '../redux/actions/auth';
+
+
+
 /* Router */
 export class Router extends React.Component {
     constructor(props) {
@@ -32,9 +37,19 @@ export class Router extends React.Component {
     };
 
     componentWillMount() {
-        const $pageLoader = document.querySelector('.page-loader');
+        this.fadein_animation();
+        this.check_session();
+    };
 
-        // Disable loader
+    fadein_animation() {
+        /**
+         * Handles the state management for the animation of fading out the
+         * page loader and fading in the app content when the app is finished
+         * loading.
+         */
+        
+         // Disable loader
+        const $pageLoader = document.querySelector('.page-loader');
         if ($pageLoader) {
             $pageLoader.setAttribute('data-loading', true);
             this.setState({
@@ -49,7 +64,20 @@ export class Router extends React.Component {
                 loaded: true
             });
         }, 300);
-    };
+    }
+
+    check_session() {
+        /**
+         * Checks cookies to see if user has logged in with previous session
+         * If so, sends the encrypted user id to the server and returns the
+         * account information needed for the redux account info.
+         */
+
+         // TODO: check browser for user cookie
+         // TODO: send id string to server
+         // TODO: (wire up this endpoint in the auth router)
+         // TODO: take account info from response and update redux store.
+    }
 
     render() {
         return (
@@ -102,5 +130,11 @@ const mapStateToProps = (state) => {
     };
 };
 
+const mapDispatchToProps = (state) => {
+    login: (account) => {
+        dispatchEvent(login(account));
+    }
+};
 
-export default connect(mapStateToProps, undefined)(Router);
+
+export default connect(mapStateToProps, mapDispatchToProps)(Router);
