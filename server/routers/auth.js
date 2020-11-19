@@ -28,7 +28,12 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 router.get('/login', (req, res) => {
+    /**
+     * Login page
+     */
+
     try {
+        // If not logged in
         return res.sendFile(appRoute);
     
     } catch(e) {
@@ -42,6 +47,9 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', (req, res, next) => {
+    /**
+     * Route to handle logging in with username and password
+     */
     passport.authenticate("local", (err, user, info) => {
 
         // Error handling
@@ -60,7 +68,11 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('logout', (req, res) => {
-    res.clearCookie('userid');
+    /**
+     * Route to clear authentication cookie
+     */
+
+    res.clearCookie('user');
     res.send();
 });
 
