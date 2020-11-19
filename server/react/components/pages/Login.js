@@ -7,6 +7,7 @@ import axios from 'axios';
 
 /* Actions */
 import {page_ID__Set} from '../../redux/actions/page';
+import {login} from '../../redux/actions/auth';
 
 
 /* Component */
@@ -22,12 +23,7 @@ export class Login extends React.Component {
 
 
     componentWillMount() {
-        this.page_ID__Set('Login');
-    };
-
-
-    page_ID__Set = (id) => {
-        this.props.page_ID__Set(id);
+        this.props.page_ID__Set('Login');
     };
 
     setEmail = (email) => {
@@ -45,7 +41,7 @@ export class Login extends React.Component {
     }
 
     login = () => {
-        axios({
+        axios({ // POST login
             method: "POST",
             data: {
                 email: this.state.email,
@@ -53,7 +49,17 @@ export class Login extends React.Component {
             },
             withCredentials: true,
             url: `${window.location.origin}/login`,
-        }).then((res) => console.log(res))
+        }).then((res) => {
+            if (res.status !== 202) {   // If not logged in
+                return console.log('Authentication failed');
+            }
+            else {  // If login successful
+                return console.log('Authentication succeeded!');
+            }
+            
+            // TODO: Store username, type and genkey from server into redux
+
+        })
     }
 
     render() {
@@ -66,7 +72,7 @@ export class Login extends React.Component {
                             type="email" 
                             id="email" 
                             name="email" 
-                            onChange={(e) => this.setEmail(e)}
+                            onChange={(e) => this.setEmail(e.target.value)}
                             required
                         />
                     </div>
@@ -105,6 +111,10 @@ export class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => ({
     page_ID__Set: (id) => {
         dispatch(page_ID__Set(id));
+    },
+
+    login: (account) => {
+        dispatch(login(account));
     }
 });
 

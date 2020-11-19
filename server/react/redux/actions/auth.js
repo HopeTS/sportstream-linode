@@ -1,5 +1,5 @@
-/*
- *  Actions for handling account information in Redux
+/**
+ * Actions for handling account information in Redux
  */
 
 

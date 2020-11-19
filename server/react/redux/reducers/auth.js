@@ -5,18 +5,35 @@
 
 /* Reducer */
 const AuthDefaultState = {
-    account: null
+    isAuthenticated: false,
+    account: {
+        email: '',
+        type: '',
+        genkey: ''
+    }
 };
 
 export default (state = AuthDefaultState, action) => {
     switch(action.type) {
         case 'LOGIN':
             return {
-                ...action.account
+                isAuthenticated: true,
+                account: {
+                    email: action.account.email,
+                    type: action.account.type,
+                    genkey: action.account.genkey
+                }
             };
         
         case 'LOGOUT':
-            return null;
+            return {
+                isAuthenticated: false,
+                account: {
+                    email: '',
+                    type: '',
+                    genkey: ''
+                }
+            };
 
         default:
             return state;
