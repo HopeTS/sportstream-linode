@@ -53,7 +53,7 @@ router.post('/login', (req, res, next) => {
             req.logIn(user, (err) => {
                 if (err) throw err;
                 res.cookie('user', user.id, {maxAge: 2592000000 }); // 1 Month
-                res.status(202).send("Successfully Authenticated");
+                res.status(202).send(user);
             });
         }
     })(req, res, next);

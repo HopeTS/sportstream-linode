@@ -50,16 +50,20 @@ export class Login extends React.Component {
             withCredentials: true,
             url: `${window.location.origin}/login`,
         }).then((res) => {
-            if (res.status !== 202) {   // If not logged in
+            // If login unsuccessful
+            if (res.status !== 202) {
                 return console.log('Authentication failed');
             }
-            else {  // If login successful
-                return console.log('Authentication succeeded!');
-            }
-            
-            // TODO: Store username, type and genkey from server into redux
 
-        })
+            // If login successful
+            // TODO: Store username, type and genkey from server into redux
+            this.props.login({
+                name: res.data.name,
+                email: res.data.email,
+                type: res.data.type
+            })
+            return console.log('Authentication succeeded!');
+        });
     }
 
     render() {
@@ -108,6 +112,13 @@ export class Login extends React.Component {
 
 
 /* Connect to store */
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
+    }
+}
+
 const mapDispatchToProps = (dispatch) => ({
     page_ID__Set: (id) => {
         dispatch(page_ID__Set(id));
@@ -119,4 +130,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(undefined, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -7,6 +7,7 @@
 const AuthDefaultState = {
     isAuthenticated: false,
     account: {
+        name: '',
         email: '',
         type: '',
         genkey: ''
@@ -19,6 +20,7 @@ export default (state = AuthDefaultState, action) => {
             return {
                 isAuthenticated: true,
                 account: {
+                    name: action.account.name,
                     email: action.account.email,
                     type: action.account.type,
                     genkey: action.account.genkey
@@ -29,6 +31,7 @@ export default (state = AuthDefaultState, action) => {
             return {
                 isAuthenticated: false,
                 account: {
+                    name: '',
                     email: '',
                     type: '',
                     genkey: ''

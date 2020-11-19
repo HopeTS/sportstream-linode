@@ -29,9 +29,9 @@ export class AccountCard extends React.Component {
     render() {
         return (
             <div id="AccountCard" data-mobile_nav={this.props.mobile_nav}>
-                {this.state.auth ?
+                {this.props.isAuthenticated ?
                     <div className="AccountCard__auth">
-
+                        Hi, {this.props.account.name}
                     </div>
                     :
                     <NavLink to="/login" onClick={this.mobile_nav}>
@@ -47,7 +47,9 @@ export class AccountCard extends React.Component {
 
 const mapStateToProps = (state) => {
     return {
-        mobile_nav: state.ui.navMenu_Mobile
+        mobile_nav: state.ui.navMenu_Mobile,
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
     };
 };
 
