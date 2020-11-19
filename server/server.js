@@ -20,13 +20,16 @@ const cookieParser = require('cookie-parser');
 
 /* Internal packages */
 const publicPath = path.join(__dirname, '../public');
-const clientRouter = require('./routers/client');
-const authRouter = require('./routers/auth');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
 
+const clientRouter = require('./routers/client');
+const authRouter = require('./routers/auth');
+const wildcardRouter = require('./routers/wildcard');
+
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
+
 
 /* Connect to MongoDB */
 mongod = new MongoD(config.mongodb);
@@ -41,6 +44,7 @@ db.once('open', () => {
     console.log(chalk.green('Mongoose has connected to MongoDB'));
     console.log(chalk.bold('MongoDB port: '), chalk.blue(config.mongodb.port));
 });    
+
 
 /* Configure express */
 const app = express();
@@ -65,6 +69,8 @@ require('./auth/passport')(passport);
 
 app.use(clientRouter);
 app.use(authRouter);
+app.use(wildcardRouter);
+
 
 /* Run server */
 if (process.env.NAME === 'development') {

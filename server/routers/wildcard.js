@@ -1,5 +1,5 @@
 /*
- *  Router handling static content endpoints
+ *  Router handling wildcard routes
  */
 
  
@@ -18,10 +18,10 @@ const wildcardRoute = path.join(publicPath, '404.html');
 /* Router */
 const router = new express.Router();
 
-router.get('/', (req, res) => {
+router.get('/*', (req, res) => {
     try {
         return res.sendFile(appRoute);
-    
+
     } catch(e) {
         res.send();
         console.log(
