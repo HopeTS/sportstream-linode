@@ -1,8 +1,27 @@
 # Sportstream (Linode) :rocket:
-> This is the minimum viable product for SportStream, deployed on linode
+> This is the minimum viable product for the Castamatch site
+
+---
+
+# Table of Contents
+
+1.  [Abstract](#Abstract)
+    1.  [Technology Overview](#Technology-Overview)
+
+---
+
+# Abstract
+
+## Technology Overview
+
+_sportstream-linode_ if the first iteration of the Castamatch live streaming
+wesbite.
 
 ## First time setup and configuration
-> ___Note___: This server can only be deployed on a linux-based operating system. Eventually, it will be encapsulated in a docker container but currently it is not.
+
+**Note:** This server can only be deployed on a linux-based operating 
+system. Eventually, it will be encapsulated in a docker container but currently 
+it is not.
 
 1. **Install Certbot**
     -   This is used to generate SSL certificates
