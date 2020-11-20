@@ -14,9 +14,6 @@ const config = {
         ping: 60,
         ping_timeout: 30,
     },
-    trans: {
-        ffmpeg: '/usr/bin/ffmpeg',
-    },
     mongodb: {
         dbpath: './server/database/db',
         port: '27018',
