@@ -12,10 +12,11 @@
 
 # Abstract
 
-## Technology Overview
-
 _sportstream-linode_ if the first iteration of the Castamatch live streaming
 wesbite.
+
+
+## Technology Overview
 
 ## First time setup and configuration
 
@@ -24,14 +25,18 @@ system. Eventually, it will be encapsulated in a docker container but currently
 it is not.
 
 1. **Install Certbot**
+
     -   This is used to generate SSL certificates
-    -   First, install the prerequisites and ensure you can run certbot with these bash commands
+    -   First, install the prerequisites and ensure you can run certbot with 
+    these bash commands
+
     ```bash
     sudo snap install core
     sudo snap refresh core
     sudo snap install --classic certbot
     sudo ln -s /snap/bin/certbot /usr/bin/certbot
     ```
+
     -   Create the certificates with this
     ```bash
     sudo certbot certonly --webroot
