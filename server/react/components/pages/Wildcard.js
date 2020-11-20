@@ -13,16 +13,9 @@ export class Wildcard extends React.Component {
         super(props);
     };
 
-
     componentWillMount() {
-        this.page_ID__Set('Wildcard');
+        this.props.page_ID__Set('Wildcard');
     };
-
-
-    page_ID__Set = (id) => {
-        this.props.page_ID__Set(id);
-    };
-
     
     render() {
         return (

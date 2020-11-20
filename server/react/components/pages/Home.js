@@ -14,20 +14,13 @@ export class Home extends React.Component {
         super(props);
     };
 
-
     componentWillMount() {
-        this.page_ID__Set('Home');
+        this.props.page_ID__Set('Home');
         axios({
             method: "get",
             url: `${window.location.origin}/user`
         }).then((res) => console.log(res))
     };
-
-
-    page_ID__Set = (id) => {
-        this.props.page_ID__Set(id);
-    };
-
 
     render() {
         return (

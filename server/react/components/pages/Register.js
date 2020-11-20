@@ -21,15 +21,10 @@ export class Register extends React.Component {
         };
     };
 
-
     componentWillMount() {
-        this.page_ID__Set('Register');
+        this.props.page_ID__Set('Register');
     };
 
-
-    page_ID__Set = (id) => {
-        this.props.page_ID__Set(id);
-    };
 
     setName = (name) => {
         this.setState({
