@@ -5,7 +5,7 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "start:dev": "concurrently --kill-others \"npm run build:dev_Nodemon\" \"npm run build:dev_Webpack\"",
+    "start:dev": "concurrently --kill-others \"npm run build:dev_Nodemon\" \"npm run build:dev_Webpack\" \"tsc -w\"",
     "start:https": "npm run build:prod & env-cmd https_production node server/server.js",
     "start:http": " npm run build:prod & env-cmd http_production node server/server.js",
     "build:dev": "webpack",

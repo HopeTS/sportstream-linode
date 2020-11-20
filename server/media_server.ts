@@ -1,5 +1,5 @@
 export {};
-/*
+/**
  *  Media server used for livestreaming
  */
 

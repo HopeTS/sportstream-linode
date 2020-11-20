@@ -1,5 +1,5 @@
 export {};
-/*
+/**
  *  Main server / entry point
  */
 
