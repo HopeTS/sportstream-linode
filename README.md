@@ -1,28 +1,53 @@
 # Sportstream (Linode) :rocket:
-> This is the minimum viable product for the Castamatch site
+
+This is the minimum viable product for the Castamatch site. This README contains 
+an overview of the technologies implemented, the development pipeline, metadata 
+about the structure of the documentation.
 
 ---
 
 # Table of Contents
 
 1.  [Abstract](#Abstract)
+    1.  [Business Requirements](#Business-Requirements) TODO
     1.  [Technology Overview](#Technology-Overview)
+1.  [Development Process](#Development-Process)
+1.  [Server Configuration](#Server-Configuration)
 
 ---
 
-# Abstract
+#   Abstract
 
 _sportstream-linode_ if the first iteration of the Castamatch live streaming
-wesbite.
+website. 
 
+##  Business Requirements
 
-## Technology Overview
+TODO! It is going to take a lot of manual labor to set a sports center up with 
+the equipment needed to livestream via Castamatch, and it is up to the each 
+sports center to charge their athletes or teams for use of the livestream 
+service.
 
-## First time setup and configuration
+##  Technology Overview
 
-**Note:** This server can only be deployed on a linux-based operating 
-system. Eventually, it will be encapsulated in a docker container but currently 
-it is not.
+---
+
+#   Development Process
+
+This server can only be run in development by a Windows machine by default. 
+It has not been tested on other operating systems, but it should work if the 
+developer changes the FFMPEG_PATH in _~/.env-cmdrc_. 
+
+1.  Install dependencies
+>   TODO: Steps to install dependencies from factory reset to npm install
+
+---
+
+#   Server Configuration
+
+This server is built to be run on a linode linux VM. By default, the 
+development server can only be run on Windows, but both the http and https 
+production server can only be run on linux due to the ffmpeg configuration.
 
 1. **Install Certbot**
 
