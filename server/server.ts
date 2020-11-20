@@ -1,5 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+export {};
+/*
+ *  Main server / entry point
+ */
+
+ 
+/* External packages */
 const express = require('express');
 const https = require('https');
 const http = require('http');
@@ -12,22 +17,37 @@ const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
+
+
+/* Internal packages */
 const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
+
 const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');
 const wildcardRouter = require('./routers/wildcard');
+
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
+
+
+/* Connect to MongoDB */
 const mongod = new MongoD(config.mongodb);
 mongod.create_connection();
-mongoose.connect(`mongodb://localhost:${config.mongodb.port}/castamatch`, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(
+    `mongodb://localhost:${config.mongodb.port}/castamatch`,
+    {useNewUrlParser: true, useUnifiedTopology: true}
+);
+
 const db = mongoose.connection;
 db.once('open', () => {
     console.log(chalk.green('Mongoose has connected to MongoDB'));
     console.log(chalk.bold('MongoDB port: '), chalk.blue(config.mongodb.port));
-});
+});    
+
+
+/* Configure express */
 const app = express();
 app.use(http2https);
 app.use(express.static(publicPath));
@@ -43,41 +63,55 @@ app.use(session({
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
-}));
+}))
 app.use(passport.initialize());
 app.use(passport.session());
 require('./auth/passport')(passport);
+
 app.use(clientRouter);
 app.use(authRouter);
 app.use(wildcardRouter);
+
+
+/* Run server */
 if (process.env.NAME === 'development') {
-    http.createServer(app).listen(process.env.HTTP_PORT, () => {
+    http.createServer(app).listen(process.env.HTTP_PORT, () => {        
         console.log(chalk.underline.green('Development HTTP server has connected.'));
-        console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
+        console.log(
+            chalk.bold('HTTP Port:'),
+            chalk.blue(process.env.HTTP_PORT)
+        );
     });
 }
+
 else if (process.env.NAME === 'https_production') {
     const httpsOptions = {
         key: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8'),
         cert: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8'),
         ca: fs.readFileSync(`${process.env.SSL_DIR}chain.pem`, 'utf8')
     };
+
     https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
         console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
         console.log(chalk.bold('HTTPS Port:'), chalk.blue(process.env.HTTPS_PORT));
     });
+
     http.createServer(app).listen(process.env.HTTP_PORT, () => {
         console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
         console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
     });
 }
+
 else if (process.env.NAME === 'http_production') {
     http.createServer(app).listen(process.env.HTTP_PORT, () => {
         console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
         console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
     });
 }
+
 else {
-    console.log(chalk.red(chalk.bold('Error: invalid environment'), 'did you forget to add an environment name?'));
+    console.log(chalk.red(
+    chalk.bold('Error: invalid environment'),
+        'did you forget to add an environment name?'        
+    ));
 }
-//# sourceMappingURL=server.js.map
