@@ -34,11 +34,14 @@ export class AccountCard extends React.Component {
                         Hi, {this.props.account.name}
                     </div>
                     :
-                    <NavLink to="/login" onClick={this.mobile_nav}>
-                        <div className="AccountCard__noAuth">
-                            Sign in
-                        </div>
-                    </NavLink>
+                    <div className="AccountCard__noAuth">
+                            Hello,&nbsp;
+                            <span className="link">
+                                <NavLink to="/login" onClick={this.mobile_nav}>
+                                    Sign in
+                                </NavLink>
+                            </span>
+                    </div>
                 }
             </div>
         );

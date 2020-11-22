@@ -30,4 +30,12 @@
 .AccountCard__noAuth {
     text-align: center;
     padding-top: 12px;
+    font-size: 14px;
+    color: var(--text-color);
+    text-decoration: none !important;
+
+    > .link {
+        color: var(--link-color);
+        text-decoration: underline;
+    }
 }
