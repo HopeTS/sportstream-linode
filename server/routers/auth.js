@@ -9,6 +9,8 @@ const chalk = require('chalk');
 const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
+const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
 
 /* Internal packages */
@@ -67,7 +69,7 @@ router.post('/login', (req, res, next) => {
     })(req, res, next);
 });
 
-router.get('logout', (req, res) => {
+router.get('/logout', ensureLoggedIn(), (req, res) => {
     /**
      * Route to clear authentication cookie
      */
@@ -76,7 +78,10 @@ router.get('logout', (req, res) => {
     res.send();
 });
 
-router.get('/register', (req, res) => {
+router.get('/register', ensureLoggedOut(), (req, res) => {
+    /**
+     * Route to register form
+     */
     try {
         return res.sendFile(appRoute);
     
@@ -90,36 +95,37 @@ router.get('/register', (req, res) => {
     }
 });
 
-router.post('/register',
-    (req, res) => {
-        try {
-            console.log(`Received a${req.secure ? " secure": "n insecure"} /register request`);
-            User.findOne({email: req.body.email}, async (err, doc) => {
-                if (err) throw err;
-                if (doc) res.send("User already exists!");
-                if (!doc) {
-                    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-                    console.log(hashedPassword)
-                    const newUser = new User({
-                        name: req.body.name,
-                        username: req.body.email,
-                        email: req.body.email,
-                        type: req.body.type,
-                        password: hashedPassword,
-                    });
-                    await newUser.save();
-                }
-            })
-        } catch(e) {
-            res.status(500).send();
-            console.log(
-                chalk.red('An error occured: '),
-                '\n',
-                `${e}`
-            );
-        }
+router.post('/register', ensureLoggedOut(), (req, res) => {
+    /**
+     * Route to register a new account in the database
+     */
+    try {
+        console.log(`Received a${req.secure ? " secure": "n insecure"} /register request`);
+        User.findOne({email: req.body.email}, async (err, doc) => {
+            if (err) throw err;
+            if (doc) res.send("User already exists!");
+            if (!doc) {
+                const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                console.log(hashedPassword)
+                const newUser = new User({
+                    name: req.body.name,
+                    username: req.body.email,
+                    email: req.body.email,
+                    type: req.body.type,
+                    password: hashedPassword,
+                });
+                await newUser.save();
+            }
+        })
+    } catch(e) {
+        res.status(500).send();
+        console.log(
+            chalk.red('An error occured: '),
+            '\n',
+            `${e}`
+        );
     }
-);
+});
 
 // Logging in from cookie too risky for now
 /*
