@@ -20,6 +20,7 @@ import Home from '../components/pages/Home';
 import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
 import Wildcard from '../components/pages/Wildcard';
+import Streams from '../components/pages/Streams';
 
 
 /* Actions */
@@ -139,6 +140,12 @@ export class Router extends React.Component {
                         <Route 
                             path="/register"
                             component={Register}
+                            exact
+                        />
+
+                        <Route 
+                            path="/streams"
+                            component={Streams}
                             exact
                         />
 
