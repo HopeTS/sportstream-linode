@@ -16,10 +16,6 @@ export class Home extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Home');
-        axios({
-            method: "get",
-            url: `${window.location.origin}/user`
-        }).then((res) => console.log(res))
     };
 
     render() {

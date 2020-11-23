@@ -17,59 +17,85 @@ export class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            type: ''
+            type: '',
+            login_failure: false
         };
     };
 
 
     componentWillMount() {
         this.props.page_ID__Set('Login');
+
     };
 
-    setEmail = (email) => {
+    setEmail(email) {
+        /** Controls email field */
+
         this.setState({
             ...this.state,
+            login_failure: false,
             email: email
         });
     }
 
     setPassword = (password) => {
+        /** Controls password field */
+
         this.setState({
             ...this.state,
+            login_failure: false,
             password: password
         });
     }
 
-    login = () => {
-        axios({ // POST login
-            method: "POST",
-            data: {
-                email: this.state.email,
-                password: this.state.password
-            },
-            withCredentials: true,
-            url: `${window.location.origin}/login`,
-        }).then((res) => {
-            // If login unsuccessful
-            if (res.status !== 202) {
-                return console.log('Authentication failed');
-            }
+    login = (e) => {
+        /**
+         *  Form submission function. The account credentials are sent to the
+         *  server, passes to login_failed() or login_succeeded()
+         */
 
-            // If login successful
-            // TODO: Store username, type and genkey from server into redux
+        e.preventDefault();
+
+        // POST login request to server
+        axios.post('/login', { 
+            email: this.state.email,
+            password: this.state.password
+        })
+
+        // If login successful
+        .then((res) => {
+            //  TODO: Update store
+            //  res.data.name
+            //  res.data.email
             this.props.login({
                 name: res.data.name,
                 email: res.data.email,
                 type: res.data.type
+            });
+
+            // Redirect
+            this.props.history.push('/');
+        })
+
+        // If login failure
+        .catch((err) => {
+            // Clear input
+            document.querySelector('#email').value = '';
+            document.querySelector('#password').value = '';
+            this.setState({
+                ...this.state,
+                login_failure: true
             })
-            return console.log('Authentication succeeded!');
         });
     }
 
     render() {
         return (
             <div id="Login">
-                <div className="Login__form">
+                <div 
+                    className="Login__form"
+                    data-active={!this.state.login_}
+                >
                     <div className="Login__field">
                         <label htmlFor="email">Email</label>
                         <input 
@@ -101,9 +127,18 @@ export class Login extends React.Component {
 
                     <div>
                         <p className="Login__register">
-                            Don't have an account? <NavLink to="/register">Register now.</NavLink>
+                            Don't have an account?&nbsp;
+                            <NavLink to="/register">
+                                Register now.
+                            </NavLink>
                         </p>
                     </div>
+                </div>
+
+                <div className="Login__failure" data-active={
+                    this.state.login_failure
+                }>
+                    login failed
                 </div>
             </div>
         );

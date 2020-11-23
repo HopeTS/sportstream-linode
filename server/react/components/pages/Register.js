@@ -65,7 +65,10 @@ export class Register extends React.Component {
             },
             withCredentials: true,
             url: `${window.location.origin}/register`,
-        }).then((res) => console.log(res))
+        }).then((res) => console.log(res));
+        //  TODO: Use response to determine whether or not auth was successful,
+        //  and update the page based on the results. Use successful account
+        //  creation to log in and redirect to the account page... maybe?
     }
 
     render() {
