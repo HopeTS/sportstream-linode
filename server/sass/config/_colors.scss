@@ -9,15 +9,20 @@
     --shadow-thick: rgba(0, 0, 0, 0.5);
 
     // Grayscale
-    --black: #080808;
+    --black: #0e0e10;
+    --dark-gray: #1a1a1e;
     --gray: #414141;
     --white: #e8e8e8;
 
     // Theme colors
     --primary-color: #5d00ff;
-    --background-color: #f8f8f8;
-    --header-color: #080808;
-    --text-color: #080808;
-    --link-color: var(--primary-color);
+    --primary-color-light: #7322ff;
+    --background-color: var(--black);
+    --background-color-light: var(--dark-gray);
+
+    // Content colors
+    --header-color: var(--primary-color-light);
+    --text-color: var(--white);
+    --link-color: var(--primary-color-light);
     --button-color: var(--primary-color);
 }

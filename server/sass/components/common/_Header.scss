@@ -5,6 +5,8 @@
     right: 0;
     height: 65px;
     z-index: 2;
+    background-color: var(--background-color-light);
+    border-bottom: 1px solid #000;
 
     @media #{$desktop_breakpoint} {
         height: 50px;

@@ -1,6 +1,7 @@
 html {
     font-family: var(--sans-serif);
     background: var(--background-color);
+    color: var(--white);
 
     &[data-mobile_nav=false] {
         overflow: unset;
