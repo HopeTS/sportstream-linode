@@ -1,41 +1,15 @@
 #AccountCard {
     position: fixed;
-    right: 70px;
-    top: 5px;
-    height: 47px;
-    background: var(--white);
-    padding: 4px;
-    width: 140px;
+    top: 0px;
+    height: 65px;
+    width: 180px;
     z-index: 100;
     transition: 200ms;
+    right: 3.5em;
 
-    &[data-mobile_nav=true] {
-        background: var(--primary-color);
-
-        .AccountCard__noAuth {
-            background: var(--shadow-light);
-            height: calc(100% - 8px);
-        } 
-        
-        .AccountCard__auth {
-            background: var(--shadow);
-        }
-
-        a {
-            color: var(--white);
-        }
-    }
-}
-
-.AccountCard__noAuth {
-    text-align: center;
-    padding-top: 12px;
-    font-size: 14px;
-    color: var(--text-color);
-    text-decoration: none !important;
-
-    > .link {
-        color: var(--link-color);
-        text-decoration: underline;
+    @media #{$desktop_breakpoint} {
+        height: 50px;
+        padding-right: 20px;
+        right: 0px;
     }
 }
