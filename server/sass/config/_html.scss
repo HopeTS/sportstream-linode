@@ -67,7 +67,7 @@ form {
     padding: 1em;
     display: flex;
     flex-direction: column;
-    background: #f0f0f0;
+    background: var(--dark-gray);
 
     > div {
         width: calc(280px - 2em);

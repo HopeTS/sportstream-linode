@@ -13,14 +13,11 @@
     }
 }
 
-.Header__forkMe {
-    &[data-visible=false] {
-        display: none;
-    }
-
-    &[data-visible=true] {
-        position: absolute;
-        top: 0;
-        right: 0;
+.Header__content {
+    @media #{$desktop_breakpoint} {
+        background: green;
+        width: 1200px;
+        margin: 0 auto;
+        height: 100%;
     }
 }

@@ -17,7 +17,25 @@ export class AccountCardNoAuth extends React.Component {
     render() {
         return (
             <div className="AccountCardNoAuth">
-                NoAuth!
+                <div className="AccountCardNoAuth__links">
+                    <NavLink
+                        className="AccountCardNoAuth__login"
+                        to="/login"
+                    >
+                        <div>
+                            Log in
+                        </div>
+                    </NavLink>
+
+                    <NavLink
+                        className="AccountCardNoAuth__register"
+                        to="/register"
+                    >
+                        <div>
+                            Register
+                        </div>
+                    </NavLink>
+                </div>
             </div>
         )
     }

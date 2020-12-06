@@ -1,3 +1,52 @@
 .AccountCardNoAuth {
-    
+    margin-top: 15px;
+
+    @media #{$desktop_breakpoint} {
+        margin-top: 7px;
+    }
 }
+
+.AccountCardNoAuth__links {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    div {
+        padding: 8px;
+        margin: auto;
+        color: var(--white);
+    }
+
+    a {
+        text-decoration: none;
+    }
+}
+
+.AccountCardNoAuth__login {
+    background-color: var(--gray);
+    border-radius: 8px;
+
+    @media #{$desktop_breakpoint} {
+        opacity: 0.7;
+        transition: 200ms;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+
+.AccountCardNoAuth__register {
+    background-color: var(--primary-color);
+    border-radius: 8px;
+
+    @media #{$desktop_breakpoint} {
+        opacity: 0.7;
+        transition: 200ms;
+
+        &:hover {
+            opacity: 1;
+        }
+    }
+}
+

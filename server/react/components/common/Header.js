@@ -17,12 +17,6 @@ export class Header extends React.Component {
                 <HomeButton />
                 <Navigation />
                 <AccountCard />
-
-                <img 
-                    className="Header__forkMe"
-                    src="/dist/images/forkmeongithub.png"
-                    data-visible={this.props.page_ID == "Default"}
-                />
             </header>
         );
     };

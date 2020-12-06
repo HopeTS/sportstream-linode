@@ -13,7 +13,7 @@
 }
 
 .DesktopNavigationLink__link {
-    color: var(--link-color);
+    color: var(--white);
     text-decoration: none;
     transition: 100ms;
     display: block;
@@ -25,6 +25,7 @@
     opacity: 0.6;
 
     &.current {
+        color: var(--link-color);
         border-bottom: 2px solid var(--link-color);
         opacity: 1;
     }
