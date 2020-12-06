@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 
 
 /* Internal packages */
+import HomeButton from '../ui/HomeButton';
 import Navigation from '../ui/Navigation';
 import AccountCard from './auth/AccountCard';
 
@@ -13,6 +14,7 @@ export class Header extends React.Component {
     render() {
         return (
             <header id="Header">
+                <HomeButton />
                 <Navigation />
                 <AccountCard />
 
