@@ -127,6 +127,11 @@ router.post('/register', ensureLoggedOut(), (req, res) => {
     }
 });
 
+router.get('/ensure-login', ensureLoggedIn(), (req, res) => {
+    console.log('User is logged in')
+    res.status(202).send();
+});
+
 // Logging in from cookie too risky for now
 /*
 router.post('/user', (req, res) => {

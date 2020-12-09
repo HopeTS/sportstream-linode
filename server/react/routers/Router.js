@@ -24,7 +24,8 @@ import Streams from '../components/pages/Streams';
 
 
 /* Actions */
-import {login} from '../redux/actions/auth';
+import { login } from '../redux/actions/auth';
+import { loadState } from '../auth/localStorage';
 
 
 
@@ -41,14 +42,16 @@ export class Router extends React.Component {
     componentWillMount() {
         this.fadein_animation();
         //this.check_session(); //<- logging in from cookie too  risky
+        //console.log(loadState());
+        this.load_localStorage();
     };
 
+    /**
+     * Handles the state management for the animation of fading out the
+     * page loader and fading in the app content when the app is finished
+     * loading.
+     */
     fadein_animation() {
-        /**
-         * Handles the state management for the animation of fading out the
-         * page loader and fading in the app content when the app is finished
-         * loading.
-         */
         
         // Disable loader
         const $pageLoader = document.querySelector('.page-loader');
@@ -68,49 +71,28 @@ export class Router extends React.Component {
         }, 300);
     }
 
-    check_session() {
-        /**
-         * Checks cookies to see if user has logged in with previous session
-         * If so, sends the encrypted user id to the server and returns the
-         * account information needed for the redux account info.
-         */
+    /**
+     * Loads data from localStorage to log user in, if user is stored in
+     * localStorage
+     */
+    load_localStorage = () => {
+        
+        // Check if user is authenticated
+        const userData = loadState(); 
 
-        // Extract user cookie
-        const cookies = document.cookie.split(';')
-            .map(cookie => cookie.split('='))
-            .filter(cookie => cookie[0] == 'user');
+        if (userData.auth.isAuthenticated) {
+            
+            // Login with auth data
+            try {
+                this.props.login(userData.auth.account)
+            
+            } catch(e) {
+                console.error(e);
+            }
 
-        // If no user cookie, then no authentication.
-        if (cookies.length === 0) {
+        } else {
             return;
         }
-
-        // If user cookie, authenticate server-side with passport
-        else {
-            axios({
-                method: 'GET',
-                url: `${window.location.origin}/user`
-            }).then((res) => {
-                console.log(res);
-            });
-        }
-
-        // If user cookie, send id to the server and retrieve user data
-        const user_id = cookies[0][1];
-        axios({
-            method: 'POST',
-            data: {
-                user: user_id
-            },
-            withCredentials: true,
-            url: `${window.location.origin}/user`,
-        }).then((res) => {
-            return console.log(res);
-        })
-
-        // TODO: send id string to server
-         // TODO: (wire up this endpoint in the auth router)
-         // TODO: take account info from response and update redux store.
     }
 
     render() {
@@ -170,11 +152,11 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (state) => {
+const mapDispatchToProps = (dispatch) => ({
     login: (account) => {
-        dispatchEvent(login(account));
+        dispatch(login(account));
     }
-};
+});
 
 
 export default connect(mapStateToProps, mapDispatchToProps)(Router);
