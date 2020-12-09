@@ -12,17 +12,13 @@
     font-size: 2.5em;
     z-index: 8;
     color: var(--link-color);
-
-    &[data-navmenu-mobile=true] {
-        color: var(--white);
-    }
 }
 
 .MobileNavigation__menu {
     position: fixed;
     top: 0;
     right: 0;
-    background: var(--primary-color);
+    background: var(--dark-gray);
 
     &[data-active=false] {
         opacity: 0;
