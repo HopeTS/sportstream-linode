@@ -6,7 +6,7 @@
     height: 100vh;*/
     right: 0;
     bottom: 0;
-    padding-top: calc(50vh - 75px);
+    padding-top: calc(50vh - 20px);
     background:#151515;
     transition: 300ms;
     opacity: 1;
@@ -24,33 +24,77 @@
 }
 
 .page-loader > div {
-    width: 133px;
-    height: 150px;
+    height: 40px;
+    width: 240px;
     margin: 0 auto;
-    border-radius: 50%;
-    animation: load 1.5s linear infinite;
-    -webkit-animation: load 1.2s linear infinite;
-    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
 }
 
-.page-loader > div > img {
-    width: auto;
-    height: 150px;
-    margin: 0 auto;
+.page-loader > div > div {
+    width: 40px;
+    height: 40px;
+    border-radius: 25px;
+    background: #7322ff;
+}
+
+.page-loader__1 {
+    animation: load_1;
+    animation-duration: 600ms;
+    animation-iteration-count: infinite;
+}
+
+.page-loader__2 {
+    animation: load_2;
+    animation-duration: 600ms;
+    animation-iteration-count: infinite;
 
 }
 
-
-@keyframes load {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(360deg);
-    }
+.page-loader__3 {
+    animation: load_3;
+    animation-duration: 600ms;
+    animation-iteration-count: infinite;
 }
 
-@-webkit-leyframes load {
-    0% {-webkit-transform: rotate(0deg);}
-    100% {-webkit-transform: rotate(360deg);}
+@keyframes load_1 {
+    0% {opacity: 0.2;}
+    33% {opacity: 0.6;}
+    66% {opacity: 1;}
+    99% {opacity: 0.2;}
+}
+
+@-webkit-keyframes load_1 {
+    0% {opacity: 0.2;}
+    33% {opacity: 0.6;}
+    66% {opacity: 1;}
+    99% {opacity: 1;}
+}
+
+@keyframes load_2 {
+    0% {opacity: 0.6;}
+    33% {opacity: 0.2;}
+    66% {opacity: 1;}
+    99% {opacity: 0.6;}
+}
+
+@-webkit-keyframes load_2 {
+    0% {opacity: 0.6;}
+    33% {opacity: 0.2;}
+    66% {opacity: 1;}
+    99% {opacity: 0.6;}
+}
+
+@keyframes load_3 {
+    0% {opacity: 1;}
+    33% {opacity: 0.6;}
+    66% {opacity: 0.2;}
+    99% {opacity: 1;}
+}
+
+@-webkit-keyframes load_3 {
+    0% {opacity: 1;}
+    33% {opacity: 0.6;}
+    66% {opacity: 0.2;}
+    99% {opacity: 1;}
 }
