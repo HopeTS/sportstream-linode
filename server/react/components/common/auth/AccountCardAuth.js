@@ -8,16 +8,32 @@ import {NavLink} from 'react-router-dom';
 import {navMenu_Mobile__Off} from '../../../redux/actions/ui';
 
 
-/* Component */
+/**
+ * Component */
 export class AccountCardAuth extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            menu: false
+        };
+    }
+
+    toggleMenu = () => {
+        this.setState({
+            menu: !this.state.menu
+        });
     }
 
     render() {
         return (
             <div className="AccountCardAuth">
-                Auth!
+                <p className="AccountCardAuth__greeting">
+                    Hello, {this.props.name ? this.props.name : 'stranger'}
+                </p>
+
+                <button className="AccountCardAuth__profileImage">
+                    <img src="/dist/images/icons/account.png" alt="" />
+                </button>
             </div>
         )
     }

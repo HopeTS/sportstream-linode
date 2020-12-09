@@ -8,7 +8,10 @@ import {NavLink} from 'react-router-dom';
 import {navMenu_Mobile__Off} from '../../../redux/actions/ui';
 
 
-/* Component */
+/**
+ * The React component for the account header menu when the user is not
+ * logged in
+ */
 export class AccountCardNoAuth extends React.Component {
     constructor(props) {
         super(props);
