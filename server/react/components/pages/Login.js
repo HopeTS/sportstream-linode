@@ -22,15 +22,13 @@ export class Login extends React.Component {
         };
     };
 
-
     componentWillMount() {
         this.props.page_ID__Set('Login');
 
     };
 
+    /** Controls email field */
     setEmail(email) {
-        /** Controls email field */
-
         this.setState({
             ...this.state,
             login_failure: false,
@@ -38,9 +36,8 @@ export class Login extends React.Component {
         });
     }
 
+    /** Controls password field */
     setPassword = (password) => {
-        /** Controls password field */
-
         this.setState({
             ...this.state,
             login_failure: false,
@@ -48,12 +45,11 @@ export class Login extends React.Component {
         });
     }
 
+    /**
+     *  Form submission function. The account credentials are sent to the
+     *  server, passes to login_failed() or login_succeeded()
+     */
     login = (e) => {
-        /**
-         *  Form submission function. The account credentials are sent to the
-         *  server, passes to login_failed() or login_succeeded()
-         */
-
         e.preventDefault();
 
         // POST login request to server
