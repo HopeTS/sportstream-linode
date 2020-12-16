@@ -46,11 +46,13 @@ export const saveState = (state) => {
     } catch(e) {
         console.error(e);
     }
+    return;
 };
 
 /**
  * Clears the Redux state from localStorage
  */
 export const clearState = () => {
-    // TODO
+    localStorage.clear();
+    return;
 }
