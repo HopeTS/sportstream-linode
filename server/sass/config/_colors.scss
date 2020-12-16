@@ -17,12 +17,13 @@
     // Theme colors
     --primary-color: #5d00ff;
     --primary-color-light: #7322ff;
+    --primary-color-lighter: #be98ff;
     --background-color: var(--black);
     --background-color-light: var(--dark-gray);
 
     // Content colors
     --header-color: var(--primary-color-light);
     --text-color: var(--white);
-    --link-color: var(--primary-color-light);
+    --link-color: var(--primary-color-lighter);
     --button-color: var(--primary-color);
 }

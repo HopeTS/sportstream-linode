@@ -78,18 +78,20 @@ export class Router extends React.Component {
     load_localStorage = () => {
         
         // Check if user is authenticated
-        const userData = loadState(); 
+        const userData = loadState();
 
-        if (userData.auth.isAuthenticated) {
+        if (userData) {
+            if (userData.auth.isAuthenticated) {
             
-            // Login with auth data
-            try {
-                this.props.login(userData.auth.account)
-            
-            } catch(e) {
-                console.error(e);
+                // Login with auth data
+                try {
+                    this.props.login(userData.auth.account)
+                
+                } catch(e) {
+                    console.error(e);
+                }
+    
             }
-
         } else {
             return;
         }
@@ -104,7 +106,9 @@ export class Router extends React.Component {
                     data-loading={this.state.loading}
                     data-loaded={this.state.loaded}
                 >
-                    <Header />
+                    {this.props.page_ID !== 'Home' &&
+                        <Header />                    
+                    }
 
                     <Switch>
                         <Route 

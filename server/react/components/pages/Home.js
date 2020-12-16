@@ -28,7 +28,21 @@ export class Home extends React.Component {
                 </section>
 
                 <section className="Home__content">
-                    Coming soon...
+                    <div className="Home__contentImage">
+                        <img 
+                            src="/dist/images/castamatch_2.png" 
+                            alt="Castamatch"
+                        />
+                    </div>
+                    <div className="Home__contentText">
+                        <p>
+                            Coming soon...
+                        </p>
+                        <br/>
+                        <small>
+                            Livestream your greatest games. Save the replays.
+                        </small>
+                    </div>
                 </section>
             </div>
         );
