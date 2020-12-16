@@ -2,9 +2,15 @@
     display: flex;
     flex-direction: row;    
     justify-content: space-between;
+    height: 65px;
+
+    @media #{$desktop_breakpoint} {
+        height: 50px;
+    }
 }
 
 .AccountCardAuth__profileImage {
+    margin-top: 12px;
     border: 0;
     background: red;
     border-radius: 100%;
@@ -15,5 +21,9 @@
         margin-top: 0;
         height: 30px;
         width: auto;
+    }
+
+    @media #{$desktop_breakpoint} {
+        margin-top: 5px;
     }
 }

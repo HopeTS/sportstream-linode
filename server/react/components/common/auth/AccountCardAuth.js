@@ -1,21 +1,24 @@
 /* External packages */
 import React from 'react';
-import {connect} from 'react-redux';
-import {NavLink} from 'react-router-dom';
+import { connect } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
 
 /* Internal packages */
-import {navMenu_Mobile__Off} from '../../../redux/actions/ui';
+import { navMenu_Mobile__Off } from '../../../redux/actions/ui';
+import AccountCardAuthMenuUser from './AccountCardAuthMenuUser';
 
 
-/**
- * Component */
+/* Component */
 export class AccountCardAuth extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             menu: false
         };
+
+        console.log('account')
+        console.log(this.props.account)
     }
 
     toggleMenu = () => {
@@ -27,13 +30,13 @@ export class AccountCardAuth extends React.Component {
     render() {
         return (
             <div className="AccountCardAuth">
-                <p className="AccountCardAuth__greeting">
-                    Hello, {this.props.name ? this.props.name : 'stranger'}
-                </p>
-
                 <button className="AccountCardAuth__profileImage">
                     <img src="/dist/images/icons/account.png" alt="" />
                 </button>
+
+                {this.props.isAuthenticated &&
+                    <AccountCardAuthMenuUser />
+                }
             </div>
         )
     }
