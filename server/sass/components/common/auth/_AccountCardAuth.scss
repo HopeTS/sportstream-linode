@@ -16,6 +16,7 @@
     border-radius: 100%;
     height: 40px;
     width: 40px;
+    cursor: pointer;
 
     img {
         margin-top: 0;
@@ -25,5 +26,19 @@
 
     @media #{$desktop_breakpoint} {
         margin-top: 5px;
+    }
+}
+
+.AccountCardAuth__menu {
+    position: fixed;
+    top: 50px;
+    right: 1em;
+    width: auto;
+    height: 0;
+    transition: 200ms;
+
+    &[data-active=true] {
+        height: auto;
+        max-height: 200px;
     }
 }

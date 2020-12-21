@@ -7,6 +7,7 @@ import { NavLink } from 'react-router-dom';
 /* Internal packages */
 import { navMenu_Mobile__Off } from '../../../redux/actions/ui';
 import AccountCardAuthMenuUser from './AccountCardAuthMenuUser';
+import AccountCardAuthMenuBusiness from './AccountCardAuthMenuBusiness';
 
 
 /* Component */
@@ -16,9 +17,6 @@ export class AccountCardAuth extends React.Component {
         this.state = {
             menu: false
         };
-
-        console.log('account')
-        console.log(this.props.account)
     }
 
     toggleMenu = () => {
@@ -30,13 +28,28 @@ export class AccountCardAuth extends React.Component {
     render() {
         return (
             <div className="AccountCardAuth">
-                <button className="AccountCardAuth__profileImage">
+                <button 
+                    className="AccountCardAuth__profileImage"
+                    onClick={this.toggleMenu}
+                >
                     <img src="/dist/images/icons/account.png" alt="" />
                 </button>
 
-                {this.props.isAuthenticated &&
-                    <AccountCardAuthMenuUser />
-                }
+                <div 
+                    className="AccountCardAuth__menu"
+                    data-active={this.state.menu}
+                >
+                    {this.props.account.type === 'user' ? 
+                        <AccountCardAuthMenuUser 
+                            active={this.state.menu}
+                        />
+                        :
+                        <AccountCardAuthMenuBusiness
+                            active={this.state.menu}
+                        />
+
+                    }
+                </div>
             </div>
         )
     }

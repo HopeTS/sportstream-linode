@@ -1,9 +1,8 @@
-/* External packages */
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
 
-/* Internal packages */
 import { navMenu_Mobile__Off } from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
 import { clearState } from '../../../auth/localStorage';
@@ -23,6 +22,13 @@ export class AccountCardAuthMenuUser extends React.Component {
      * authentication data
      */
     logout = () => {
+        // server logout
+        axios.get('logout', {}).then((res) => {
+            console.log('Here is the logout response')
+            console.log(res)
+        });
+
+        // client logout
         clearState();
         clearCookies();
         this.props.logout();
@@ -30,9 +36,26 @@ export class AccountCardAuthMenuUser extends React.Component {
 
     render() {
         return (
-            <div className="AccountCardAuthMenu">
+            <div 
+                className="AccountCardAuthMenu"
+                data-active={this.props.active}
+            >
                 <ul>
-                    
+                    <li>
+                        <NavLink 
+                            to="/account"
+                        >
+                            My account
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink
+                            to="/"
+                            onClick={this.logout}
+                        >
+                            Log out
+                        </NavLink>
+                    </li>
                 </ul>
             </div>
         );    

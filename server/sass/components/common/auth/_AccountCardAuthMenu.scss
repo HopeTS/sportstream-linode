@@ -1,0 +1,32 @@
+.AccountCardAuthMenu {
+    padding-left: 0;
+    list-style-type: none;
+
+    ul {
+        background: var(--background-color-light);
+        padding-left: 0;
+        border: 1px solid var(--background-color);
+    }
+
+    li {
+        display: block;
+        padding: 1em;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--background-color);
+        }
+    }
+
+    a {
+        text-decoration: none;
+        color: var(--text-color);
+    }
+
+    &[data-active=false] {
+        display: none;
+    }
+
+    &[data-active=true] {
+        display: block;
+    }
+}

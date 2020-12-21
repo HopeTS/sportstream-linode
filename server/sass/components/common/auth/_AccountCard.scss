@@ -2,10 +2,26 @@
     position: fixed;
     top: 0px;
     height: 65px;
-    width: 180px;
     z-index: 100;
     transition: 200ms;
     right: 3.5em;
+
+    &[data-active=false] {
+        height: 0;
+        transition: 200ms;
+    }
+    &[data-active=true] {
+        height: auto;
+        max-height: 200px;
+
+    }
+
+    &[data-mobile_nav=false] {
+
+    }
+    &[data-mobile_nav=true] {
+
+    }
 
     @media #{$desktop_breakpoint} {
         height: 50px;
