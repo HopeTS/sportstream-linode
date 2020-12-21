@@ -10,7 +10,8 @@
 @import
     './mixins/innerContent',
     './mixins/form',
-    './mixins/page';
+    './mixins/page',
+    './mixins/accountPage';
 
 
 /* Common Components */
@@ -19,6 +20,7 @@
     './components/common/auth/AccountCard',
     './components/common/auth/AccountCardAuth',
     './components/common/auth/AccountCardNoAuth',
+    './components/common/auth/AccountCardAuthMenu',
     './components/common/Footer';
 
 
@@ -42,4 +44,8 @@
     './components/pages/Home',
     './components/pages/Register',
     './components/pages/Login',
+    './components/pages/AccountPage/AccountPage',
+    './components/pages/AccountPage/AccountPageBusiness',
+    './components/pages/AccountPage/AccountPageNoAuth',
+    './components/pages/AccountPage/AccountPageUser',
     './components/pages/Wildcard';

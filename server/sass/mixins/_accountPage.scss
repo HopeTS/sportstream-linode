@@ -1,0 +1,10 @@
+@mixin accountPage {
+    
+    .section {
+
+    }
+}
+
+.accountPage {
+    @include accountPage;
+}
