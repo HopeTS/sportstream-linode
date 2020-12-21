@@ -21,6 +21,7 @@ import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
 import Wildcard from '../components/pages/Wildcard';
 import Streams from '../components/pages/Streams';
+import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 
 /* Actions */
@@ -106,9 +107,7 @@ export class Router extends React.Component {
                     data-loading={this.state.loading}
                     data-loaded={this.state.loaded}
                 >
-                    {this.props.page_ID !== 'Home' &&
-                        <Header />                    
-                    }
+                    <Header />                    
 
                     <Switch>
                         <Route 
@@ -132,6 +131,12 @@ export class Router extends React.Component {
                         <Route 
                             path="/streams"
                             component={Streams}
+                            exact
+                        />
+
+                        <Route 
+                            path="/account"
+                            component={AccountPage}
                             exact
                         />
 
