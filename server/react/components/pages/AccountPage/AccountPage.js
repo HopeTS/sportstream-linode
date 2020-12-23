@@ -2,8 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import AccountPageNoAuth from './AccountPageNoAuth';
-import AccountPageUser from './AccountPageUser';
-import AccountPageBusiness from './AccountPageBusiness';
+import AccountPageAuth from './AccountPageAuth';
 import {page_ID__Set} from '../../../redux/actions/page';
 
 /**
@@ -15,31 +14,9 @@ export class AccountPage extends React.Component {
     };
 
     componentWillMount() {
+        console.log(this.props)
         this.props.page_ID__Set('AccountPage');
     };
-
-    /**
-     * Renders the content of the account page based on the state of
-     * authentication
-     * 
-     * @returns JSX.Element
-     */
-    content = () => {
-        if (this.props.isAuthenticated) {
-            switch (this.props.account.type) {
-                case 'user':
-                    return <AccountPageUser />;
-
-                case 'business':
-                    return <AccountPageBusiness />;
-
-                default:
-                    return <AccountPageNoAuth />;
-            }
-        } else {
-            return <AccountPageNoAuth />;
-        }
-    }
 
     render() {
         return (
@@ -50,7 +27,11 @@ export class AccountPage extends React.Component {
                 </section>
 
                 <section className="AccountPage__content">
-                    {this.content()}
+                    {this.props.isAuthenticated ?
+                        <AccountPageAuth />
+                        :
+                        <AccountPageNoAuth />
+                    }
                 </section>
             </div>
         );
@@ -73,4 +54,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(undefined, mapDispatchToProps)(AccountPage);
+export default connect(mapStateToProps, mapDispatchToProps)(AccountPage);

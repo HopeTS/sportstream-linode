@@ -18,6 +18,7 @@ export default (state = AuthDefaultState, action) => {
     switch(action.type) {
         case 'LOGIN':
             return {
+                ...state,
                 isAuthenticated: true,
                 account: {
                     name: action.account.name,
@@ -29,6 +30,7 @@ export default (state = AuthDefaultState, action) => {
         
         case 'LOGOUT':
             return {
+                ...state,
                 isAuthenticated: false,
                 account: {
                     name: '',
