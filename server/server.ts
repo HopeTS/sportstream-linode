@@ -3,8 +3,6 @@ export {};
  *  Main server / entry point
  */
 
- 
-/* External packages */
 const express = require('express');
 const https = require('https');
 const http = require('http');
@@ -18,8 +16,6 @@ const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
-
-/* Internal packages */
 const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
@@ -27,6 +23,7 @@ const MongoD = require('./database/mongod');
 
 const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');
+const settingsRouter = require('./routers/settings');
 const wildcardRouter = require('./routers/wildcard');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
@@ -70,6 +67,7 @@ require('./auth/passport')(passport);
 
 app.use(clientRouter);
 app.use(authRouter);
+app.use(settingsRouter);
 app.use(wildcardRouter);
 
 
