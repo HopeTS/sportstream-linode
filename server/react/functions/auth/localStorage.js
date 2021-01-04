@@ -1,8 +1,3 @@
-/**
- * Handler functions for localStorage
- */
-
- /* External packages */
 const axios = require('axios');
 
 
@@ -32,6 +27,7 @@ export const loadState = () => {
     }
 }; 
 
+
 /**
  * Stores the Redux state in localStorage
  * 
@@ -48,6 +44,7 @@ export const saveState = (state) => {
     }
     return;
 };
+
 
 /**
  * Clears the Redux state from localStorage
