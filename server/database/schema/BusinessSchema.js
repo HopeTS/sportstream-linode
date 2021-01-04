@@ -21,4 +21,5 @@ const BusinessSchema = new Schema({
     password: String,
     stream_keys: Array,
     connection_id: String,
+    type: String
 });

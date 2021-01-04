@@ -12,6 +12,7 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
 const http2https = require('../middleware/http2https');
+const generateStreamKey = require('../auth/keygen').generateStreamKey;
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 
@@ -114,51 +115,81 @@ router.get('/register', ensureLoggedOut(), (req, res) => {
 
 
 /**
- * Route to register a new account in the database
+ * Route to register a new User account in the database
  */
-router.post('/register', ensureLoggedOut(), (req, res) => {
+router.post('/register-user', ensureLoggedOut(), (req, res) => {
     try {
-        console.log(`Received a${req.secure ? " secure": "n insecure"} /register request`);
+        console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
         User.findOne({email: req.body.email}, async (err, doc) => {
 
             // Error handling
             if (err) throw err; 
-            if (doc) res.send("User already exists!");
+            if (doc) res.send("User account already exists!");
 
-            // Store new user
+            // Register new user
             if (!doc) {
                 const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+                // Store user
+                const newUser = new User({
+                    name: req.body.name,
+                    password: hashedPassword,
+                    email: req.body.email,
+                    connected_businesses: [],
+                    type: 'user'
+                });
+                await newUser.save();
+                res.status(201).send('User account created');
+            }
+        })
+    } catch(e) {
+        res.status(500).send();
+        console.log(
+            chalk.red('An error occured: '),
+            '\n',
+            `${e}`
+        );
+    }
+});
+
+
+/**
+ * Route to register a new Business account in the database
+ */
+router.post('/register-business', ensureLoggedOut(), (req, res) => {
+    try {
+        console.log(`Received a${req.secure ? " secure": "n insecure"} /register-business request`);
+        User.findOne({email: req.body.email}, async (err, doc) => {
+
+            // Error handling
+            if (err) throw err; 
+            if (doc) res.send("Business account already exists!");
+
+            // Register new business
+            if (!doc) {
+                const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                const streamKeys = [
+                    generateStreamKey(),
+                    generateStreamKey(),
+                    generateStreamKey()
+                ];
 
                 // Business registration
                 if (req.body.type == 'business') {
                     const connection_id = Math.random().toString(36)
                         .replace(/[^a-z]+/g, '').substr(0, 5);
 
-                    const newBusiness = new User({
+                    const newBusiness = new Business({
                         name: req.body.name,
                         username: req.body.email,
                         email: req.body.email,
                         type: req.body.type,
                         password: hashedPassword,
                         connection_id: connection_id,
-                        stream_key: []
+                        stream_key: streamKeys
                     });
                     await newBusiness.save();
                     res.status(201).send('Business account created');
-                }
-                
-                // User registration
-                else if (req.body.type == 'user') {
-                    const newUser = new User({
-                        name: req.body.name
-                    });
-                    await newUser.save();
-                    res.status(201).send('User account created');
-                }
-
-                // Invalid account type (bad request)
-                else {
-                    res.status(400).send();
                 }
             }
         })
@@ -181,31 +212,5 @@ router.get('/ensure-login', ensureLoggedIn(), (req, res) => {
     res.status(202).send();
 });
 
-// Logging in from cookie too risky for now
-/*
-router.post('/user', (req, res) => {
-    try {
-        await User.findOne({_id: req.user}, async (err, doc) => {
-
-            // Error handling
-            if (err) throw err;
-            if (!doc) return res.status(404).send();
-
-            // Sign in
-            else {
-                req.logIn(user)
-            }
-        });
-
-    } catch(e) {
-        res.status(500).send();
-        console.log(
-            chalk.red('An error occured: '),
-            '\n',
-            `${e}`
-        );
-    }
-})
-*/
 
 module.exports = router;
