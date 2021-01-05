@@ -19,6 +19,7 @@ const config = {
         port: '27018',
     },
     secret: 'sdkngoih38yghgdsgh845ret34t',
+    business_key: 'xqc4TE#3?>692'
 };
 
 module.exports = config;
