@@ -10,16 +10,19 @@ const Schema = mongoose.Schema;
  * 
  * __password:__ Account password
  * 
- * __stream_keys:__ Keys to establish an RTMP stream through OBS
+ * **stream_key:** Keys to establish an RTMP stream through OBS
  * 
- * __connection_id:__ String that user accounts need to enter to gain access
+ * **connection_id:** String that user accounts need to enter to gain access
  * to the company streams
  */
 const BusinessSchema = new Schema({
     name: String,
+    username: String,
     email: String,
     password: String,
-    stream_keys: Array,
+    stream_key: Array,
     connection_id: String,
     type: String
 });
+
+module.exports = BusinessSchema;
