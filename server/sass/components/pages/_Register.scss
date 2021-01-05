@@ -10,3 +10,15 @@
     font-size: var(--xs-font);
     text-align: center;
 }
+
+.Register__field {
+    &[data-active=false] {
+        height: 0;
+        overflow: hidden;
+        margin: 0;
+    }
+
+    &[data-active=true] {
+        height: auto;
+    }
+}
