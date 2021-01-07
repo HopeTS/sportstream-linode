@@ -10,13 +10,23 @@ const AuthDefaultState = {
         name: '',
         email: '',
         type: '',
-        genkey: ''
+        connected_businesses: [],
+        connection_id: '',
+        stream_key: []
     }
 };
 
 export default (state = AuthDefaultState, action) => {
     switch(action.type) {
+
         case 'LOGIN':
+            const connected_businesses = action.account.connected_businesses ?
+                action.account.connected_businesses : [];
+            const connection_id = action.account.connection_id ?
+                action.account.connection_id : '';
+            const stream_key = action.account.stream_key ? 
+                action.account.stream_key : [];
+
             return {
                 ...state,
                 isAuthenticated: true,
@@ -24,10 +34,12 @@ export default (state = AuthDefaultState, action) => {
                     name: action.account.name,
                     email: action.account.email,
                     type: action.account.type,
-                    genkey: action.account.genkey
+                    connected_businesses: connected_businesses,
+                    connection_id: connection_id,
+                    stream_key: stream_key
                 }
             };
-        
+
         case 'LOGOUT':
             return {
                 ...state,
@@ -36,7 +48,9 @@ export default (state = AuthDefaultState, action) => {
                     name: '',
                     email: '',
                     type: '',
-                    genkey: ''
+                    connected_businesses: [],
+                    connection_id: '',
+                    stream_key: []
                 }
             };
 

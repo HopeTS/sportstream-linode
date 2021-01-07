@@ -5,7 +5,7 @@
 
 /* Actions */
 export const login = (account) => ({
-    type:  'LOGIN',
+    type: 'LOGIN',
     account
 });
 

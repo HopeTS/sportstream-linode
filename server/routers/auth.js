@@ -13,6 +13,8 @@ const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
 const http2https = require('../middleware/http2https');
 const generateStreamKey = require('../auth/keygen').generateStreamKey;
+const generateConnectionID = require('../auth/keygen').generateConnectionID;
+const config = require('../config/default');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 
@@ -53,7 +55,6 @@ router.post('/login-user', (req, res, next) => {
     passport.authenticate('userLogin', (err, user, info) => {
         if (err) throw err;
         if (!user) res.status(404).send("No User exists");
-
         // Log in
         else {
             req.logIn(user, (err) => {
@@ -72,7 +73,7 @@ router.post('/login-user', (req, res, next) => {
 router.post('/login-business', (req, res, next) => {
     passport.authenticate('businessLogin', (err, user, info) => {
         if (err) throw err;
-        if (!user) res.status(404).send("No User exists");
+        if (!user) res.status(404).send("No Business exists");
 
         // Log in
         else {
@@ -116,30 +117,61 @@ router.get('/register', ensureLoggedOut(), (req, res) => {
 
 /**
  * Route to register a new User account in the database
+ * 
+ * The req body contains:
+ *  - email: the email
+ *  - name: The person's name
+ *  - password: the password
+ *  - business_password?: password to connect to a business via the business
+ *      connection_id
  */
 router.post('/register-user', ensureLoggedOut(), (req, res) => {
     try {
         console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
         User.findOne({email: req.body.email}, async (err, doc) => {
-
             // Error handling
             if (err) throw err; 
-            if (doc) res.send("User account already exists!");
+            if (doc) res.status(409).send("User account already exists!");
 
             // Register new user
             if (!doc) {
                 const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
+                // Connect to business
+                // TODO: Connect to business
+                let connected_businesses = [];
+                if (req.body.business_password) {
+                    console.log('There is a business password here')
+                    // TODO: Query business database to find a connection_id 
+                    //       that matches this password
+                    
+                    // Query Businesses for connection_id == business_password
+                    Business.findOne({connection_id: req.body.business_password}, 
+                        async (err, doc) => {
+                            if (err) throw err;
+                            
+                            if (doc) {
+                                console.log('Business with matching id found!');
+                                console.log(doc);
+                            } else {
+                                console.log('Business with matching id not found!')
+                            }
+                        }
+                    );
+                }
+
+                console.log('Time to save user')
                 // Store user
                 const newUser = new User({
                     name: req.body.name,
                     password: hashedPassword,
                     email: req.body.email,
-                    connected_businesses: [],
+                    connected_businesses: connected_businesses,
                     type: 'user'
                 });
                 await newUser.save();
-                res.status(201).send('User account created');
+
+                res.status(201).send(newUser);
             }
         })
     } catch(e) {
@@ -155,42 +187,51 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
 
 /**
  * Route to register a new Business account in the database
+ * 
+ * The req body contains:
+ *  - email: The company email
+ *  - name: The company name
+ *  - business_key: The business key
+ *  - connection_id: The connection id (The password to give to user's to
+ *      enable access to the company streams)
  */
 router.post('/register-business', ensureLoggedOut(), (req, res) => {
     try {
         console.log(`Received a${req.secure ? " secure": "n insecure"} /register-business request`);
-        User.findOne({email: req.body.email}, async (err, doc) => {
+        Business.findOne({email: req.body.email}, async (err, doc) => {
 
             // Error handling
             if (err) throw err; 
-            if (doc) res.send("Business account already exists!");
+            if (doc) res.status(409).send("Business account already exists!");
+            if (req.body.business_key != config.business_key) {
+                res.status(401).send('Invalid business_key');
+            }
+
 
             // Register new business
             if (!doc) {
                 const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                const connection_id = generateConnectionID();
                 const streamKeys = [
                     generateStreamKey(),
                     generateStreamKey(),
                     generateStreamKey()
                 ];
 
-                // Business registration
-                if (req.body.type == 'business') {
-                    const connection_id = Math.random().toString(36)
-                        .replace(/[^a-z]+/g, '').substr(0, 5);
+                const newBusiness = new Business({
+                    name: req.body.name,
+                    username: req.body.email,
+                    email: req.body.email,
+                    type: 'business',
+                    password: hashedPassword,
+                    connection_id: connection_id,
+                    stream_key: streamKeys
+                });
 
-                    const newBusiness = new Business({
-                        name: req.body.name,
-                        username: req.body.email,
-                        email: req.body.email,
-                        type: req.body.type,
-                        password: hashedPassword,
-                        connection_id: connection_id,
-                        stream_key: streamKeys
-                    });
-                    await newBusiness.save();
-                    res.status(201).send('Business account created');
-                }
+                await newBusiness.save((err) => {
+                    if (err) console.log(err);
+                });
+                res.status(201).send(newBusiness);
             }
         })
     } catch(e) {

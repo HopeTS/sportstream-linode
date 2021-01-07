@@ -15,7 +15,6 @@ export class Register extends React.Component {
             email: '',
             password: '',
             business_key: '',
-            connection_id: '',
             business_password: '',
             type: 'business',
             form_error: ''
@@ -37,21 +36,6 @@ export class Register extends React.Component {
         this.setState({
             ...this.state,
             business_key: business_key
-        });
-
-        this.clearFormError();
-    }
-
-    /**
-     *  Handler for connection id input field
-     * 
-     *  The business account sets this field, it's given out to users to give
-     *  them access to the business streams
-     */
-    setConnectionId = () => {
-        this.setState({
-            ...this.state,
-            connection_id: connection_id
         });
 
         this.clearFormError();
@@ -130,12 +114,13 @@ export class Register extends React.Component {
                 name: this.state.name,
                 email: this.state.email,
                 password: this.state.password,
+                business_key: this.state.business_key
             },
             withCredentials: true,
             url: `${window.location.origin}/register-${this.state.type}`,
-        }).then((res) => {
-
-            // If account was created
+        })
+        
+        .then((res) => {
             if (res.status === 201) {
                 // TODO: Login
                 // TODO: Add 'Go to my account' button
@@ -143,26 +128,14 @@ export class Register extends React.Component {
                 console.log(res);
             }
 
-            // If invalid business key was entered
-            else if (res.status == 401) {
-                // TODO: Put 'Invalid business key' message
-            }
-
-            // If account already exists
-            else if (res.status === 409) {
-                // TODO: Put 'Account already exists' message
-            }
-
-            // If server has issues
-            else if (res.status === 500) {
-                // TODO: Add 'server issues' message
-            }
-
             // Other error
             else {
-                // TODO: Add 'Something went wrong. Try again in a few 
-                // minutes' message
+                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
             }
+        })
+
+        .catch((error) => {
+            this.handleFormError(error.response.data);
         });
     }
 
@@ -178,9 +151,9 @@ export class Register extends React.Component {
             },
             withCredentials: true,
             url: `${window.location.origin}/register-user`,
-        }).then((res) => {
-
-            // If account was created
+        })
+        
+        .then((res) => {
             if (res.status === 201) {
                 // TODO: Login
                 // TODO: Add 'Go to my account' button
@@ -188,26 +161,14 @@ export class Register extends React.Component {
                 console.log(res);
             }
 
-            // If invalid business key was entered
-            else if (res.status == 401) {
-                // TODO: Put 'Invalid business key' message
-            }
-
-            // If account already exists
-            else if (res.status === 409) {
-                // TODO: Put 'Account already exists' message
-            }
-
-            // If server has issues
-            else if (res.status === 500) {
-                // TODO: Add 'server issues' message
-            }
-
             // Other error
             else {
-                // TODO: Add 'Something went wrong. Try again in a few 
-                // minutes' message
+                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
             }
+        })
+
+        .catch((error) => {
+            this.handleFormError(error.response.data);
         });
     }
 
@@ -238,7 +199,7 @@ export class Register extends React.Component {
             <div id="Register">
                 <div className="Register__form">
                     <div className="Register__account-type">
-                        <label htmlFor="account_type">I am a... </label>
+                        <label htmlFor="account_type">I am a...</label>
                         
                         <select 
                             name="account_type" 
@@ -310,20 +271,6 @@ export class Register extends React.Component {
                             name="business_key"
                             id="business_key"
                             onChange={(e) => this.setBusinessKey(e.target.value)}
-                        />
-                    </div>
-
-                    <div
-                        className="Register__field"
-                        data-type="business"
-                        data-active={this.state.type === 'business'}
-                    >
-                        <label htmlFor="connectionID">Connection ID</label>
-                        <input 
-                            type="text"
-                            name="connection_id"
-                            id="connection_id"
-                            onChange={(e) => this.setConnectionId(e.target.value)}
                         />
                     </div>
 

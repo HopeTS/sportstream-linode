@@ -14,7 +14,7 @@ import 'normalize.css/normalize.css';
 import '../sass/main.scss';
 import storeConfig from './redux/store/storeConfig';
 import Router from './routers/Router';
-import { saveState } from './auth/localStorage';
+import { saveState } from './functions/auth/localStorage';
 
 
 /* Configure store */

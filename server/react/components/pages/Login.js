@@ -17,8 +17,8 @@ export class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            type: '',
-            login_failure: false
+            type: 'business',
+            form_error: ''
         };
     };
 
@@ -27,62 +27,120 @@ export class Login extends React.Component {
 
     };
 
-    /** Controls email field */
-    setEmail(email) {
+    /** Handler for account type input field */
+    setAccountType = (type) => {
         this.setState({
             ...this.state,
-            login_failure: false,
+            type: type,
+            form_error: ''
+        });
+    }
+
+    /** Handler for email input field */
+    setEmail = (email) => {
+        this.setState({
+            ...this.state,
+            form_error: '',
             email: email
         });
     }
 
-    /** Controls password field */
+    /** Handler for password input field */
     setPassword = (password) => {
         this.setState({
             ...this.state,
-            login_failure: false,
+            form_error: '',
             password: password
         });
     }
 
-    /**
-     *  Form submission function. The account credentials are sent to the
-     *  server, passes to login_failed() or login_succeeded()
-     */
-    login = (e) => {
-        e.preventDefault();
+    /** Handle login form submission */
+    login = () => {
+        if (this.state.type === 'user') this.loginUser();
+        else if (this.state.type === 'business') this.loginBusiness();
+        else this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
+    }
 
-        // POST login request to server
-        axios.post('/login', { 
+    /** Handles login for Business account */
+    loginBusiness = () => {
+        axios.post('/login-business', { 
             email: this.state.email,
             password: this.state.password
         })
-
-        // If login successful
+        
         .then((res) => {
-            //  TODO: Update store
-            //  res.data.name
-            //  res.data.email
-            this.props.login({
-                name: res.data.name,
-                email: res.data.email,
-                type: res.data.type
-            });
+            if (res.status === 202) {
+                console.log('User found');
+                this.props.login({
+                    name: res.data.name,
+                    email: res.data.email,
+                    type: 'business'
+                });
+                this.props.history.push('/');
+            }
 
-            // Redirect
-            this.props.history.push('/');
+            else {
+                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
+            }
         })
 
-        // If login failure
-        .catch((err) => {
-            // Clear input
-            document.querySelector('#email').value = '';
-            document.querySelector('#password').value = '';
+        .catch((error) => {
+            this.handleFormError(error.response.data);
+        });
+    }
+
+    /** Handles login for User account */
+    loginUser = () => {
+        axios.post('/login-user', { 
+            email: this.state.email,
+            password: this.state.password
+        })
+        
+        .then((res) => {
+            if (res.status === 202) {
+                this.props.login({
+                    name: res.data.name,
+                    email: res.data.email,
+                    type: 'user'
+                });
+                this.props.history.push('/');
+            }
+
+            else {
+                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
+            }
+        })
+
+        .catch((error) => {
+            console.log(error);
+            let errorMessage = error.response ? 
+                error.response.data : 'Something went wrong';
+            this.handleFormError(errorMessage);
+        });
+    }
+
+    /** Handles form error */
+    handleFormError = (errorMessage) => {
+        console.log('Handle form error called')
+        this.setState({
+            ...this.state,
+            form_error: errorMessage
+        });
+
+        setTimeout(() => {
+            this.clearFormError();
+        }, 2000)
+    }
+
+    /** Clears form error */
+    clearFormError = () => {
+        console.log('Clear form error called')
+        if (this.state.form_error) {
             this.setState({
                 ...this.state,
-                login_failure: true
-            })
-        });
+                form_error: ''
+            });    
+        }
     }
 
     render() {
@@ -92,6 +150,19 @@ export class Login extends React.Component {
                     className="Login__form"
                     data-active={!this.state.login_}
                 >
+                    <div className="Login__account-type">
+                        <label htmlFor="account_type">I am a...</label>
+
+                        <select 
+                            name="account_type" 
+                            id="account_type"
+                            onChange={(e) => this.setAccountType(e.target.value)}
+                        >
+                            <option value="business">Business</option>
+                            <option value="user">Athlete/Parent</option>
+                        </select>
+                    </div>
+
                     <div className="Login__field">
                         <label htmlFor="email">Email</label>
                         <input 
@@ -113,6 +184,14 @@ export class Login extends React.Component {
                             required
                         />
                     </div>
+                    
+                    <div 
+                        className="Login__error" 
+                        data-active={!!this.state.form_error}
+                    >
+                        {this.state.form_error}
+                    </div>
+
 
                     <button 
                         className="Login__button"
@@ -129,12 +208,6 @@ export class Login extends React.Component {
                             </NavLink>
                         </p>
                     </div>
-                </div>
-
-                <div className="Login__failure" data-active={
-                    this.state.login_failure
-                }>
-                    login failed
                 </div>
             </div>
         );
