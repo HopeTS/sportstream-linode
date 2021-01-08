@@ -20,8 +20,10 @@ const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
+/* const databaseConfig = require('./dev/databaseConfig'); */
 
 const clientRouter = require('./routers/client');
+const developmentRouter = require('./routers/development');
 const authRouter = require('./routers/auth');
 const settingsRouter = require('./routers/settings');
 const wildcardRouter = require('./routers/wildcard');
@@ -69,6 +71,10 @@ app.use(clientRouter);
 app.use(authRouter);
 app.use(settingsRouter);
 app.use(wildcardRouter);
+if (process.env.NAME === 'development') {
+    console.log(chalk.blue('Attaching dev routes to the server'));
+    app.use(developmentRouter);
+}  
 
 
 /* Run server */
