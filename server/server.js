@@ -16,8 +16,11 @@ const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
+const databaseConfig = require('./dev/databaseConfig');
 const clientRouter = require('./routers/client');
+const developmentRouter = require('./routers/development');
 const authRouter = require('./routers/auth');
+const settingsRouter = require('./routers/settings');
 const wildcardRouter = require('./routers/wildcard');
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 const mongod = new MongoD(config.mongodb);
@@ -49,7 +52,13 @@ app.use(passport.session());
 require('./auth/passport')(passport);
 app.use(clientRouter);
 app.use(authRouter);
+app.use(settingsRouter);
 app.use(wildcardRouter);
+if (process.env.NAME === 'development') {
+    console.log(chalk.blue('Attaching dev routes to the server'));
+    app.use(developmentRouter);
+    databaseConfig();
+}
 if (process.env.NAME === 'development') {
     http.createServer(app).listen(process.env.HTTP_PORT, () => {
         console.log(chalk.underline.green('Development HTTP server has connected.'));
