@@ -27,16 +27,9 @@ module.exports = function(passport) {
                 if (!user) return done(null, false);
 
                 bcrypt.compare(password, user.password, (err, result) => {
-                    console.log('Looking for account in User collection');
                     if (err) throw err;
-                    if (result === true) {
-                        return done(null, user);
-                    } else {
-                        console.log(
-                            'No matching account found in the User collection'
-                        );
-                        return done(null, false);
-                    }
+                    if (result === true) return done(null, user);
+                    else return done(null, false);
                 });
             });
         })
@@ -53,18 +46,11 @@ module.exports = function(passport) {
                 if (err) throw err;
                 if (!user) return done(null, false);
 
-                bcrypt.ccompare(password, user.password, (err, result) => {
-                    console.log('Looking for account in Business collection');
+                bcrypt.compare(password, user.password, (err, result) => {
                     if (err) throw err;
-                    if (result === true) {
-                        return done(null, user);
-                    } else {
-                        console.log(
-                            'No matching account found in the Business collection'
-                        );
-                        return done(null, false);
-                    }
-                })
+                    if (result === true) return done(null, user);
+                    else return done(null, false);
+                });
             });
         })
     );
@@ -73,12 +59,7 @@ module.exports = function(passport) {
         cb(null, user.id);
     });
 
-    passport.deserializeUser((id, cb) => {
-        User.findOne({ _id: id }, (err, user) => {
-            const userInformation = {
-                email: user.email,
-            };
-            cb(err, userInformation);
-        });
+    passport.deserializeUser(function(user, done) {
+        if(user!=null) done(null,user);
     });
 };
