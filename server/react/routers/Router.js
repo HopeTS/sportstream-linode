@@ -1,21 +1,11 @@
-/*
- *  Router component
- */
-
-
-/* External packages */
 import React from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import axios from 'axios';
 
-
-/* Components */
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 
-
-/* Pages/Routes */
 import Home from '../components/pages/Home';
 import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
@@ -23,14 +13,14 @@ import Wildcard from '../components/pages/Wildcard';
 import Streams from '../components/pages/Streams';
 import AccountPage from '../components/pages/AccountPage/AccountPage';
 
-
-/* Actions */
 import { login } from '../redux/actions/auth';
-import { loadState } from '../auth/localStorage';
+import { loadState } from '../functions/auth/localStorage';
 
 
 
-/* Router */
+/**
+ *  Master Router component
+ */
 export class Router extends React.Component {
     constructor(props) {
         super(props);
