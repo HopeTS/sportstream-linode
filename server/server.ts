@@ -23,7 +23,6 @@ const MongoD = require('./database/mongod');
 const databaseConfig = require('./dev/databaseConfig');
 
 const clientRouter = require('./routers/client');
-const developmentRouter = require('./routers/development');
 const authRouter = require('./routers/auth');
 const settingsRouter = require('./routers/settings');
 const wildcardRouter = require('./routers/wildcard');
@@ -35,7 +34,7 @@ console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 const mongod = new MongoD(config.mongodb);
 mongod.create_connection();
 mongoose.connect(
-    `mongodb://localhost:${config.mongodb.port}/castamatch`,
+    `mongodb://localhost:${config.mongodb.port}/${config.mongodb.dbname}`,
     {useNewUrlParser: true, useUnifiedTopology: true}
 );
 
@@ -43,6 +42,7 @@ const db = mongoose.connection;
 db.once('open', () => {
     console.log(chalk.green('Mongoose has connected to MongoDB'));
     console.log(chalk.bold('MongoDB port: '), chalk.blue(config.mongodb.port));
+    console.log(chalk.bold('MongoDB name: '), chalk.blue(config.mongodb.dbname));
 });    
 
 
@@ -72,8 +72,6 @@ app.use(authRouter);
 app.use(settingsRouter);
 app.use(wildcardRouter);
 if (process.env.NAME === 'development') {
-    console.log(chalk.blue('Attaching dev routes to the server'));
-    app.use(developmentRouter);
     databaseConfig();
 }  
 

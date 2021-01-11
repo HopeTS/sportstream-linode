@@ -2,14 +2,10 @@
  *  Object that initializes MongoDB
  */
 
- 
-/* External packages */
 const chalk = require('chalk');
 const path = require('path');
 const exec = require('child_process').exec;
 
-
-/* MongoDB connection object */
 class MongoD {
     constructor({ dbpath, port }) {
         this.dbpath = dbpath;
