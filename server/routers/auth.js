@@ -39,11 +39,7 @@ router.get('/login', (req, res) => {
     
     } catch(e) {
         res.send();
-        console.log(
-            chalk.red('An error occured: '),
-            '\n',
-            `${e}`
-        );
+        console.log(chalk.red('An error occured: '), '\n', `${e}`);
     }
 });
 
@@ -106,11 +102,7 @@ router.get('/register', ensureLoggedOut(), (req, res) => {
     
     } catch(e) {
         res.send();
-        console.log(
-            chalk.red('An error occured: '),
-            '\n',
-            `${e}`
-        );
+        console.log(chalk.red('An error occured: '), '\n', `${e}`);
     }
 });
 
@@ -140,7 +132,7 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
                 // Connect to business
                 // TODO: Connect to business
                 let connected_businesses = [];
-                if (req.body.business_password) {
+                if (req.body.business_password.length > 0) {
                     console.log('There is a business password here')
                     // TODO: Query business database to find a connection_id 
                     //       that matches this password
@@ -160,7 +152,6 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
                     );
                 }
 
-                console.log('Time to save user')
                 // Store user
                 const newUser = new User({
                     name: req.body.name,
@@ -176,11 +167,7 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
         })
     } catch(e) {
         res.status(500).send();
-        console.log(
-            chalk.red('An error occured: '),
-            '\n',
-            `${e}`
-        );
+        console.log(chalk.red('An error occured: '), '\n', `${e}`);
     }
 });
 
