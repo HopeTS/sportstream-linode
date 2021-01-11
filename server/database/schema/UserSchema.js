@@ -36,13 +36,11 @@ UserSchema.methods.connectToBusiness = (cb, business_password) => {
 
 /* Hooks */
 UserSchema.pre('save', async function(done) {
-    console.log('user save hook', this._id)
+    // TODO: connect to business if applicable and isNew
 });
 
 UserSchema.post('insertMany', async function(docs, next) {
-    console.log('insert many user hook')
     docs.forEach((doc) => {
-        console.log(doc._id)
         // TODO: connect to business if applicable
     });
 });

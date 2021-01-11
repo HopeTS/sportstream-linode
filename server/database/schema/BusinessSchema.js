@@ -47,11 +47,33 @@ BusinessSchema.methods.generateStreamKey = async function(cb, length=12) {
     return streamKey;
 }
 
+BusinessSchema.methods.removeStreamKey = async function(cb, streamKey="") {
+    console.log('Geti')
+    // TODO: Find a business with a matching stream key, remove that stream key
+    Business.find({stream_key: streamKey}, async function(err, doc) {
+        if (err) throw err;
+        if (!doc) console.log('No matching business')
+        
+        if (doc) {
+            console.log('Business found, the keys are', doc.stream_key);
+            const keyIndex = doc.stream_key.indexOf(streamKey);
+            console.log('Index of the key', keyIndex);
+            if (keyIndex > 1) doc.stream_key.splice(keyIndex, 1);
+            console.log('New doc', doc)
+            await doc.save();
+            return true
+        } else {
+            console.log('Doc not found')
+            return false
+        }
+    });
+}
+
 /* Hooks */
 BusinessSchema.pre('save', async function(done) {
     // First time configuration
     if (this.isNew) {
-        
+
         // Generate stream keys
         for (let i=0; i<3; i++) {
             this.stream_key.push(this.generateStreamKey());
@@ -61,13 +83,13 @@ BusinessSchema.pre('save', async function(done) {
 
 BusinessSchema.post('insertMany', async function(docs, next) {
     docs.forEach(async (doc) => {
+        
         // Generate stream keys
         for (let i=0; i<3; i++) {
             doc.stream_key.push(await doc.generateStreamKey());
         }
 
         await doc.save();
-        console.log('final doc before save', doc)
     })
 });
 

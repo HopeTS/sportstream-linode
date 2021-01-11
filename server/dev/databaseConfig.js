@@ -61,7 +61,6 @@ const databaseConfig = async () => {
     await Business.find({}, (err, docs) => {
         docs.forEach((doc) => {
             const id = doc._id;
-            console.log('Here is the business before delete', doc)
             Business.findByIdAndDelete(id, (err) => {
                 if (err) throw err;
             });
@@ -72,6 +71,13 @@ const databaseConfig = async () => {
     Business.insertMany(businesses, (err, docs) => {
         if (err) throw err;
     });
+
+    Business.find({}, function(err, docs) {
+        if (err) throw err;
+        docs.forEach((doc) => {
+            console.log(doc)
+        })
+    })
 }
 
 module.exports = databaseConfig;
