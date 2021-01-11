@@ -11,7 +11,8 @@ const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../database/schema/Schema').User;
-const { rename } = require('fs/promises');
+const Business = require('../database/schema/Schema').Business;
+const generateStreamKey = require('../auth/keygen').generateStreamKey;
 
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
@@ -39,10 +40,17 @@ router.post('/change-password', (req, res) => {
 });
 
 /**
- * Handles the delete stream key function
+ * Handles the add stream key function
  */
 router.post('/add-stream-key', (req, res) => {
     // TODO: plan strategy and structure of this endpoint
+
+    return res.send();
+});
+
+router.post('/delete-stream-key', (req, res) => {
+    // TODO
+
     return res.send();
 });
 
