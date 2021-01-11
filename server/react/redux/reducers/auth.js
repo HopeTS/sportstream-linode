@@ -7,9 +7,9 @@
 const AuthDefaultState = {
     isAuthenticated: false,
     account: {
+        type: undefined,
         name: '',
         email: '',
-        type: '',
         connected_businesses: [],
         connection_id: '',
         stream_key: []
@@ -31,9 +31,9 @@ export default (state = AuthDefaultState, action) => {
                 ...state,
                 isAuthenticated: true,
                 account: {
+                    type: action.account.type,
                     name: action.account.name,
                     email: action.account.email,
-                    type: action.account.type,
                     connected_businesses: connected_businesses,
                     connection_id: connection_id,
                     stream_key: stream_key
@@ -45,9 +45,9 @@ export default (state = AuthDefaultState, action) => {
                 ...state,
                 isAuthenticated: false,
                 account: {
+                    type: undefined,
                     name: '',
                     email: '',
-                    type: '',
                     connected_businesses: [],
                     connection_id: '',
                     stream_key: []
