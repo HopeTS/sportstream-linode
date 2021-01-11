@@ -2,6 +2,8 @@ import React from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 
+import AccountPageSettings from './AccountPageSettings';
+
 /**
  * Content of account settings dashboard for a standard user account
  */
@@ -14,48 +16,18 @@ export class AccountPageAuth extends React.Component {
 
     };
 
-    /**
-     * Form submission handler
-     */
-    submit = () => {
-        // TODO
-        return;
-    }
-
     render() {
         const accountType = this.props.account.type === 'business' ? 
-            'business':'Athlete';
+            'business':'user';
         return (
             <div className="AccountPageAuth">
                 <div className="AccountPageAuth__header">
                     <h1>
                         Account Dashboard
                     </h1>
-                    <p>
-                        Hi, {this.props.account.name}!
-                    </p>
                 </div>
                 <div className="AccountPageAuth__content">
-                    <div className="AccountPageAuth__section">
-                        <h2>Account information:</h2>
-                        <p>
-                            <small>Account type:</small> {accountType}
-                        </p>
-                        <p>
-                            <small>Name:</small> {this.props.account.name}
-                        </p>
-                        <p>
-                            <small>Email:</small> {this.props.account.email}
-                        </p>
-                        {this.props.account.type === 'business' &&
-                        <div className="AccountPageAuth__genKey">
-                            <small>Stream key:</small> {this.props.account.genkey}
-                            <button onClick={this.genKey}>
-                                Generate new key
-                            </button>
-                        </div>                        
-                        }
-                    </div>
+                    <AccountPageSettings />
                 </div>
             </div>
         );

@@ -5,8 +5,9 @@ import axios from 'axios';
 
 import {navMenu_Mobile__Off} from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
-import { clearState } from '../../../auth/localStorage';
-import { clearCookies } from '../../../auth/cookies';
+import { clearState } from '../../../functions/auth/localStorage';
+import { clearCookies } from '../../../functions/auth/cookies';
+
 
 /**
  * The account options dropdown list for User accounts. 

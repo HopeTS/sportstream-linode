@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-export function BusinessSettings() {
+export function AccountPageSettings() {
 
     /**
      * Handles email change form submission
@@ -51,16 +51,24 @@ export function BusinessSettings() {
                     id="change_email"
                 >
                     <section>
+                        <label htmlFor="name">
+                            Name:
+                        </label>
+
+                        <input 
+                            id="name" name="name" type="text"
+                            placeholder={props.account.name} disabled
+                        />
+                    </section>
+
+                    <section>
                         <label htmlFor="email">
                             Current email:
                         </label>
 
                         <input 
-                            id="email"
-                            name="email"
-                            type="text"
-                            placeholder={props.account.email}
-                            disabled
+                            id="email" name="email" type="email"
+                            placeholder={props.account.email} disabled
                         />
 
                         {/* <button
@@ -69,53 +77,24 @@ export function BusinessSettings() {
                             Change email
                         </button> */}
                     </section>
-                    {/* 
-                        TODO: Email section 
-                        Contains current email
-                        Form to change email
-                        Submit button
-                    */}
-                </form>
-            </div>
 
-            <div className="AccountPageSettings__section">
-                <form 
-                    action="/change-password"
-                    id="change_password"
-                    className="AccountPageSettings__form"
-                >
-                    {/* 
-                        TODO: Password section  
-                        Contains option to change password
-                        Submit button
-                    */}
-                </form>
-            </div>
+                    {props.account.type === 'business' &&
+                        <section>
+                            <label htmlFor="connection_id">
+                                Connection ID:
+                            </label>
 
-            <div className="AccountPageSettings__section">
-                <form 
-                    action="handle-keys" 
-                    className="AccountPageSettings__form"
-                >
-                    {/* 
-                        TODO: Stream key section 
-                        Contains current stream keys
-                        Option to delete keys
-                        Option to add keys
-                        (MVP VITAL)
-                    */}
-                </form>
-            </div>
-
-            <div className="AccountPageSettings__section">
-                <form 
-                    action="" 
-                    className="AccountPageSettings__form"
-                >
-                    {/*
-                        TODO: Connected users section
-                        (Show ten, then a 'show more' option)
-                    */}
+                            <input 
+                                id="connection_id" name="connection_id"
+                                type="text" placeholder={props.account.connection_id}
+                                disabled
+                            />
+                            {/* 
+                            TODO: Add button to change connection id to a new
+                            randomly generated one
+                            */}
+                        </section>
+                    }
                 </form>
             </div>
         </div>
@@ -129,4 +108,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, undefined)(BusinessSettings);
+export default connect(mapStateToProps, undefined)(AccountPageSettings);
