@@ -68,16 +68,19 @@ const databaseConfig = async () => {
     });
 
     // Add test businesses
-    Business.insertMany(businesses, (err, docs) => {
+    await Business.insertMany(businesses, async (err, docs) => {
         if (err) throw err;
     });
 
-    Business.find({}, function(err, docs) {
-        if (err) throw err;
-        docs.forEach((doc) => {
-            console.log(doc)
-        })
-    })
+    setTimeout(async () => {
+        await Business.find({}, async (err, docs) => {
+            if (err) throw err;
+            docs.forEach(async (doc) => {
+                // Find and delete a stream key
+                await doc.deleteStreamKey(doc.stream_key[0]);
+            });
+        });    
+    }, 200);
 }
 
 module.exports = databaseConfig;

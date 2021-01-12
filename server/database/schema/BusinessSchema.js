@@ -28,12 +28,12 @@ const BusinessSchema = new Schema({
 /**
  * Generates a single stream key for a Business document
  * 
- * @param {*} cb callback function
  * @param {*} length length of the stream key
+ * @param {*} cb callback function
  * 
  * @returns {string} stream key
  */
-BusinessSchema.methods.generateStreamKey = async function(cb, length=12) {
+BusinessSchema.methods.generateStreamKey = async function(length=12, cb) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let streamKeyArray = [];
     let streamKey;
@@ -47,33 +47,29 @@ BusinessSchema.methods.generateStreamKey = async function(cb, length=12) {
     return streamKey;
 }
 
-BusinessSchema.methods.removeStreamKey = async function(cb, streamKey="") {
-    console.log('Geti')
+/**
+ * Removes a given stream key from the business account
+ * 
+ * @param {*} streamKey stream key string to remove
+ * @param {*} cb callback function
+ */
+BusinessSchema.methods.deleteStreamKey = async function(streamKey="", cb) {
     // TODO: Find a business with a matching stream key, remove that stream key
-    Business.find({stream_key: streamKey}, async function(err, doc) {
-        if (err) throw err;
-        if (!doc) console.log('No matching business')
-        
-        if (doc) {
-            console.log('Business found, the keys are', doc.stream_key);
-            const keyIndex = doc.stream_key.indexOf(streamKey);
-            console.log('Index of the key', keyIndex);
-            if (keyIndex > 1) doc.stream_key.splice(keyIndex, 1);
-            console.log('New doc', doc)
-            await doc.save();
-            return true
-        } else {
-            console.log('Doc not found')
-            return false
-        }
-    });
+    if (this.stream_key.includes(streamKey)) {
+        this.stream_key.splice(this.stream_key.indexOf(streamKey), 1);
+        this.save(cb);
+        return true;
+    }
+    
+    return false;
 }
 
 /* Hooks */
 BusinessSchema.pre('save', async function(done) {
+
     // First time configuration
     if (this.isNew) {
-
+        
         // Generate stream keys
         for (let i=0; i<3; i++) {
             this.stream_key.push(this.generateStreamKey());
