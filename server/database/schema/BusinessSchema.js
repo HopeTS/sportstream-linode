@@ -52,9 +52,10 @@ BusinessSchema.methods.generateStreamKey = async function(length=12, cb) {
  * 
  * @param {*} streamKey stream key string to remove
  * @param {*} cb callback function
+ * 
+ * @returns {boolean} true if deleted, else false
  */
 BusinessSchema.methods.deleteStreamKey = async function(streamKey="", cb) {
-    // TODO: Find a business with a matching stream key, remove that stream key
     if (this.stream_key.includes(streamKey)) {
         this.stream_key.splice(this.stream_key.indexOf(streamKey), 1);
         this.save(cb);
@@ -66,7 +67,6 @@ BusinessSchema.methods.deleteStreamKey = async function(streamKey="", cb) {
 
 /* Hooks */
 BusinessSchema.pre('save', async function(done) {
-
     // First time configuration
     if (this.isNew) {
         
