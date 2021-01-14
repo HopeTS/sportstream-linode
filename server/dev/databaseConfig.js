@@ -18,11 +18,6 @@ const databaseConfig = async () => {
         connected_businesses: []
     }];
 
-    const userConnection = {
-        index: 1,
-        business_password: ''
-    }
-
     // Clear User collection
     await User.find({}, (err, docs) => {
         docs.forEach((doc) => {
@@ -54,8 +49,8 @@ const databaseConfig = async () => {
         password: 'testing123',
         stream_key: [],
         connection_id: '',
-        type: 'business'
-    }]
+       type: 'business'
+    }];
 
     // Clear Business collection
     await Business.find({}, (err, docs) => {
@@ -68,19 +63,47 @@ const databaseConfig = async () => {
     });
 
     // Add test businesses
-    await Business.insertMany(businesses, async (err, docs) => {
+    for (var i=0; i<businesses.length; i++) {
+        let newBusiness = new Business({...businesses[i]});
+        console.log('creating new business')
+        const result = await newBusiness.save();
+        console.log(result)
+        console.log('created new business')
+    }
+
+    let user_connection;
+
+    // Get connection id for user to business connection
+    await Business.findOne({}, (err, user) => {
+        user_connection = user.connection_id;
+    })
+
+    // connect user to business
+    await User.findOne({}, async function(err, user) {
         if (err) throw err;
+        await user.connectToBusiness(user_connection);
     });
 
-    setTimeout(async () => {
-        await Business.find({}, async (err, docs) => {
+    let bus_id;
+
+    setTimeout(async function() {
+        await User.find({}, (err, docs) => {
             if (err) throw err;
-            docs.forEach(async (doc) => {
-                // Find and delete a stream key
-                await doc.deleteStreamKey(doc.stream_key[0]);
-            });
-        });    
-    }, 200);
+            console.log('final docs', docs)
+            for (var i=0; i<docs.length; i++) {
+                if (docs[i].connected_businesses.length === 1) {
+                    bus_id = docs[i].connected_businesses[0];
+                }
+            }
+        });
+
+        Business.find({_id: bus_id}, function(err, doc) {
+            if (err) throw err;
+            console.log('Business found was', doc)
+        })
+    }, 3000)
+
+    // dont connect user to business
 }
 
 module.exports = databaseConfig;
