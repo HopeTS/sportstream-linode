@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const { Business } = require('./Schema');
 const Schema = mongoose.Schema;
 
 /**
@@ -27,7 +26,7 @@ const BusinessSchema = new Schema({
 });
 
 /**
- * Generates a single unique stream key for a Business document
+ * Generates a single stream key for a Business document
  * 
  * @param {*} length length of the stream key
  * @param {*} cb callback function
@@ -36,31 +35,30 @@ const BusinessSchema = new Schema({
  */
 BusinessSchema.methods.generateStreamKey = async function(length=12, cb) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let unique = false;   // Whether or not streamKey is shared by other businesses
     let streamKeyArray = [];
     let streamKey;
 
     // Generate the key
-    while (!unique) {
-        for ( var i = 0; i < length; i++ ) {
-            streamKeyArray.push(
-                characters.charAt(Math.floor(Math.random() * characters.length))
-            );
-        }
-        streamKey = streamKeyArray.join('');
-
-        // Ensure key is unique
-        await mongoose.models['Business'].findOne({stream_key: {"$in": [streamKey]}}, function(err, user) {
-            if (err) throw err;
-            if (!user) unique = true;
-        });    
+    for ( var i = 0; i < length; i++ ) {
+        streamKeyArray.push(
+            characters.charAt(Math.floor(Math.random() * characters.length))
+        );
     }
-
-    // Add key to stream_key
+    streamKey = streamKeyArray.join("");
     this.stream_key.push(streamKey);
-    return streamKey;
-}
 
+    // Store the key
+    try {
+        this.save(cb);
+        return streamKey;    
+    } 
+    
+    catch(e) {
+        console.error(e);
+        return false;
+    }
+}
+ 
 /**
  * Removes a given stream key from the business account
  * 
@@ -72,60 +70,80 @@ BusinessSchema.methods.generateStreamKey = async function(length=12, cb) {
 BusinessSchema.methods.deleteStreamKey = async function(streamKey="", cb) {
     if (this.stream_key.includes(streamKey)) {
         this.stream_key.splice(this.stream_key.indexOf(streamKey), 1);
+        await this.save();
         return true;
     }
     return false;
 }
 
-/**
- * Generates a unique connection ID for a Business account
- * 
- * @param {*} length length of the id
- * @param {*} cb callback function
- * 
- * @returns {string} connection ID
- */
 BusinessSchema.methods.generateConnectionId = async function(length=12, cb) {
+    // Generate the connection id
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let unique = false;
     let connectionIdArray = [];
     let connectionId;
 
-    // Generate connection ID
-    while (!unique) {
-        for ( var i = 0; i < length; i++ ) {
-            connectionIdArray.push(
-                characters.charAt(Math.floor(Math.random() * characters.length))
-            );
-        }    
-        connectionId = connectionIdArray.join('');
-
-        // Ensure ID is unique
-        await mongoose.models['User'].findOne({connection_id: connectionId}, function(err, user) {
-            if (err) throw err;
-            if (!user) unique = true;
-        })
+    for ( var i = 0; i < length; i++ ) {
+        connectionIdArray.push(
+            characters.charAt(Math.floor(Math.random() * characters.length))
+        );
     }
 
-    // Add connection ID
-    connectionId = connectionIdArray.join('');
+    connectionId = connectionIdArray.join("");
+    console.log('(instance method) connection id before:', this.connection_id);
     this.connection_id = connectionId;
-    return this.connection_id;
+    console.log('(instance method) after', this.connection_id);
+    await this.save();
+
+    return false;    
 }
+
 
 /* Hooks */
 BusinessSchema.pre('save', async function(done) {
+    // First time configuration
     if (this.isNew) {
+        this.stream_key = ['erererer']
+    }
+});
+
+BusinessSchema.post('insertMany', function(docs, next) {
+    docs.forEach((doc) => {
+        doc.generateConnectionId().then((res) => {
+
+        }).catch((e) => {
+            console.log(e)
+        })
+
+        // Generate stream keys
+        for (let i=0; i<3; i++) {
+            doc.generateStreamKey().then((res) => {
+
+            }).catch((e) => {
+                console.log(e);
+            })
+        }
+    })
+});
+
+BusinessSchema.post('validate', async function(doc, next) {
+    console.log('POST VALIDATE');
+    if (this.isNew) {
+        console.log('new POST VALIDATE')
         await this.generateConnectionId();
-    
+        
         // Businesses start with 3 stream keys
         for (let i=0; i<3; i++) {
-            console.log('(save) generating a key');
             await this.generateStreamKey();
-        } 
-        return done();    
+        }        
     }
+});
 
+BusinessSchema.pre('create', async function(doc, next) {
+    console.log('PRE CREATE');
+})
+
+BusinessSchema.post('create', async function(doc, next) {
+    console.log('POST CREATE');
 });
 
 module.exports = BusinessSchema;
