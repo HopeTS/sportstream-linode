@@ -5,7 +5,8 @@
 
 /* Reducer */
 const UIDefaultState = {
-    navMenu_Mobile: false
+    navMenu_Mobile: false,
+    accountMenu: false
 };
 
 export default (state = UIDefaultState, action) => {
@@ -27,6 +28,25 @@ export default (state = UIDefaultState, action) => {
             return {
                 ...state,
                 navMenu_Mobile: false
+            };
+
+        case 'ACCOUNT_MENU__TOGGLE':
+            return {
+                ...state,
+                accountMenu: state.accountMenu ? false : true
+            }
+
+        case 'ACCOUNT_MENU__ON':
+            return {
+                ...state,
+                accountMenu: true
+            };
+    
+
+        case 'ACCOUNT_MENU__OFF':
+            return {
+                ...state,
+                accountMenu: false
             };
 
         default:

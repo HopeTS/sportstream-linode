@@ -2,7 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
-import {navMenu_Mobile__Off} from '../../../redux/actions/ui';
+import {
+    navMenu_Mobile__Off, accountMenu__Toggle, accountMenu__Off, accountMenu__On
+} from '../../../redux/actions/ui';
 import AccountCardAuth from './AccountCardAuth';
 import AccountCardNoAuth from './AccountCardNoAuth';
 
@@ -18,7 +20,6 @@ export class AccountCard extends React.Component {
         super(props);
         this.state = {
             auth: false,
-            menu: false
         }
     }
 
@@ -41,17 +42,15 @@ export class AccountCard extends React.Component {
     /**
      * Toggles the account card menu display
      */
-    toggle_card = () => {
-        this.setState({
-            menu: !this.state.menu
-        });
+    accountMenu__Toggle = () => {
+        this.props.accountMenu__Toggle();
     }
 
     render() {
         return (
             <div id="AccountCard" 
                 data-mobile_nav={this.props.mobile_nav}
-                data-active={this.state.menu}
+                data-active={this.props.accountMenu}
 
             >
                 {this.props.isAuthenticated ?
@@ -69,6 +68,7 @@ export class AccountCard extends React.Component {
 const mapStateToProps = (state) => {
     return {
         mobile_nav: state.ui.navMenu_Mobile,
+        accountMenu: state.ui.accountMenu,
         isAuthenticated: state.auth.isAuthenticated,
         account: state.auth.account
     };
@@ -77,6 +77,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navMenu_Mobile__Off: () => {
         dispatch(navMenu_Mobile__Off());
+    },
+    accountMenu__Toggle: () => {
+        dispatch(accountMenu__Toggle());
     }
 });
 

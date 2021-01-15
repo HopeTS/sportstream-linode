@@ -3,7 +3,9 @@ import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 import axios from 'axios';
 
-import { navMenu_Mobile__Off } from '../../../redux/actions/ui';
+import {
+    navMenu_Mobile__Off, accountMenu__Off
+} from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
 import { clearState } from '../../../functions/auth/localStorage';
 import { clearCookies } from '../../../functions/auth/cookies';
@@ -34,21 +36,30 @@ export class AccountCardAuthMenuUser extends React.Component {
         this.props.logout();
     }
 
+    /** Handler for turning accountMenu off */
+    accountMenu__Off = () => {
+        this.props.accountMenu__Off();
+    }
+
     render() {
         return (
             <div 
                 className="AccountCardAuthMenu"
-                data-active={this.props.active}
+                data-active={this.props.accountMenu}
             >
                 <ul>
-                    <li>
+                    <li
+                        onClick={this.accountMenu__Off}
+                    >
                         <NavLink 
                             to="/account"
                         >
                             My account
                         </NavLink>
                     </li>
-                    <li>
+                    <li
+                        onClick={this.accountMenu__Off}
+                    >
                         <NavLink
                             to="/"
                             onClick={this.logout}
@@ -67,6 +78,7 @@ export class AccountCardAuthMenuUser extends React.Component {
 const mapStateToProps = (state) => {
     return {
         mobile_nav: state.ui.navMenu_Mobile,
+        accountMenu: state.ui.accountMenu,
         isAuthenticated: state.auth.isAuthenticated,
         account: state.auth.account
     };
@@ -75,6 +87,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navMenu_Mobile__Off: () => {
         dispatch(navMenu_Mobile__Off());
+    },
+    accountMenu__Off: () => {
+        dispatch(accountMenu__Off());
     },
     logout: () => {
         dispatch(logout());

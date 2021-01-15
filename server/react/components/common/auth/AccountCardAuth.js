@@ -5,7 +5,9 @@ import { NavLink } from 'react-router-dom';
 
 
 /* Internal packages */
-import { navMenu_Mobile__Off } from '../../../redux/actions/ui';
+import {
+    navMenu_Mobile__Off, accountMenu__Toggle
+} from '../../../redux/actions/ui';
 import AccountCardAuthMenuUser from './AccountCardAuthMenuUser';
 import AccountCardAuthMenuBusiness from './AccountCardAuthMenuBusiness';
 
@@ -19,10 +21,8 @@ export class AccountCardAuth extends React.Component {
         };
     }
 
-    toggleMenu = () => {
-        this.setState({
-            menu: !this.state.menu
-        });
+    accountMenu__Toggle = () => {
+        this.props.accountMenu__Toggle();
     }
 
     render() {
@@ -30,23 +30,19 @@ export class AccountCardAuth extends React.Component {
             <div className="AccountCardAuth">
                 <button 
                     className="AccountCardAuth__profileImage"
-                    onClick={this.toggleMenu}
+                    onClick={this.accountMenu__Toggle}
                 >
                     <img src="/dist/images/icons/account.png" alt="" />
                 </button>
 
                 <div 
                     className="AccountCardAuth__menu"
-                    data-active={this.state.menu}
+                    data-active={this.props.accountMenu}
                 >
                     {this.props.account.type === 'user' ? 
-                        <AccountCardAuthMenuUser 
-                            active={this.state.menu}
-                        />
+                        <AccountCardAuthMenuUser />
                         :
-                        <AccountCardAuthMenuBusiness
-                            active={this.state.menu}
-                        />
+                        <AccountCardAuthMenuBusiness />
 
                     }
                 </div>
@@ -60,6 +56,7 @@ export class AccountCardAuth extends React.Component {
 const mapStateToProps = (state) => {
     return {
         mobile_nav: state.ui.navMenu_Mobile,
+        accountMenu: state.ui.accountMenu,
         isAuthenticated: state.auth.isAuthenticated,
         account: state.auth.account
     };
@@ -68,6 +65,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     navMenu_Mobile__Off: () => {
         dispatch(navMenu_Mobile__Off());
+    },
+    accountMenu__Toggle: () => {
+        dispatch(accountMenu__Toggle());
     }
 });
 

@@ -1,3 +1,86 @@
 .AccountPageAuth {
     
 }
+
+.AccountPageAuth__header {
+    padding-left: 12px;
+
+    h1 {
+        font-weight: 400;
+        font-size: 1.2rem;
+    }  
+
+    h3 {
+        font-weight: 100;
+        font-size: 1rem;
+    }
+
+    @media #{$tablet_breakpoint} {
+        padding-left: 0px;
+    }
+}
+
+.AccountPageAuth__form {
+    @include form;
+    vertical-align: top;
+    background: unset;
+    padding: 0;
+    margin: 0;
+    width: 100% !important;
+
+    @media #{$tablet_breakpoint} {
+        width: 100%;
+    }
+}
+
+.AccountPageAuth__section {
+    background: var(--dark-gray);
+    padding: 0;    
+    border-radius: 8px;
+    border: 1px solid var(--gray);
+
+    section {
+        width: 100%;
+        padding: 16px 0;
+        display: flex;
+        flex-direction: column;
+
+        &:not(:last-child) {
+            border-bottom: 1px solid var(--gray);
+        }
+    }
+
+    label {
+        margin-left: 16px;
+    }
+
+    input {
+        width: calc(100% - 32px);
+        margin: 4px auto;
+        margin-top: 8px;
+        background: var(--black);
+        color: var(--gray);
+        padding: 8px;
+        border: 0;
+        border-radius: 4px;
+    }
+
+    @media #{$tablet_breakpoint} {
+        section {
+            flex-direction: row;
+        }
+
+        label {
+            margin-top: 14px;
+        }
+
+        input {
+            width: 60%;
+            margin-right: 12px;
+        }
+    }
+
+    @media #{$ultrawide_breakpoint} {
+        max-width: 1200px;
+    }
+}
