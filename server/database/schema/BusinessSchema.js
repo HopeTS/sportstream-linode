@@ -90,6 +90,7 @@ BusinessSchema.methods.generateConnectionId = async function(length=12, cb) {
     let unique = false;
     let connectionIdArray = [];
     let connectionId;
+    let newDoc = false; // Flag to determine if save should be called
 
     // Generate connection ID
     while (!unique) {
@@ -101,14 +102,13 @@ BusinessSchema.methods.generateConnectionId = async function(length=12, cb) {
         connectionId = connectionIdArray.join('');
 
         // Ensure ID is unique
-        await mongoose.models['User'].findOne({connection_id: connectionId}, function(err, user) {
+        await mongoose.models['Business'].findOne({connection_id: connectionId}, function(err, user) {
             if (err) throw err;
             if (!user) unique = true;
         })
     }
 
     // Add connection ID
-    connectionId = connectionIdArray.join('');
     this.connection_id = connectionId;
     return this.connection_id;
 }
@@ -116,11 +116,10 @@ BusinessSchema.methods.generateConnectionId = async function(length=12, cb) {
 /* Hooks */
 BusinessSchema.pre('save', async function(done) {
     if (this.isNew) {
-        await this.generateConnectionId();
-    
+        this.connection_id = this.generateConnectionId();
+
         // Businesses start with 3 stream keys
         for (let i=0; i<3; i++) {
-            console.log('(save) generating a key');
             await this.generateStreamKey();
         } 
         return done();    

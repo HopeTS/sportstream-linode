@@ -33,9 +33,9 @@ const UserSchema = new Schema({
  * @returns {boolean} true if connected to business, false if not
  */
 UserSchema.methods.connectToBusiness = async function(password="", cb) {
-    console.log('Here is this!', this._id)
-    const user_id = this._id
     let newConnections = this.connected_businesses || [];
+    const user_id = this._id
+    let newDoc = false; // Flag to determine if save should be called
 
     // Find business (if exists)
     await mongoose.models['Business'].findOne({connection_id: password}, 
@@ -44,22 +44,35 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
             if (!user) return false;
 
             // If business found
-            console.log(user._id)
             newConnections.push(user._id);
-            console.log('new connections', newConnections)
         }
     );
 
-    mongoose.models['User'].findOne({_id: user_id}, async function (err, doc) {
-        doc.connected_businesses = newConnections;
-        console.log('Here are new connections', doc.connected_businesses)
-        doc.markModified('connected_businesses')
-        await doc.save(function(err, news) {
-            if (err) throw err;
-            if (news) console.log(news)
-        });
-    })
 
+    mongoose.models['User'].findOne({_id: user_id}, async function (err, doc) {
+        if (err) throw err;
+
+        // If User is not new
+        if (doc) {
+            doc.connected_businesses = newConnections;
+            doc.markModified('connected_businesses');
+            await doc.save(function(err, news) {
+                if (err) throw err;
+                if (news) console.log(news);
+            });
+        }
+
+        // If user is new
+        else {
+            newDoc = true;       
+        }
+    });
+
+    if (newDoc) {
+        this.connected_businesses = newConnections;
+    }
+
+    return newConnections;
 }
 
 /* Hooks */
@@ -76,7 +89,6 @@ UserSchema.post('insertMany', async function(docs, next) {
 });
 
 UserSchema.post('insert', (err, next) => {
-    console.log('User insert pre hook', next)
     // TODO: connect to business if applicable
 });
 
