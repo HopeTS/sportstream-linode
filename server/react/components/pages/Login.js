@@ -70,8 +70,6 @@ export class Login extends React.Component {
         
         .then((res) => {
             if (res.status === 202) {
-                console.log('Here is the business', res.data);
-
                 const stream_key = res.data.stream_key || [];
                 const connection_id = res.data.connection_id || [];
                 this.props.login({
@@ -89,8 +87,11 @@ export class Login extends React.Component {
             }
         })
 
-        .catch((error) => {
-            this.handleFormError(error.response.data);
+        .catch((err) => {
+            if (err.response.status === 404) {
+                return this.handleFormError("Invalid email/password");
+            }
+            return this.handleFormError(error.response.status);
         });
     }
 
