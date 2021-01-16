@@ -1,100 +1,110 @@
-.page-loader {
-    position: absolute;
-    top: 0;
-    left: 0;
-    /*width: 100vw;
-    height: 100vh;*/
-    right: 0;
-    bottom: 0;
-    padding-top: calc(50vh - 20px);
-    background:#151515;
-    transition: 300ms;
-    opacity: 1;
-    overflow: hidden;
-    margin: 0;
+body[data-loading=true] {
+    background: #181818;
 }
 
-.page-loader[data-loading=false] {
+.page_loader {
+    position: absolute;
+    width: 90px;
+    left: calc(50% - 45px);
+    bottom: calc(50% - 20px);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.page_loader[data-loading=false] {
     opacity: 0;
     transition: 300ms;
 }
 
-.page-loader[data-loaded=true] {
+.page_loader[data-loaded=true] {
     display: none;
 }
 
-.page-loader > div {
+.page_loader > div {
+    background: #e1e1ff;
+    width: 10px;
     height: 40px;
-    width: 240px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
+    position: relative;
 }
 
-.page-loader > div > div {
-    width: 40px;
-    height: 40px;
-    border-radius: 25px;
-    background: #7322ff;
-}
-
-.page-loader__1 {
-    animation: load_1;
-    animation-duration: 600ms;
+.page_loader1 {
+    animation: load1;
+    animation-duration: 400ms;
     animation-iteration-count: infinite;
 }
 
-.page-loader__2 {
-    animation: load_2;
-    animation-duration: 600ms;
-    animation-iteration-count: infinite;
-
-}
-
-.page-loader__3 {
-    animation: load_3;
-    animation-duration: 600ms;
+.page_loader2 {
+    animation: load2;
+    animation-duration: 400ms;
     animation-iteration-count: infinite;
 }
 
-@keyframes load_1 {
-    0% {opacity: 0.2;}
-    33% {opacity: 0.6;}
-    66% {opacity: 1;}
-    99% {opacity: 0.2;}
+.page_loader3 {
+    animation: load3;
+    animation-duration: 400ms;
+    animation-iteration-count: infinite;
 }
 
-@-webkit-keyframes load_1 {
-    0% {opacity: 0.2;}
-    33% {opacity: 0.6;}
-    66% {opacity: 1;}
-    99% {opacity: 1;}
+.page_loader4 {
+    animation: load4;
+    animation-duration: 400ms;
+    animation-iteration-count: infinite;
 }
 
-@keyframes load_2 {
-    0% {opacity: 0.6;}
-    33% {opacity: 0.2;}
-    66% {opacity: 1;}
-    99% {opacity: 0.6;}
+.page_loader5 {
+    animation: load5;
+    animation-duration: 400ms;
+    animation-iteration-count: infinite;    
 }
 
-@-webkit-keyframes load_2 {
-    0% {opacity: 0.6;}
-    33% {opacity: 0.2;}
-    66% {opacity: 1;}
-    99% {opacity: 0.6;}
+
+@keyframes load1 {
+    0% {top: 0px;}
+    20% {top: -24px;}
+    35% {top: 0px;}
+    50% {top: 0px;}
+    75% {top: 0px;}
+    90% {top: 0px;}
+    100% {top: 0px;}
 }
 
-@keyframes load_3 {
-    0% {opacity: 1;}
-    33% {opacity: 0.6;}
-    66% {opacity: 0.2;}
-    99% {opacity: 1;}
+@keyframes load2 {
+    0% {top: 0px;}
+    20% {top: 0px;}
+    35% {top: -24px;}
+    50% {top: 0px;}
+    75% {top: 0px;}
+    90% {top: 0px;}
+    100% {top: 0px;}
 }
 
-@-webkit-keyframes load_3 {
-    0% {opacity: 1;}
-    33% {opacity: 0.6;}
-    66% {opacity: 0.2;}
-    99% {opacity: 1;}
+@keyframes load3 {
+    0% {top: 0px;}
+    20% {top: 0px;}
+    35% {top: 0px;}
+    50% {top: -24px;}
+    75% {top: 0px;}
+    90% {top: 0px;}
+    100% {top: 0px;}
+}
+
+@keyframes load4 {
+    0% {top: 0px;}
+    20% {top: 0px;}
+    35% {top: 0px;}
+    50% {top: 0px;}
+    75% {top: -24px;}
+    90% {top: 0px;}
+    100% {top: 0px;}
+}
+
+@keyframes load5 {
+    0% {top: 0px;}
+    20% {top: 0px;}
+    35% {top: 0px;}
+    50% {top: 0px;}
+    75% {top: 0px;}
+    90% {top: -24px;}
+    100% {top: 0px;}
 }
