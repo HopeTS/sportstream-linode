@@ -12,7 +12,6 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
-const generateStreamKey = require('../auth/keygen').generateStreamKey;
 
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');

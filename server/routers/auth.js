@@ -12,8 +12,6 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
 const http2https = require('../middleware/http2https');
-const generateStreamKey = require('../auth/keygen').generateStreamKey;
-const generateConnectionID = require('../auth/keygen').generateConnectionID;
 const config = require('../config/default');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
@@ -165,9 +163,11 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
                 res.status(201).send(newUser);
             }
         })
-    } catch(e) {
-        res.status(500).send();
+    } 
+    
+    catch(e) {
         console.log(chalk.red('An error occured: '), '\n', `${e}`);
+        res.status(500).send('Something went wrong on our end.');
     }
 });
 
@@ -178,56 +178,62 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
  * The req body contains:
  *  - email: The company email
  *  - name: The company name
- *  - business_key: The business key
+ *  - business_key: The business key that allows a Business account to
+ *      actually register
  *  - connection_id: The connection id (The password to give to user's to
  *      enable access to the company streams)
  */
 router.post('/register-business', ensureLoggedOut(), (req, res) => {
     try {
+        console.log('Here is the request', req.body)
         console.log(`Received a${req.secure ? " secure": "n insecure"} /register-business request`);
         Business.findOne({email: req.body.email}, async (err, doc) => {
-
             // Error handling
             if (err) throw err; 
-            if (doc) res.status(409).send("Business account already exists!");
+            if (doc) {
+                return res.status(409).send("Business account already exists!");
+            }
             if (req.body.business_key != config.business_key) {
-                res.status(401).send('Invalid business_key');
+                return res.status(401).send('Invalid business_key');
             }
 
 
             // Register new business
             if (!doc) {
+                console.log('Saving business')
                 const hashedPassword = await bcrypt.hash(req.body.password, 10);
-                const connection_id = generateConnectionID();
-                const streamKeys = [
-                    generateStreamKey(),
-                    generateStreamKey(),
-                    generateStreamKey()
-                ];
 
                 const newBusiness = new Business({
                     name: req.body.name,
                     username: req.body.email,
                     email: req.body.email,
                     type: 'business',
-                    password: hashedPassword,
-                    connection_id: connection_id,
-                    stream_key: streamKeys
+                    password: hashedPassword
                 });
 
                 await newBusiness.save((err) => {
-                    if (err) console.log(err);
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Something went wrong on our end.');
+                    };
                 });
-                res.status(201).send(newBusiness);
+
+                // Return new business details
+                const resBusiness = {
+                    name: newBusiness.name,
+                    username: newBusiness.username,
+                    email: newBusiness.email,
+                    type: 'business'
+                }
+                console.log('Here is the res business', resBusiness);
+                return res.status(201).send(resBusiness);
             }
         })
-    } catch(e) {
-        res.status(500).send();
-        console.log(
-            chalk.red('An error occured: '),
-            '\n',
-            `${e}`
-        );
+    } 
+    
+    catch(e) {
+        console.log(chalk.red('An error occured: '), '\n', `${e}`);
+        return res.status(500).send('Something went wrong on our end.');
     }
 });
 
