@@ -4,6 +4,7 @@ import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
+import {login} from '../../redux/actions/auth';
 
 
 /* Component */
