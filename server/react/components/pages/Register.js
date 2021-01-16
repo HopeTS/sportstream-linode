@@ -122,10 +122,7 @@ export class Register extends React.Component {
         
         .then((res) => {
             if (res.status === 201) {
-                // TODO: Login
-                // TODO: Add 'Go to my account' button
-                console.log('Business created');
-                console.log(res);
+                this.loginBusiness();
             }
 
             // Other error
@@ -136,6 +133,40 @@ export class Register extends React.Component {
 
         .catch((error) => {
             this.handleFormError(error.response.data);
+        });
+    }
+
+    /** Handles login for Business account */
+    loginBusiness = () => {
+        axios.post('/login-business', { 
+            email: this.state.email,
+            password: this.state.password
+        })
+        
+        .then((res) => {
+            if (res.status === 202) {
+                console.log('Here is the business', res.data);
+
+                const stream_key = res.data.stream_key || [];
+                const connection_id = res.data.connection_id || [];
+                this.props.login({
+                    name: res.data.name,
+                    email: res.data.email,
+                    stream_key: stream_key,
+                    connection_id: connection_id,
+                    type: 'business'
+                });
+                this.props.history.push('/');
+            }
+
+            else {
+                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
+            }
+        })
+
+        .catch((error) => {
+            console.log(error)
+            //this.handleFormError(error.response.data);
         });
     }
 
@@ -155,10 +186,7 @@ export class Register extends React.Component {
         
         .then((res) => {
             if (res.status === 201) {
-                // TODO: Login
-                // TODO: Add 'Go to my account' button
-                console.log('User created');
-                console.log(res);
+                this.loginUser();
             }
 
             // Other error
@@ -169,6 +197,36 @@ export class Register extends React.Component {
 
         .catch((error) => {
             this.handleFormError(error.response.data);
+        });
+    }
+
+    /** Handles login for User account */
+    loginUser = () => {
+        axios.post('/login-user', { 
+            email: this.state.email,
+            password: this.state.password
+        })
+        
+        .then((res) => {
+            if (res.status === 202) {
+                this.props.login({
+                    name: res.data.name,
+                    email: res.data.email,
+                    type: 'user'
+                });
+                this.props.history.push('/');
+            }
+
+            else {
+                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
+            }
+        })
+
+        .catch((error) => {
+            console.log(error);
+            let errorMessage = error.response ? 
+                error.response.data : 'Something went wrong';
+            this.handleFormError(errorMessage);
         });
     }
 
