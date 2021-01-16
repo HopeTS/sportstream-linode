@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 
@@ -8,13 +10,13 @@ const databaseConfig = async () => {
     // Test users
     const users = [{
         name: 'Test1',
-        email: 'Test1@gmail.com',
-        password: 'Test123',
+        email: 'user@gmail.com',
+        password: await bcrypt.hash('1234', 10),
         connected_businesses: []
     }, {
         name: 'Test2',
-        email: 'Test2@gmail.com',
-        password: 'Test123',
+        email: 'user2@gmail.com',
+        password: await bcrypt.hash('1234', 10),
         connected_businesses: []
     }];
 
@@ -37,16 +39,16 @@ const databaseConfig = async () => {
     const businesses = [{
         name: 'Test business 1',
         username: 'Test_business',
-        email: 'test@gmail.com',
-        password: 'testing123',
+        email: 'business@gmail.com',
+        password: await bcrypt.hash('1234', 10),
         stream_key: [],
         connection_id: '',
         type: 'business'
     }, {
         name: 'Test business 2',
         username: 'Test_business2',
-        email: 'test2@gmail.com',
-        password: 'testing123',
+        email: 'business2@gmail.com',
+        password: await bcrypt.hash('1234', 10),
         stream_key: [],
         connection_id: '',
        type: 'business'
@@ -65,10 +67,7 @@ const databaseConfig = async () => {
     // Add test businesses
     for (var i=0; i<businesses.length; i++) {
         let newBusiness = new Business({...businesses[i]});
-        console.log('creating new business')
         const result = await newBusiness.save();
-        console.log(result)
-        console.log('created new business')
     }
 
     let user_connection;
@@ -89,7 +88,6 @@ const databaseConfig = async () => {
     setTimeout(async function() {
         await User.find({}, (err, docs) => {
             if (err) throw err;
-            console.log('final docs', docs)
             for (var i=0; i<docs.length; i++) {
                 if (docs[i].connected_businesses.length === 1) {
                     bus_id = docs[i].connected_businesses[0];
@@ -97,9 +95,12 @@ const databaseConfig = async () => {
             }
         });
 
-        Business.find({_id: bus_id}, function(err, doc) {
+        Business.findOne({_id: bus_id}, async function(err, doc) {
             if (err) throw err;
-            console.log('Business found was', doc)
+
+            if (doc) {
+                await doc.generateConnectionId();    
+            }
         })
     }, 3000)
 
