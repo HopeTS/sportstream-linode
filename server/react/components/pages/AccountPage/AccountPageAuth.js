@@ -88,7 +88,7 @@ export function AccountPageAuth(props) {
                                                 <input 
                                                     type="text" id={key} key={key}
                                                     placeholder={key}
-                                                    name={key}
+                                                    name={key} disabled
                                                 />
                                             )
                                         })
