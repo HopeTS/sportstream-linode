@@ -3,8 +3,6 @@
 }
 
 .AccountPageAuth__header {
-    padding-left: 12px;
-
     h1 {
         font-weight: 400;
         font-size: 1.2rem;
@@ -16,7 +14,19 @@
     }
 
     @media #{$tablet_breakpoint} {
-        padding-left: 0px;
+        h1 {
+            font-size: 1.8rem;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+        }
+    }
+
+    @media #{$desktop_breakpoint} {
+        h1 {
+            font-size: 2rem;
+        }
     }
 }
 
@@ -38,6 +48,7 @@
     padding: 0;    
     border-radius: 8px;
     border: 1px solid var(--gray);
+    max-width: 800px;
 
     section {
         width: 100%;
@@ -78,9 +89,5 @@
             width: 60%;
             margin-right: 12px;
         }
-    }
-
-    @media #{$ultrawide_breakpoint} {
-        max-width: 1200px;
     }
 }
