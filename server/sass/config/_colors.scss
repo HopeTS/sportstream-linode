@@ -10,6 +10,7 @@
 
     // Grayscale
     --black: #0e0e10;
+    --darker-gray: #0f0f0e;
     --dark-gray: #1a1a1e;
     --gray: #414141;
     --white: #e8e8e8;
@@ -22,7 +23,7 @@
     --background-color-light: var(--dark-gray);
 
     // Content colors
-    --header-color: var(--primary-color-light);
+    --header-color: var(--white);
     --text-color: var(--white);
     --link-color: var(--primary-color-lighter);
     --button-color: var(--primary-color);
