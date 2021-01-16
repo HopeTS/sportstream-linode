@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 
@@ -8,6 +8,10 @@ import axios from 'axios';
 export function AccountPageAuth(props) {
     const accountType = props.account.type === 'business' ? 
             'business':'user';
+
+            useEffect(() => {
+                console.log(props.account.stream_key)
+            })
             
     return (
         <div className="AccountPageAuth">
@@ -69,6 +73,33 @@ export function AccountPageAuth(props) {
                                     TODO: Add button to change connection id to a new
                                     randomly generated one
                                     */}
+                                </section>
+                            }
+
+                            {props.account.type === 'business' &&
+                                <section className="AccountPageAuth__multiInputs">
+                                    <label htmlFor="stream_key">
+                                        Stream Keys:
+                                    </label>
+
+                                    {props.account.stream_key.map((key) => {
+                                            console.log('Here is key', key)
+                                            return (
+                                                <input 
+                                                    type="text" id={key} key={key}
+                                                    placeholder={key}
+                                                    name={key}
+                                                />
+                                            )
+                                        })
+
+                                        }                                    {/* TODO: Stream keys */}
+                                </section>
+                            }
+
+                            {props.account.type === 'user' &&
+                                <section>
+                                    {/* TODO: Connected businesses */}
                                 </section>
                             }
                         </form>
