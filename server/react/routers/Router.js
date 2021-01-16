@@ -13,8 +13,9 @@ import Wildcard from '../components/pages/Wildcard';
 import Streams from '../components/pages/Streams';
 import AccountPage from '../components/pages/AccountPage/AccountPage';
 
-import { login } from '../redux/actions/auth';
-import { loadState } from '../functions/auth/localStorage';
+import {login} from '../redux/actions/auth';
+import {loadState} from '../functions/auth/localStorage';
+import {accountMenu__Off} from '../redux/actions/ui';
 
 
 
@@ -45,7 +46,7 @@ export class Router extends React.Component {
     fadein_animation() {
         
         // Disable loader
-        const $pageLoader = document.querySelector('.page-loader');
+        const $pageLoader = document.querySelector('.page_loader');
         if ($pageLoader) {
             $pageLoader.setAttribute('data-loading', true);
             this.setState({
@@ -88,6 +89,13 @@ export class Router extends React.Component {
         }
     }
 
+    /** Handler for toggling accountMenu (the account card) */
+    accountMenu__Off = () => {
+        if (this.props.accountMenu) {
+            this.props.accountMenu__Off();
+        }
+    }
+
     render() {
         return (
             <BrowserRouter>
@@ -96,6 +104,7 @@ export class Router extends React.Component {
                     data-page_id={this.props.page_ID}
                     data-loading={this.state.loading}
                     data-loaded={this.state.loaded}
+                    onClick={this.accountMenu__Off}
                 >
                     <Header />                    
 
@@ -147,13 +156,17 @@ export class Router extends React.Component {
 /* Connect to store */
 const mapStateToProps = (state) => {
     return {
-        page_ID: state.page.id
+        page_ID: state.page.id,
+        accountMenu: state.ui.accountMenu
     };
 };
 
 const mapDispatchToProps = (dispatch) => ({
     login: (account) => {
         dispatch(login(account));
+    },
+    accountMenu__Off: () => {
+        dispatch(accountMenu__Off());
     }
 });
 
