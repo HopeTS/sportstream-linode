@@ -58,7 +58,6 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
             doc.markModified('connected_businesses');
             await doc.save(function(err, news) {
                 if (err) throw err;
-                if (news) console.log(news);
             });
         }
 
