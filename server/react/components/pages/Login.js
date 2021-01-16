@@ -70,10 +70,15 @@ export class Login extends React.Component {
         
         .then((res) => {
             if (res.status === 202) {
-                console.log('User found');
+                console.log('Here is the business', res.data);
+
+                const stream_key = res.data.stream_key || [];
+                const connection_id = res.data.connection_id || [];
                 this.props.login({
                     name: res.data.name,
                     email: res.data.email,
+                    stream_key: stream_key,
+                    connection_id: connection_id,
                     type: 'business'
                 });
                 this.props.history.push('/');
