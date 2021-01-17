@@ -25,6 +25,9 @@ server/ssl/*.key
 server/ssl/*.srl
 server/ssl/*.csr
 
+# Thumbnails
+server/thumbnails/*.png
+
 # MongoDB database
 server/database/db/*.wt
 server/database/db/mongod.lock
