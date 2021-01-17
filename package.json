@@ -5,12 +5,13 @@
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
-    "start:dev": "tsc & concurrently --kill-others \"npm run build:dev_Nodemon\" \"npm run build:dev_Webpack\" \"tsc -w\"",
+    "start:watch": "tsc & concurrently --kill-others \"npm run build:nodemon\" \"npm run build:webpack\" \"tsc -w\"",
+    "start:dev": "tsc & npm run build:nodemon & npm run build:webpack",
     "start:https": "npm run build:prod & env-cmd https_production node server/server.js",
     "start:http": " npm run build:prod & env-cmd http_production node server/server.js",
     "build:dev": "webpack",
-    "build:dev_Nodemon": "env-cmd development nodemon server/server.js -e js,css,html,hbs",
-    "build:dev_Webpack": "webpack --watch",
+    "build:nodemon": "env-cmd development nodemon server/server.js -e js,css,html,hbs",
+    "build:webpack": "webpack --watch",
     "build:prod": "webpack -p --env production",
     "test": "jest --config=jest.config.json",
     "test:watch": "npm run test -- --watch"
