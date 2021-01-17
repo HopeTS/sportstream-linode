@@ -38,6 +38,9 @@ server/database/db/WiredTiger.turtle
 server/database/db/diagnostic.data
 server/database/db/journal
 
-# Ignore JS files built from TypeScript
+# Stream data
+server/media/live/*
+
+# JS files built from TypeScript
 server/media_server.js
 server/server.js
