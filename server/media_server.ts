@@ -22,23 +22,23 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
 
     // TODO: Fix this for new database schema
-    await Business.findOne({stream_key: [stream_key]}, (err: any, user: any) => {
+    await Business.findOne({stream_key: stream_key}, (err: any, user: any) => {
         console.log('[nms] Ran the nms query');
         if (err) {
             return console.log(err);
         }
         if (!user) {
-            console.log('[nms] Business not found in ')
+            console.log('[nms] Invalid business key ')
             return nms.getSession(id).reject();
         }
-        return console.log('[nms] Would have generated thumbnail');
+        return console.log(`[nms] ${stream_key} is connected to business ${user.email}`);
     });
 });
 
 const getStreamKeyFromStreamPath = (path: string) => {
     let parts = path.split('/');
     console.log('Here are the parts', parts)
-    return parts[parts.length - 1];
+    return parts[2];
 };  
 
 
