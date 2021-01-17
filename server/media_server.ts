@@ -5,7 +5,7 @@ export {};
 
 const NodeMediaServer = require('node-media-server');
 
-const config = require('./config/default').rtmp;
+const config = require('./config/default').nms;
 const Business = require('./database/schema/Schema').Business;
 //const helpers = require('./helpers/helpers');
 
