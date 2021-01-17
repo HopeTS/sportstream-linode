@@ -13,7 +13,7 @@ const Business = require('./database/schema/Schema').Business;
 /* Media Server */
 const nms = new NodeMediaServer(config);
 
-/* nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
+nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     let stream_key = getStreamKeyFromStreamPath(StreamPath);
     console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
 
@@ -34,7 +34,7 @@ const nms = new NodeMediaServer(config);
 const getStreamKeyFromStreamPath = (path: string) => {
     let parts = path.split('/');
     return parts[parts.length - 1];
-}; */
+}; 
 
 
 module.exports = nms;
