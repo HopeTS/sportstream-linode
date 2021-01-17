@@ -15,7 +15,6 @@ const http2https = require('../middleware/http2https');
 const config = require('../config/default');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
-const router = require('./auth');
 
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
