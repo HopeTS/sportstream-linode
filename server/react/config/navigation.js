@@ -31,7 +31,7 @@ export default [
         text: "Home",
         internal: true
     }, {
-        href: "/watch",
+        href: "/streams",
         text: "Watch",
         internal: true
     }
