@@ -158,9 +158,21 @@ router.post('/register-user', ensureLoggedOut(), (req, res) => {
                     connected_businesses: connected_businesses,
                     type: 'user'
                 });
-                await newUser.save();
+                await newUser.save((err) => {
+                    if (err) {
+                        console.error(err);
+                        return res.status(500).send('Something went wrong on our end.');
+                    };
+                });
 
-                res.status(201).send(newUser);
+                // Return new user details
+                const resUser = {
+                    name: newUser.name,
+                    email: newUser.email,
+                    connected_businesses: newUser.connected_businesses,
+                    type: 'user'
+                }
+                res.status(201).send(resUser);
             }
         })
     } 
@@ -225,7 +237,6 @@ router.post('/register-business', ensureLoggedOut(), (req, res) => {
                     email: newBusiness.email,
                     type: 'business'
                 }
-                console.log('Here is the res business', resBusiness);
                 return res.status(201).send(resBusiness);
             }
         })

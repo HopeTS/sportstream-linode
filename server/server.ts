@@ -21,6 +21,7 @@ const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
 const databaseConfig = require('./dev/databaseConfig');
+const node_media_server = require('./media_server');
 
 const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');
@@ -50,6 +51,7 @@ db.once('open', () => {
 const app = express();
 app.use(http2https);
 app.use(express.static(publicPath));
+app.use('/thumbnails', express.static('server/thumbnails'));
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.urlencoded({ extended: true }));
@@ -85,6 +87,8 @@ if (process.env.NAME === 'development') {
             chalk.blue(process.env.HTTP_PORT)
         );
     });
+
+    node_media_server.run();
 }
 
 else if (process.env.NAME === 'https_production') {
@@ -103,6 +107,8 @@ else if (process.env.NAME === 'https_production') {
         console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
         console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
     });
+
+    node_media_server.run();
 }
 
 else if (process.env.NAME === 'http_production') {
