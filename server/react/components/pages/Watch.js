@@ -31,7 +31,7 @@ export class Watch extends React.Component {
         axios({
             method: "get",
             withCredentials: true,
-            url: `${window.location.hostname}:${config.rtmp.port}/api/streams`
+            url: `${window.location.hostname}:${config.nms.rtmp.port}/api/streams`
         }).then((res) => {
             const streams = res.data;
             if (typeof (streams['live'] !== 'undefined')) {
