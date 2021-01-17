@@ -11,7 +11,7 @@ import {page_ID__Set} from '../../redux/actions/page';
 
 
 /* Component */
-export class Streams extends React.Component {
+export class Watch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -20,7 +20,7 @@ export class Streams extends React.Component {
     };
 
     componentWillMount() {
-        this.props.page_ID__Set('Streams');
+        this.props.page_ID__Set('Watch');
         this.getLiveStreams();
     };
 
@@ -31,7 +31,7 @@ export class Streams extends React.Component {
         axios({
             method: "get",
             withCredentials: true,
-            url: `${window.location.origin}/${config.rtmp.port}/api/streams`
+            url: `${window.location.hostname}:${config.rtmp.port}/api/streams`
         }).then((res) => {
             const streams = res.data;
             if (typeof (streams['live'] !== 'undefined')) {
@@ -52,14 +52,14 @@ export class Streams extends React.Component {
 
     render() {
         return (
-            <div id="Streams">
-                <section className="Streams__header">
-                    <div className="Streams__headerContent">
+            <div id="Watch">
+                <section className="Watch__header">
+                    <div className="Watch__headerContent">
                         Your available games
                     </div>
                 </section>
 
-                <section className="Streams__content">
+                <section className="Watch__content">
                     Live Stream page
                 </section>
             </div>
@@ -76,4 +76,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(undefined, mapDispatchToProps)(Streams);
+export default connect(undefined, mapDispatchToProps)(Watch);

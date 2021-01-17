@@ -10,7 +10,7 @@ import Home from '../components/pages/Home';
 import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
 import Wildcard from '../components/pages/Wildcard';
-import Streams from '../components/pages/Streams';
+import Watch from '../components/pages/Watch';
 import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
@@ -128,8 +128,8 @@ export class Router extends React.Component {
                         />
 
                         <Route 
-                            path="/streams"
-                            component={Streams}
+                            path="/watch"
+                            component={Watch}
                             exact
                         />
 
