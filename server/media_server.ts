@@ -37,6 +37,7 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
 
 const getStreamKeyFromStreamPath = (path: string) => {
     let parts = path.split('/');
+    console.log('Here are the parts', parts)
     return parts[parts.length - 1];
 };  
 
