@@ -26,6 +26,7 @@ const node_media_server = require('./media_server');
 const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');
 const settingsRouter = require('./routers/settings');
+const streamsRouter = require('./routers/streams');
 const wildcardRouter = require('./routers/wildcard');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
@@ -72,6 +73,7 @@ require('./auth/passport')(passport);
 app.use(clientRouter);
 app.use(authRouter);
 app.use(settingsRouter);
+app.use(streamsRouter);
 app.use(wildcardRouter);
 if (process.env.NAME === 'development') {
     databaseConfig();

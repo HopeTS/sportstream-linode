@@ -26,9 +26,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
-/**
- * Login page
- */
+/** Login page */
 router.get('/login', (req, res) => {
 
     try {
@@ -42,9 +40,7 @@ router.get('/login', (req, res) => {
 });
 
 
-/**
- * Route to log in User account
- */
+/** Route to log in User account */
 router.post('/login-user', (req, res, next) => {
     passport.authenticate('userLogin', (err, user, info) => {
         if (err) throw err;
@@ -61,9 +57,7 @@ router.post('/login-user', (req, res, next) => {
 });
 
 
-/**
- * Route to log in Business account
- */
+/** Route to log in Business account */
 router.post('/login-business', (req, res, next) => {
     passport.authenticate('businessLogin', (err, user, info) => {
         if (err) throw err;
@@ -81,9 +75,7 @@ router.post('/login-business', (req, res, next) => {
 });
 
 
-/**
- * Route to clear authentication cookie
- */
+/** Route to clear authentication cookie */
 router.get('/logout', ensureLoggedIn(), (req, res) => {
 
     res.clearCookie('user');
@@ -91,9 +83,7 @@ router.get('/logout', ensureLoggedIn(), (req, res) => {
 });
 
 
-/**
- * Route to register form
- */
+/** Route to register form */
 router.get('/register', ensureLoggedOut(), (req, res) => {
     try {
         return res.sendFile(appRoute);
