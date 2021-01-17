@@ -6,14 +6,14 @@ export {};
 const NodeMediaServer = require('node-media-server');
 
 const config = require('./config/default').rtmp;
-const Business = require('./database/schema/Schema').Business;
+//const Business = require('./database/schema/Schema').Business;
 //const helpers = require('./helpers/helpers');
 
 
 /* Media Server */
 const nms = new NodeMediaServer(config);
 
-nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
+/* nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     let stream_key = getStreamKeyFromStreamPath(StreamPath);
     console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
 
@@ -34,7 +34,7 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
 const getStreamKeyFromStreamPath = (path: string) => {
     let parts = path.split('/');
     return parts[parts.length - 1];
-}; 
+};  */
 
 
 module.exports = nms;
