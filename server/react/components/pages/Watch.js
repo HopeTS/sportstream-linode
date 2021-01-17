@@ -24,10 +24,10 @@ export class Watch extends React.Component {
         this.getLiveStreams();
     };
 
+    /**
+     * Pulls all RTMP streams from the server
+     */
     getLiveStreams() {
-        /**
-         * Pulls all RTMP streams from the server
-         */
         axios({
             method: "get",
             withCredentials: true,
@@ -40,15 +40,16 @@ export class Watch extends React.Component {
         });
     }
 
-    getStreamsInfo(live_streams) {
-        /**
-         * Pulls the data for each RTMP stream
-         */
+    // http://192.168.1.244:8000/api/streams
+    /**
+     * Pulls the data for each RTMP stream
+     */
+    /* getStreamsInfo(live_streams) {
         axios({
             method: 'get',
 
         })
-    }
+    } */
 
     render() {
         return (
