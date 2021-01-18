@@ -36,21 +36,9 @@ router.use(bodyParser.urlencoded({ extended: true }));
 async function encryptStreamKeys(keys) {
     const encryptedKeys = await Promise.all(keys.map(async (key) => {
         const encryptedKey = await encryptStreamKey(key)
-        console.log('[esks] key:', encryptedKey);
         return encryptedKey;
     }));
-    /* for (var i=0; i<keys.length; i++) {
-        encryptStreamKey(keys[i])
-        
-        .then(function(encryptedKey) {
-            encryptedKeys.push(encryptedKey);
-        })
 
-        .catch(function(err) {
-            console.error(err);
-        })
-    } */
-    console.log('[esks] Here are the encrypted keys', encryptedKeys);
     return encryptedKeys;
 }
 
@@ -63,7 +51,6 @@ async function encryptStreamKeys(keys) {
  */
 async function encryptStreamKey(key) {
     const encryptedKey = await bcrypt.hash(key, 10)
-    console.log('[esk] encrypted key:', encryptedKey);
     return encryptedKey
 }
 
