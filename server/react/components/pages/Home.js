@@ -29,6 +29,11 @@ export class Home extends React.Component {
             axios.get(
                 '/streams/user/get-current-streams',
                 {
+                    params: {
+                        encrypted_keys: encrypted_keys
+                    }
+                },
+                {
                     withCredentials: true,
                     encrypted_keys: encrypted_keys
                 },
@@ -41,21 +46,6 @@ export class Home extends React.Component {
         })
         .catch((err) => {
             console.log(err)
-        })
-
-        console.log('In between axios requests')
-
-        axios.get(
-            '/streams/user/get-current-streams',
-            {
-                withCredentials: true,
-                encrypted_keys: encrypted_keys
-            },
-        ).then((res) => {
-            console.log('send get response', res);
-        })
-        .catch((err) => {
-            console.log(err);
         });
     };
 
