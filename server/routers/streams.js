@@ -82,7 +82,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                 if (doc) {
                     // Gather all associated businesses
                     let all_keys = [];
-                    doc.connected_businesses.forEach((bid) => {
+                    doc.connected_businesses.map((bid) => {
                         console.log('Looking for business', bid);
                         Business.findOne({_id: bid},
                             async (err, bus) => {
@@ -96,7 +96,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         id: bus._id,
                                         keys: business_keys
                                     });
-                                    console.log('[route] Here is all keys', all_keys)
+                                    console.log('[route] Here is all keys', all_keys);
                                 }
                             }
                         );
