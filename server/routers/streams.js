@@ -49,17 +49,16 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
 
                                 if (bus) {
                                     console.debug('Here is the connected business', bus);
-                                    const hashedKeys = [];
+                                    const hashedKeys = {
+                                        id: bus._id,
+                                        keys: []
+                                    };
                                     bus.stream_key.forEach(async (stream_key) => {
                                         const hashedKey = await bcrypt.hash(stream_key, 10);
-                                        hashedKeys.push({
-                                            id: bus._id,
-                                            stream_key: hashedKey,
-                                        });
-                                        console.log('Here is the stream key object', hashedKeys);
+                                        hashedKeys.keys.push(hashedKey);
                                     });
-
-                                    business_keys.push(hashedKeys);
+                                    console.log('Here is the hashedKeys object', hashedKeys);
+                                    business_keys.push(business_connections);
                                 }
                             }
                         );
