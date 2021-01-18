@@ -33,7 +33,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
  */
 async function encryptStreamKeys(keys) {
     const encryptedKeys = keys.map(async (key) => {
-        return await encryptStreamKey(key);
+        await encryptStreamKey(key);
     })
 
     await Promise.all(encryptedKeys);
@@ -58,16 +58,8 @@ async function encryptStreamKeys(keys) {
  * @returns encrypted stream key
  */
 async function encryptStreamKey(key) {
-    bcrypt.hash(key, 10)
-
-    .then(function(encryptedKey) {
-        console.log('[esk] then encryptStreamKey cb', encryptedKey)
-        return encryptedKey;
-    })
-
-    .catch(function(err) {
-        console.error(err);
-    });
+    await bcrypt.hash(key, 10)
+    console.log('[esk] encrypted key:', key);
 }
 
 /**
@@ -102,22 +94,10 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                             id: bus._id,
                                             keys: encryptedKeys
                                         });
-                                    });
-                                    /* bus.stream_key.forEach((stream_key) => {
-                                        encryptStreamKey(stream_key)
-                                        .then((encryptedKey) => {
-                                            business_keys.push(encryptedKey);
-                                        })
-                                        .catch((err) => {
-                                            console.log(err);
-                                        })
-                                    });  */   
+                                    });  
                                 }
                             }
                         );
-                    })
-                    .then(function(data)  {
-                        console.log('[outermost promise] here is the data', business_keys)
                     })
 
                 } 
