@@ -83,16 +83,13 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
         );
 
         const businesses = await Promise.all(user.connected_businesses.map(async(bid) => {
-            // Get business
-            const business = await Business.findOne({_id: bid},
+            return await Business.findOne({_id: bid},
                 (err, doc) => {
                     if (err) throw err;
                     if (doc) return doc;
                     return false;
                 }
             );
-           console.log('business in promise.all', business) 
-           return business;
         }));
 
         console.log('businesses when done', businesses)
