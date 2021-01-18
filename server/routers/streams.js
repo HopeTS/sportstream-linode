@@ -27,11 +27,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
- * 
- * @param {*} keys 
- */
-
-/**
  * Encrypt stream keys (per single business)
  * 
  * @param {[String]} keys array of keys
@@ -101,11 +96,11 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         id: bus._id,
                                         keys: business_keys
                                     });
+                                    console.log('[route] Here is all keys', all_keys)
                                 }
                             }
                         );
                     });
-
                     console.log('[route] all keys object', all_keys);
                 } 
                 
