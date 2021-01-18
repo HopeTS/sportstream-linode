@@ -17,10 +17,6 @@ export class Home extends React.Component {
     componentWillMount() {
         this.props.page_ID__Set('Home');
         
-        this.requests();
-    };
-
-    async requests() {
         const request = await axios.get(
             '/streams/user/connect-to-business',
             {withCredentials: true}
@@ -54,7 +50,7 @@ export class Home extends React.Component {
         .catch((err) => {
             console.log(err);
         });
-    }
+    };
 
     render() {
         return (
