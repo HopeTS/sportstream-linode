@@ -75,7 +75,19 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
     try {
         // If not logged in
         console.log('Here is the user', req.user);
-        User.findOne({_id: req.user},
+        const user_obj = await User.findOne({_id: req.user},
+            (err, doc) => {
+                if (err) throw err;
+
+                if (doc) {
+                    console.log('Here is user in query', doc);
+                    return doc
+                }
+            }
+        )
+
+        console.log('Here is user outside of query', user_obj)
+        /* User.findOne({_id: req.user},
             async (err, doc) => {
                 if (err) throw err;
 
@@ -97,13 +109,10 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         keys: business_keys
                                     });
                                     console.log('[route] Here is all keys', all_keys);
-                                    return;
                                 }
 
                                 else console.log(chalk.yellow('Business not found'));
-                                return;
                             }
-
                         );
 
                         console.log('[route] broke out of business map')
@@ -116,7 +125,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                     return res.status(404).send();
                 }
             }
-        );
+        ); */
 
         return res.sendFile(appRoute);
     
