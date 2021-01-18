@@ -32,7 +32,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.get('/streams/user-to-business', ensureLoggedIn(), (req, res) => {
     try {
         // If not logged in
-        console.log('Here is the req', req)
+        console.log('Here is the user', req.user);
         return res.sendFile(appRoute);
     
     } catch(e) {

@@ -17,7 +17,10 @@ export class Home extends React.Component {
     componentWillMount() {
         this.props.page_ID__Set('Home');
 
-        axios.get('/streams/user-to-business')
+        axios.get(
+            '/streams/user-to-business',
+            {withCredentials: true}
+        )
         .then(((res) => {
             console.log(res)
         }))
