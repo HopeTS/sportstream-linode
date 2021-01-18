@@ -58,7 +58,7 @@ async function encryptStreamKey(key) {
  * Route to validate users connected to businesses. Returns an array of 
  * bcrypt(10) encrypted connection ids from connected business accounts
  */
-router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
+router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, res) => {
     try {
 
         // Collect user
@@ -90,10 +90,26 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
             }
         }));
 
-        res.status(200).send(businessDocuments);
+        res.status(200).send({encrypted_keys: businessDocuments});
+    } 
+    
+    catch(e) {
+        res.status(500).send();
+        console.log(chalk.red('An error occured: '), '\n', `${e}`);
+    }
+});
 
-    } catch(e) {
-        res.send();
+/**
+ * Use encrypted stream keys from user -> business connection to return 
+ * unencrypted stream key for available streams. 
+ */
+router.get('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
+    try {
+        console.log('encrypted stream keys', req.body)
+    }
+
+    catch(e) {
+        res.status(500).send();
         console.log(chalk.red('An error occured: '), '\n', `${e}`);
     }
 });
