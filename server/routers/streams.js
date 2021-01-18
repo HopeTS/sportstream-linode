@@ -74,6 +74,7 @@ async function encryptStreamKey(key) {
 router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
     try {
 
+        // Collect user
         const user = await User.findOne({_id: req.user},
             (err, doc) => {
                 if (err) throw err;
@@ -82,6 +83,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
             }
         );
 
+        // Collect businesses
         const businesses = await Promise.all(user.connected_businesses.map(async (bid) => {
             return await Business.findOne({_id: bid},
                 (err, doc) => {
@@ -103,48 +105,6 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
 
         res.status(200).send(businessDocuments);
 
-        /* User.findOne({_id: req.user},
-            async (err, doc) => {
-                if (err) throw err;
-
-                if (doc) {
-                    // Gather all associated businesses
-                    let all_keys = [];
-                    doc.connected_businesses.map((bid) => {
-                        console.log('Looking for business', bid);
-                        Business.findOne({_id: bid},
-                            async (err, bus) => {
-                                if (err) throw err;
-
-                                if (bus) {
-                                    console.debug('Here is the connected business', bus);
-                                    const business_keys = await encryptStreamKeys(bus.stream_key);
-                                    console.log('[route] encrypted keys business', business_keys);
-                                    all_keys.push({
-                                        id: bus._id,
-                                        keys: business_keys
-                                    });
-                                    console.log('[route] Here is all keys', all_keys);
-                                }
-
-                                else console.log(chalk.yellow('Business not found'));
-                            }
-                        );
-
-                        console.log('[route] broke out of business map')
-                    });
-                    console.log('[route] all keys object', all_keys);
-                } 
-                
-                else {
-                    console.debug('No user found')
-                    return res.status(404).send();
-                }
-            }
-        ); */
-
-        return res.sendFile(appRoute);
-    
     } catch(e) {
         res.send();
         console.log(chalk.red('An error occured: '), '\n', `${e}`);
