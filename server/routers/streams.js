@@ -101,7 +101,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
             }
         }));
 
-        console.log('business documents after promise', businessDocuments)
+        res.status(200).send(businessDocuments);
 
         /* User.findOne({_id: req.user},
             async (err, doc) => {
