@@ -60,6 +60,7 @@ async function encryptStreamKeys(keys) {
 async function encryptStreamKey(key) {
     await bcrypt.hash(key, 10)
     console.log('[esk] encrypted key:', key);
+    return key
 }
 
 /**
