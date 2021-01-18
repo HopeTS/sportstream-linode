@@ -14,7 +14,7 @@ export class Home extends React.Component {
         super(props);
     };
 
-    componentWillMount() {
+    async componentWillMount() {
         this.props.page_ID__Set('Home');
         
         const request = await axios.get(
