@@ -28,7 +28,12 @@ const config = {
                     dashFlags: '[f=dash:window_size=3:extra_window_size=5]'
                 }
             ]
-        }
+        },
+        auth: {
+            api : true,
+            api_user: 'admin',
+            api_pass: process.env.RTMP_PASS,
+        },
     },
     mongodb: {
         dbpath: './server/database/db',
