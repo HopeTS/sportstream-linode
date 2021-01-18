@@ -29,7 +29,6 @@ export class Home extends React.Component {
             axios.get(
                 '/streams/user/get-current-streams',
                 {
-                    withCredentials: true,
                     encrypted_keys: encrypted_keys
                 },
             ).then((res) => {
