@@ -34,9 +34,7 @@ export class Home extends React.Component {
             '/streams/user/get-current-streams',
             {
                 withCredentials: true,
-                params: {
-                    encrypted_keys: encrypted_keys
-                }
+                encrypted_keys: encrypted_keys
             },
         ).then((res) => {
             console.log('send get response', res);
