@@ -105,7 +105,7 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
  */
 router.get('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
     try {
-        console.log('encrypted stream keys', req.body)
+        console.log('encrypted stream keys', req.params);
     }
 
     catch(e) {
