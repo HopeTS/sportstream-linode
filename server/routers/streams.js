@@ -82,7 +82,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
             }
         );
 
-        const businesses = await Promise.all(user.connected_businesses.map(async(bid) => {
+        const businesses = await Promise.all(user.connected_businesses.map(async (bid) => {
             return await Business.findOne({_id: bid},
                 (err, doc) => {
                     if (err) throw err;
@@ -92,7 +92,16 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
             );
         }));
 
-        console.log('businesses when done', businesses)
+        // create individual business connection documents
+        const businessDocuments = await Promise.all(businesses.map(async (business) => {
+            const encrypted_keys = await encryptStreamKeys(business.stream_key);
+            return {
+                id: business._id,
+                keys: encrypted_keys
+            }
+        }));
+
+        console.log('business documents after promise', businessDocuments)
 
         /* User.findOne({_id: req.user},
             async (err, doc) => {
