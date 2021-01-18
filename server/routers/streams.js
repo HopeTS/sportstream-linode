@@ -92,6 +92,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                 }
             );
            console.log('business in promise.all', business) 
+           return business;
         }));
 
         console.log('businesses when done', businesses)
