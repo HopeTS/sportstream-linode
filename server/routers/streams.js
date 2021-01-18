@@ -60,7 +60,7 @@ async function encryptStreamKey(key) {
  */
 router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, res) => {
     try {
-
+        console.log('What')
         // Collect user
         const user = await User.findOne({_id: req.user},
             (err, doc) => {
@@ -104,6 +104,7 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
  * unencrypted stream key for available streams. 
  */
 router.get('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
+    console.log('What2')
     try {
         console.log('encrypted stream keys', req.body);
     }
