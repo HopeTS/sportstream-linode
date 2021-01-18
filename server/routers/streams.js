@@ -58,9 +58,8 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                     });
                                     const business_connections = {
                                         id: bus._id,
-                                        keys: hashedKeys
+                                        keys: await Promise.all(hashedKeys)
                                     }
-                                    console.log('Here is the hashedKeys list', hashedKeys);
                                     console.log('Here is the business_connections object', business_connections);    
                                 }
                             }
