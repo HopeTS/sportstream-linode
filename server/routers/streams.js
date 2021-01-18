@@ -27,7 +27,8 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
- * Route to validate users connected to businesses
+ * Route to validate users connected to businesses. Returns an array of 
+ * bcrypt(10) encrypted connection ids from connected business accounts
  */
 router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
     try {
@@ -38,9 +39,25 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                 if (err) throw err;
 
                 if (doc) {
-                    console.log('Found the doc', doc)
-                } else {
-                    console.log('User not found')
+                    // Gather all associated businesses
+                    const businesses = [];
+                    doc.connected_businesses.forEach((bid) => {
+                        console.log('Looking for business', bid);
+                        Business.findOne({_id: bid},
+                            async (err, bus) => {
+                                if (err) throw err;
+
+                                if (bus) {
+                                    console.log('Here is the connected business', bus)
+                                }
+                            }
+                        );
+                    });
+                } 
+                
+                else {
+                    console.debug('No user found')
+                    return res.status(404).send();
                 }
             }
         );
