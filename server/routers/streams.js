@@ -90,7 +90,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                     doc.connected_businesses.forEach((bid) => {
                         console.log('Looking for business', bid);
                         Business.findOne({_id: bid},
-                            (err, bus) => {
+                            async (err, bus) => {
                                 if (err) throw err;
 
                                 if (bus) {
