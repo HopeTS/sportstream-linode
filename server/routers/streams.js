@@ -29,10 +29,22 @@ router.use(bodyParser.urlencoded({ extended: true }));
 /**
  * Route to validate users connected to businesses
  */
-router.get('/streams/user-to-business', ensureLoggedIn(), (req, res) => {
+router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
     try {
         // If not logged in
         console.log('Here is the user', req.user);
+        User.findOne({_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+
+                if (doc) {
+                    console.log('Found the doc', doc)
+                } else {
+                    console.log('User not found')
+                }
+            }
+        );
+
         return res.sendFile(appRoute);
     
     } catch(e) {
