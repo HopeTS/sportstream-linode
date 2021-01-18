@@ -44,7 +44,7 @@ async function encryptStreamKeys(keys) {
             console.error(err);
         })
     }
-
+    console.log('[esks] Here are the encrypted keys', encryptedKeys);
     return encryptedKeys;
 }
 
