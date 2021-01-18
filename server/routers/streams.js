@@ -32,8 +32,12 @@ router.use(bodyParser.urlencoded({ extended: true }));
  * @returns encrypted stream key
  */
 async function encryptStreamKeys(keys) {
-    let encryptedKeys = [];
-    for (var i=0; i<keys.length; i++) {
+    const encryptedKeys = keys.map(async (key) => {
+        return await encryptStreamKey(key);
+    })
+
+    await Promise.all(encryptedKeys);
+    /* for (var i=0; i<keys.length; i++) {
         encryptStreamKey(keys[i])
         
         .then(function(encryptedKey) {
@@ -43,7 +47,7 @@ async function encryptStreamKeys(keys) {
         .catch(function(err) {
             console.error(err);
         })
-    }
+    } */
     console.log('[esks] Here are the encrypted keys', encryptedKeys);
     return encryptedKeys;
 }
