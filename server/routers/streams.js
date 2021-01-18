@@ -27,6 +27,15 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
+ * Encrypt stream key
+ * 
+ * @returns encrypted stream key
+ */
+async function encryptStreamKey(key) {
+    return await bcrypt.hash(key, 10)
+}
+
+/**
  * Route to validate users connected to businesses. Returns an array of 
  * bcrypt(10) encrypted connection ids from connected business accounts
  */
@@ -49,12 +58,14 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
 
                                 if (bus) {
                                     console.debug('Here is the connected business', bus);
-                                    let hashedKeys = []
-                                    await bus.stream_key.map(async (stream_key) => {
-                                        console.log('Here is the stream_key', stream_key)
-                                        const hashedKey = await bcrypt.hash(stream_key, 10);
-                                        console.log('New hashed key', hashedKey);
-                                        await hashedKeys.push(await Promise.all(hashedKey));
+                                    bus.stream_key.forEach((stream_key) => {
+                                        encryptStreamKey(stream_key)
+                                        .then((encryptedKey) => {
+                                            business_keys.push(encryptedKey);
+                                        })
+                                        .catch((err) => {
+                                            console.log(err);
+                                        })
                                     });
                                     const business_connections = {
                                         id: bus._id,
