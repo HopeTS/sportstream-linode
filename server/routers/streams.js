@@ -54,11 +54,11 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         console.log('Here is the stream_key', stream_key)
                                         const hashedKey = await bcrypt.hash(stream_key, 10);
                                         console.log('New hashed key', hashedKey);
-                                        await hashedKeys.push(hashedKey);
+                                        hashedKeys.push(hashedKey);
                                     });
                                     const business_connections = {
                                         id: bus._id,
-                                        keys: await hashedKeys
+                                        keys: hashedKeys
                                     }
                                     console.log('Here is the hashedKeys list', hashedKeys);
                                     console.log('Here is the business_connections object', business_connections);    
