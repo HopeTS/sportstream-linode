@@ -27,7 +27,14 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
- * Encrypt stream keys
+ * 
+ * @param {*} keys 
+ */
+
+/**
+ * Encrypt stream keys (per single business)
+ * 
+ * @param {[String]} keys array of keys
  * 
  * @returns encrypted stream key
  */
@@ -53,7 +60,9 @@ async function encryptStreamKeys(keys) {
 }
 
 /**
- * Encrypt stream key
+ * Encrypt single stream key
+ * 
+ * @param {string} key stream key to encrypt
  * 
  * @returns encrypted stream key
  */
@@ -77,7 +86,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
 
                 if (doc) {
                     // Gather all associated businesses
-                    const business_keys = [];
+                    let all_keys = [];
                     doc.connected_businesses.forEach((bid) => {
                         console.log('Looking for business', bid);
                         Business.findOne({_id: bid},
@@ -86,16 +95,8 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
 
                                 if (bus) {
                                     console.debug('Here is the connected business', bus);
-                                    encryptStreamKeys(bus.stream_key)
-                                    
-                                    .then(function(encryptedKeys) {
-                                        console.log('[route] keys cb', encryptedKeys);
-
-                                        business_keys.push({
-                                            id: bus._id,
-                                            keys: encryptedKeys
-                                        });
-                                    });  
+                                    const business_keys = await encryptStreamKeys(bus.stream_key);
+                                    console.log('[route] encrypted keys business', business_keys);
                                 }
                             }
                         );
