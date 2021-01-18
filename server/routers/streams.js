@@ -27,12 +27,43 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
+ * Encrypt stream keys
+ * 
+ * @returns encrypted stream key
+ */
+async function encryptStreamKeys(keys) {
+    let encryptedKeys = [];
+    for (var i=0; i<keys.length; i++) {
+        encryptStreamKey(keys[i])
+        
+        .then(function(encryptedKey) {
+            encryptedKeys.push(encryptedKey);
+        })
+
+        .catch(function(err) {
+            console.error(err);
+        })
+    }
+
+    return encryptedKeys;
+}
+
+/**
  * Encrypt stream key
  * 
  * @returns encrypted stream key
  */
 async function encryptStreamKey(key) {
-    return await bcrypt.hash(key, 10)
+    bcrypt.hash(key, 10)
+
+    .then(function(encryptedKey) {
+        console.log('[esk] then encryptStreamKey cb', encryptedKey)
+        return encryptedKey;
+    })
+
+    .catch(function(err) {
+        console.error(err);
+    });
 }
 
 /**
@@ -53,12 +84,22 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                     doc.connected_businesses.forEach((bid) => {
                         console.log('Looking for business', bid);
                         Business.findOne({_id: bid},
-                            async (err, bus) => {
+                            (err, bus) => {
                                 if (err) throw err;
 
                                 if (bus) {
                                     console.debug('Here is the connected business', bus);
-                                    bus.stream_key.forEach((stream_key) => {
+                                    encryptStreamKeys(bus.stream_key)
+                                    
+                                    .then(function(encryptedKeys) {
+                                        console.log('[route] keys cb', encryptedKeys);
+
+                                        business_keys.push({
+                                            id: bus._id,
+                                            keys: encryptedKeys
+                                        });
+                                    });
+                                    /* bus.stream_key.forEach((stream_key) => {
                                         encryptStreamKey(stream_key)
                                         .then((encryptedKey) => {
                                             business_keys.push(encryptedKey);
@@ -66,14 +107,15 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         .catch((err) => {
                                             console.log(err);
                                         })
-                                    });    
+                                    });  */   
                                 }
                             }
                         );
-                    });
-                    setTimeout(() => {
-                        console.log('Here are the business_keys to return', business_keys);
-                    }, 500)
+                    })
+                    .then(function(data)  {
+                        console.log('[outermost promise] here is the data', business_keys)
+                    })
+
                 } 
                 
                 else {
