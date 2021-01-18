@@ -56,14 +56,12 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         console.log('New hashed key', hashedKey);
                                         hashedKeys.push(hashedKey);
                                     });
-                                    setTimeout(() => {
-                                        const business_connections = {
-                                            id: bus._id,
-                                            keys: hashedKeys
-                                        }
-                                        console.log('Here is the hashedKeys list', hashedKeys);
-                                        console.log('Here is the business_connections object', business_connections);    
-                                    }, 200);
+                                    const business_connections = {
+                                        id: bus._id,
+                                        keys: await hashedKeys
+                                    }
+                                    console.log('Here is the hashedKeys list', await hashedKeys);
+                                    console.log('Here is the business_connections object', business_connections);    
                                 }
                             }
                         );
