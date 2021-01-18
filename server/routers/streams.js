@@ -71,7 +71,9 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                             }
                         );
                     });
-                    console.log('Here are the business_keys to return', business_keys);
+                    setTimeout(() => {
+                        console.log('Here are the business_keys to return', business_keys);
+                    }, 500)
                 } 
                 
                 else {
