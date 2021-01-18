@@ -40,7 +40,7 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
 
                 if (doc) {
                     // Gather all associated businesses
-                    const businesses = [];
+                    const business_keys = [];
                     doc.connected_businesses.forEach((bid) => {
                         console.log('Looking for business', bid);
                         Business.findOne({_id: bid},
@@ -48,7 +48,18 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                 if (err) throw err;
 
                                 if (bus) {
-                                    console.log('Here is the connected business', bus)
+                                    console.debug('Here is the connected business', bus);
+                                    const hashedKeys = [];
+                                    bus.stream_key.forEach((stream_key) => {
+                                        const hashedKey = await bcrypt.hash(stream_key, 10);
+                                        hashedKeys.push({
+                                            id: bus._id,
+                                            stream_key: hashedKey,
+                                        });
+                                        console.log('Here is the stream key object', hashedKeys);
+                                    });
+
+                                    business_keys.push(hashedKeys);
                                 }
                             }
                         );
