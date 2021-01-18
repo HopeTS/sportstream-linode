@@ -58,7 +58,6 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         hashedKeys.keys.push(hashedKey);
                                     });
                                     console.log('Here is the hashedKeys object', hashedKeys);
-                                    business_keys.push(business_connections);
                                 }
                             }
                         );
