@@ -97,11 +97,13 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                         keys: business_keys
                                     });
                                     console.log('[route] Here is all keys', all_keys);
+                                    return;
                                 }
 
                                 else console.log(chalk.yellow('Business not found'));
                                 return;
                             }
+
                         );
 
                         console.log('[route] broke out of business map')
