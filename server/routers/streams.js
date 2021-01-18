@@ -27,6 +27,12 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
+ * 
+ * @param {*} keys 
+ */
+async function connectUsers()
+
+/**
  * Encrypt stream keys (per single business)
  * 
  * @param {[String]} keys array of keys
@@ -73,20 +79,29 @@ async function encryptStreamKey(key) {
  */
 router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
     try {
-        // If not logged in
-        console.log('Here is the user', req.user);
-        const user_obj = await User.findOne({_id: req.user},
+
+        const user = await User.findOne({_id: req.user},
             (err, doc) => {
                 if (err) throw err;
-
-                if (doc) {
-                    console.log('Here is user in query', doc);
-                    return doc
-                }
+                if (doc) return doc;
+                return false;
             }
-        )
+        );
 
-        console.log('Here is user outside of query', user_obj)
+        const businesses = await Promise.all(user.connected_businesses.map(async(bid) => {
+            // Get business
+            const business = await Business.findOne({_id: bid},
+                (err, doc) => {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return false;
+                }
+            );
+           console.log('business in promise.all', business) 
+        }));
+
+        console.log('businesses when done', businesses)
+
         /* User.findOne({_id: req.user},
             async (err, doc) => {
                 if (err) throw err;
