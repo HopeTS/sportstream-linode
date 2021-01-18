@@ -26,15 +26,9 @@ export class Home extends React.Component {
             encrypted_keys = res.data.encrypted_keys;
             console.log(encrypted_keys);
 
-            axios.get(
+            axios.post(
                 '/streams/user/get-current-streams',
                 {
-                    params: {
-                        encrypted_keys: encrypted_keys
-                    }
-                },
-                {
-                    withCredentials: true,
                     encrypted_keys: encrypted_keys
                 },
             ).then((res) => {

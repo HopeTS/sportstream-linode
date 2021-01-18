@@ -106,6 +106,7 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
 router.get('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
     try {
         //if (!req.body) res.status(400).send('Empty request body');
+        console.log('Here is request', req)
         console.log('here is body', req.body);
         console.log('here is params', req.params)
         return res.send();
