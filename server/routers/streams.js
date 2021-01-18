@@ -97,11 +97,16 @@ router.get('/streams/user-to-business', ensureLoggedIn(), async (req, res) => {
                                     console.debug('Here is the connected business', bus);
                                     const business_keys = await encryptStreamKeys(bus.stream_key);
                                     console.log('[route] encrypted keys business', business_keys);
+                                    all_keys.push({
+                                        id: bus._id,
+                                        keys: business_keys
+                                    });
                                 }
                             }
                         );
-                    })
+                    });
 
+                    console.log('[route] all keys object', all_keys);
                 } 
                 
                 else {
