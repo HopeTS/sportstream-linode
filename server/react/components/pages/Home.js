@@ -14,7 +14,7 @@ export class Home extends React.Component {
         super(props);
     };
 
-    async componentWillMount() {
+    componentWillMount() {
         this.props.page_ID__Set('Home');
 
         let encrypted_keys;
