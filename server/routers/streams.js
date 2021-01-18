@@ -32,7 +32,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
  * @returns encrypted stream key
  */
 async function encryptStreamKeys(keys) {
-    const encryptedKeys = keys.map(async (key) => {
+    const encryptedKeys = await keys.map(async (key) => {
         const encryptedKey = await encryptStreamKey(key)
         console.log('[esks] key:', encryptedKey);
         return encryptedKey;
