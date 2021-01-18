@@ -14,14 +14,8 @@ export class Home extends React.Component {
         super(props);
     };
 
-    async componentWillMount() {
+    componentWillMount() {
         this.props.page_ID__Set('Home');
-        
-        const request = await axios.get(
-            '/streams/user/connect-to-business',
-            {withCredentials: true}
-        );
-        console.log('Here is request #1', request)
 
         let encrypted_keys;
         axios.get(
@@ -31,6 +25,19 @@ export class Home extends React.Component {
         .then((res) => {
             encrypted_keys = res.data.encrypted_keys;
             console.log(encrypted_keys);
+
+            axios.get(
+                '/streams/user/get-current-streams',
+                {
+                    withCredentials: true,
+                    encrypted_keys: encrypted_keys
+                },
+            ).then((res) => {
+                console.log('inner response', res);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         })
         .catch((err) => {
             console.log(err)
