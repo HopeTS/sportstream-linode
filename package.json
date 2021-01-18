@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/RobbyB97/sportstream-linode#readme",
   "dependencies": {
+    "@babel/plugin-transform-async-to-generator": "^7.12.1",
     "axios": "^0.21.0",
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.3",
