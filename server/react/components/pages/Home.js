@@ -30,6 +30,8 @@ export class Home extends React.Component {
             console.log(err)
         })
 
+        console.log('In between axios requests')
+
         axios.get(
             '/streams/user/get-current-streams',
             {
@@ -39,6 +41,9 @@ export class Home extends React.Component {
         ).then((res) => {
             console.log('send get response', res);
         })
+        .catch((err) => {
+            console.log(err);
+        });
     };
 
     render() {
