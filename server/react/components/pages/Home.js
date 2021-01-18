@@ -17,6 +17,16 @@ export class Home extends React.Component {
     componentWillMount() {
         this.props.page_ID__Set('Home');
         
+        this.requests();
+    };
+
+    async requests() {
+        const request = await axios.get(
+            '/streams/user/connect-to-business',
+            {withCredentials: true}
+        );
+        console.log('Here is request #1', request)
+
         let encrypted_keys;
         axios.get(
             '/streams/user/connect-to-business',
@@ -44,7 +54,7 @@ export class Home extends React.Component {
         .catch((err) => {
             console.log(err);
         });
-    };
+    }
 
     render() {
         return (
