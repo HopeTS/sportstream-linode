@@ -27,12 +27,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 
 /**
- * 
- * @param {*} keys 
- */
-async function connectUsers()
-
-/**
  * Encrypt stream keys (per single business)
  * 
  * @param {[String]} keys array of keys
