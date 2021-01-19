@@ -214,7 +214,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
             console.log('Fail 3');
         }) */
 
-        console.log('Here is stream api data', stream_data);
+        //console.log('Here is stream api data', stream_data);
 
         // Filter out current stream keys per business
 
