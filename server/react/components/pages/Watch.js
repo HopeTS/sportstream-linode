@@ -21,22 +21,41 @@ export class Watch extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Watch');
-        this.getLiveStreams();
     };
 
     /**
-     * Pulls all RTMP streams from the server
+     * Gets all available RTMP streams
      */
     getLiveStreams() {
-        axios({
-            method: "get",
-            withCredentials: true,
-            url: `${window.location.hostname}:${config.nms.rtmp.port}/api/streams`
-        }).then((res) => {
-            const streams = res.data;
-            if (typeof (streams['live'] !== 'undefined')) {
-                this.getStreamsInfo(streams['live']);
-            }
+        if (this.props.account.type !== 'user') return;
+
+        let encrypted_keys;
+        axios.get(
+            '/streams/user/connect-to-business',
+            {withCredentials: true}
+        )
+
+        .then((res) => {
+            encrypted_keys = res.data.encrypted_keys;
+            console.log(encrypted_keys);
+
+            axios.post(
+                '/streams/user/get-current-streams',
+                {
+                    encrypted_keys: encrypted_keys
+                },
+            )
+
+            .then((res) => {
+                console.log('inner response', res);
+            })
+
+            .catch((err) => {
+                console.log(err);
+            });
+        })
+        .catch((err) => {
+            console.log(err)
         });
     }
 
@@ -70,6 +89,14 @@ export class Watch extends React.Component {
 
 
 /* Connect to store */
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
+    };
+};
+
+
 const mapDispatchToProps = (dispatch) => ({
     page_ID__Set: (id) => {
         dispatch(page_ID__Set(id));
@@ -77,4 +104,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(undefined, mapDispatchToProps)(Watch);
+export default connect(mapStateToProps, mapDispatchToProps)(Watch);

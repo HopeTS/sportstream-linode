@@ -16,31 +16,6 @@ export class Home extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Home');
-
-        let encrypted_keys;
-        axios.get(
-            '/streams/user/connect-to-business',
-            {withCredentials: true}
-        )
-        .then((res) => {
-            encrypted_keys = res.data.encrypted_keys;
-            console.log(encrypted_keys);
-
-            axios.post(
-                '/streams/user/get-current-streams',
-                {
-                    encrypted_keys: encrypted_keys
-                },
-            ).then((res) => {
-                console.log('inner response', res);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        })
-        .catch((err) => {
-            console.log(err)
-        });
     };
 
     render() {
