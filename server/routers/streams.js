@@ -179,13 +179,15 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         headers.append('Accept', 'application/json');
         headers.append('Authorization', `Basic ${base64data}`);
 
-        let req = new Request(api_url, {
+        const api_req = new Request(api_url, {
             method: 'GET',
             headers: headers,
             credentials: 'same-origin'
         });
 
-        fetch(req)
+        console.log(api_req)
+
+        fetch(api_req)
         .then((res) => {
             if (res.ok) {
                 return res.json();
