@@ -29,10 +29,11 @@ const config = {
                 }
             ]
         },
+        api_url: 'http://127.0.0.1:8000/api/streams',
         auth: {
             api : true,
             api_user: 'admin',
-            api_pass: process.env.RTMP_PASS,
+            api_pass: '3r32rtes9798h!@$!@#fd',  
         },
     },
     mongodb: {

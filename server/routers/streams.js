@@ -2,6 +2,7 @@
  * Router for handling stream based features
  */
 
+ const axios = require('axios');
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
@@ -25,6 +26,12 @@ const wildcardRoute = path.join(publicPath, '404.html');
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
+
+const api_url = config.nms.api_url;
+const rtmp_auth = {
+    user: config.nms.auth.api_user,
+    pass: config.nms.auth.api_pass
+};
 
 /**
  * Encrypt stream keys (per single business)
@@ -112,8 +119,12 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
 router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
     try {
         if (!req.body) res.status(400).send('Empty request body');
+        
+        const data = req.body.encrypted_keys;
+        let result;
+
         // Get businesses with matching ids
-        const businesses = await Promise.all(req.body.encrypted_keys.map(async (business) => {
+        const businesses = await Promise.all(data.map(async (business) => {
             return await Business.findOne({_id: business.id},
                 (err, doc) => {
                     if (err) throw err;
@@ -122,7 +133,30 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
                 }
             );
         }));
-        console.log('get-current-streams here are connected businesses', businesses)
+
+        console.log('get-current-streams here are connected businesses', businesses);
+
+        // Get list of keys that are currently streaming
+        const stream_data = await axios.get(api_url,  {}, {
+            auth: {
+                username: rtmp_auth.user,
+                password: rtmp_auth.pass
+            }
+        })
+
+        .then((res) => {
+            return res;
+        })
+
+        .catch((err) => {
+            console.log(err);
+        });
+
+        console.log('Here is stream api data', stream_data);
+
+        // Filter out current stream keys per business
+
+
         return res.send();
     }
 
