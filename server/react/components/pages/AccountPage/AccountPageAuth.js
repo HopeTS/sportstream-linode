@@ -91,7 +91,7 @@ export function AccountPageAuth(props) {
                                             )
                                         })
 
-                                        }                                    {/* TODO: Stream keys */}
+                                        }
                                 </section>
                             }
 
