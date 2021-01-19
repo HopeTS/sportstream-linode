@@ -61,6 +61,7 @@
     "extract-text-webpack-plugin": "^3.0.0",
     "mongoose": "^5.9.12",
     "node-cron": "^2.0.3",
+    "node-fetch": "^2.6.1",
     "node-media-server": "^2.2.4",
     "nodemon": "^1.19.1",
     "normalize.css": "^7.0.0",

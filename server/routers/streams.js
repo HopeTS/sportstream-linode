@@ -2,6 +2,7 @@
  * Router for handling stream based features
  */
 
+const fetch = require('node-fetch'); 
 const axios = require('axios');
 const http = require('http');
 const express = require('express');
@@ -175,7 +176,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
 
         console.log('Trying fetch...');
 
-        let headers = new Headers();
+        let headers = new fetch.Headers();
         headers.append('Accept', 'application/json');
         headers.append('Authorization', `Basic ${base64data}`);
 
