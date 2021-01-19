@@ -32,21 +32,15 @@ export class Watch extends React.Component {
         if (this.props.account.type !== 'user') return;
 
         let encrypted_keys;
-        axios.get(
-            '/streams/user/connect-to-business',
-            {withCredentials: true}
-        )
+        axios.get('/streams/user/connect-to-business', {withCredentials: true})
 
         .then((res) => {
             encrypted_keys = res.data.encrypted_keys;
             console.log(encrypted_keys);
 
-            axios.post(
-                '/streams/user/get-current-streams',
-                {
+            axios.post('/streams/user/get-current-streams', {
                     encrypted_keys: encrypted_keys
-                },
-            )
+            })
 
             .then((res) => {
                 console.log('inner response', res);

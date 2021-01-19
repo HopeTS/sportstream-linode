@@ -102,13 +102,27 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
 /**
  * Use encrypted stream keys from user -> business connection to return 
  * unencrypted stream key for available streams. 
+ * 
+ * @returns [{
+ *  business_id (String): ID of business,
+ *  business_name (String): Name of the business,
+ *  current_streams (Array): List of unencrypted stream keys for current streams
+ * }]
  */
 router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
     try {
-        //if (!req.body) res.status(400).send('Empty request body');
-        console.log('Here is request', req)
-        console.log('here is body', req.body);
-        console.log('here is params', req.params)
+        if (!req.body) res.status(400).send('Empty request body');
+        // Get businesses with matching ids
+        const businesses = await Promise.all(req.body.encrypted_keys.map(async (business) => {
+            return await Business.findOne({_id: business.id},
+                (err, doc) => {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return false;
+                }
+            );
+        }));
+        console.log('get-current-streams here are connected businesses', businesses)
         return res.send();
     }
 
