@@ -144,7 +144,16 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
                 'Authorization': `Basic ${base64data}`
             }
         });
-        stream_data = await axios.get(api_url,  {}, axiosObject)
+
+        const axiosRes = await axios.get(api_url, {
+            auth: {
+                username: rtmp_auth.user,
+                password: rtmp_aith.pass
+            }
+        })
+
+        console.log('Here is axiosRes', axiosRes)
+        /* stream_data = await axios.get(api_url,  {}, axiosObject)
 
         .then((res) => {
             return res;
@@ -203,7 +212,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
 
         .catch((err) => {
             console.log('Fail 3');
-        })
+        }) */
 
         console.log('Here is stream api data', stream_data);
 

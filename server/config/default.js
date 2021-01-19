@@ -29,7 +29,7 @@ const config = {
                 }
             ]
         },
-        api_url: '127.0.0.1:8000/api/streams',
+        api_url: 'http://127.0.0.1:8000/api/streams',
         auth: {
             api : true,
             api_user: 'admin',
