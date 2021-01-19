@@ -136,14 +136,6 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         }));
 
         // Get list of keys that are currently streaming
-        const usernamePasswordBuffer = `${rtmp_auth.user}:${rtmp_auth.pass}`;
-        const base64data = usernamePasswordBuffer.toString('base64');
-        const axiosObject = axios.create({
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${base64data}`
-            }
-        });
 
         const axiosRes = await axios.get(api_url, {
             auth: {
@@ -152,72 +144,11 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
             }
         })
 
-        console.log('Here is axiosRes', axiosRes)
-        /* stream_data = await axios.get(api_url,  {}, axiosObject)
+        if (axiosRes.status != 200) {
+            return res.status(500).send('Something went wrong with the stream api.');
+        } 
 
-        .then((res) => {
-            return res;
-        })
-
-        .catch((err) => {
-            console.log('fail 1');
-        });
-
-        console.log('API url', api_url);
-        console.log('Username being sent:', rtmp_auth.user);
-        console.log('Password being sent:', rtmp_auth.pass);
-
-        stream_data = await axios.get(api_url,  {}, {
-            withCredentials: true,
-            auth: {
-                username: rtmp_auth.user,
-                password: rtmp_auth.pass
-            }
-        })
-
-        .then((res) => {
-            return res;
-        })
-
-        .catch((err) => {
-            console.log('fail 2');
-        });
-
-        console.log('Trying fetch...');
-
-        let headers = new fetch.Headers();
-        headers.append('Accept', 'application/json');
-        headers.append('Authorization', `Basic ${base64data}`);
-
-        const api_req = new fetch.Request(api_url, {
-            method: 'GET',
-            headers: headers,
-            credentials: 'same-origin'
-        });
-
-        console.log(api_req)
-
-        fetch(api_req)
-        .then((res) => {
-            if (res.ok) {
-                return res.json();
-            } else {
-                throw new Error('FUCK!');
-            }
-        })
-
-        .then((jsonData) => {
-            console.log('Callback chain data', jsonData);
-        })
-
-        .catch((err) => {
-            console.log('Fail 3');
-        }) */
-
-        //console.log('Here is stream api data', stream_data);
-
-        // Filter out current stream keys per business
-
+        console.log('Here is the axiosRes API data', axiosRes.data);
 
         return res.send();
     }
