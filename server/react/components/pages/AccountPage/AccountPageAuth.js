@@ -85,11 +85,9 @@ export function AccountPageAuth(props) {
                                     {props.account.stream_key.map((key) => {
                                             console.log('Here is key', key)
                                             return (
-                                                <input 
-                                                    type="text" id={key} key={key}
-                                                    placeholder={key}
-                                                    name={key} disabled
-                                                />
+                                                <p id={key} key={key}>
+                                                    {key}
+                                                </p>
                                             )
                                         })
 
