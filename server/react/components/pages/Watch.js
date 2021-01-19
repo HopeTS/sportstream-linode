@@ -21,6 +21,8 @@ export class Watch extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Watch');
+
+        this.getLiveStreams();
     };
 
     /**
