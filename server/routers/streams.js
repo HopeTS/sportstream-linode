@@ -145,6 +145,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         })
 
         .then((res) => {
+            console.log('Strem data =', res)
             return res;
         })
 
