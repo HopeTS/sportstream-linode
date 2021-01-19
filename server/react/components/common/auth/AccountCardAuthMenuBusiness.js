@@ -25,6 +25,8 @@ export class AccountCardAuthMenuBusiness extends React.Component {
      * authentication data
      */
     logout = () => {
+        this.accountMenu__Off();
+
         // server logout
         axios.get('logout', {}).then((res) => {
             console.log('Here is the logout response')
@@ -49,25 +51,23 @@ export class AccountCardAuthMenuBusiness extends React.Component {
                 data-active={this.props.accountMenu}
             >
                 <ul>
-                    <li
+                    <NavLink 
+                        to="/account"
                         onClick={this.accountMenu__Off}
                     >
-                        <NavLink 
-                            to="/account"
-                        >
+                        <li>
                             My account
-                        </NavLink>
-                    </li>
-                    <li
-                        onClick={this.accountMenu__Off}
+                        </li>
+                    </NavLink>
+
+                    <NavLink
+                        to="/"
+                        onClick={this.logout}
                     >
-                        <NavLink
-                            to="/"
-                            onClick={this.logout}
-                        >
+                        <li>
                             Log out
-                        </NavLink>
-                    </li>
+                        </li>
+                    </NavLink>
                 </ul>
             </div>
         );    
