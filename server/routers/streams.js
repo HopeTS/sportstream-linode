@@ -137,12 +137,15 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         console.log('get-current-streams here are connected businesses', businesses);
 
         // Get list of keys that are currently streaming
-        const stream_data = await axios.get(api_url,  {}, {
-            auth: {
-                username: rtmp_auth.user,
-                password: rtmp_auth.pass
+        const usernamePasswordBuffer = Buffer.from(rtmp_auth.user + ":" + rtmp_auth.pass);
+        const base64data = usernamePasswordBuffer.toString('base64');
+        const axiosObject = axios.create({
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Basic ${base64data}`
             }
-        })
+        });
+        const stream_data = await axios.get(api_url,  {}, axiosObject)
 
         .then((res) => {
             console.log('Strem data =', res)
