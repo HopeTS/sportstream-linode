@@ -120,7 +120,7 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
 router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
     try {
         if (!req.body) res.status(400).send('Empty request body');
-        
+        console.log('In current streams route')
         const data = req.body.encrypted_keys;
         let result;
 
@@ -176,11 +176,11 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
 
         console.log('Trying fetch...');
 
-        let headers = new fetch.Headers();
+        let headers = new Headers();
         headers.append('Accept', 'application/json');
         headers.append('Authorization', `Basic ${base64data}`);
 
-        const api_req = new fetch.Request(api_url, {
+        const api_req = new Request(api_url, {
             method: 'GET',
             headers: headers,
             credentials: 'same-origin'
