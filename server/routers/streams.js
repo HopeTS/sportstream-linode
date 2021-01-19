@@ -186,7 +186,6 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         });
 
         fetch(req)
-
         .then((res) => {
             if (res.ok) {
                 return res.json();
