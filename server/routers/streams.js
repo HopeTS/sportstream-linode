@@ -153,6 +153,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         });
 
         stream_data = await axios.get(api_url,  {}, {
+            withCredentials: true,
             auth: {
                 username: rtmp_auth.user,
                 password: rtmp_auth.pass
