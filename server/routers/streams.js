@@ -67,7 +67,6 @@ async function encryptStreamKey(key) {
  */
 router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, res) => {
     try {
-        console.log('What')
         // Collect user
         const user = await User.findOne({_id: req.user},
             (err, doc) => {
@@ -134,8 +133,6 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
             );
         }));
 
-        console.log('get-current-streams here are connected businesses', businesses);
-
         // Get list of keys that are currently streaming
         const usernamePasswordBuffer = Buffer.from(rtmp_auth.user + ":" + rtmp_auth.pass);
         const base64data = usernamePasswordBuffer.toString('base64');
@@ -145,15 +142,29 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
                 'Authorization': `Basic ${base64data}`
             }
         });
-        const stream_data = await axios.get(api_url,  {}, axiosObject)
+        stream_data = await axios.get(api_url,  {}, axiosObject)
 
         .then((res) => {
-            console.log('Strem data =', res)
             return res;
         })
 
         .catch((err) => {
-            console.log(err);
+            console.log('fail 1', err.data.status);
+        });
+
+        stream_data = await axios.get(api_url,  {}, {
+            auth: {
+                username: rtmp_auth.user,
+                password: rtmp_auth.pass
+            }
+        })
+
+        .then((res) => {
+            return res;
+        })
+
+        .catch((err) => {
+            console.log('fail 2', err.data.status);
         });
 
         console.log('Here is stream api data', stream_data);
