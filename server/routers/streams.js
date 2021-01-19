@@ -149,7 +149,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         })
 
         .catch((err) => {
-            console.log('fail 1', err.data.status);
+            console.log('fail 1');
         });
 
         stream_data = await axios.get(api_url,  {}, {
@@ -164,7 +164,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         })
 
         .catch((err) => {
-            console.log('fail 2', err.data.status);
+            console.log('fail 2');
         });
 
         console.log('Here is stream api data', stream_data);
