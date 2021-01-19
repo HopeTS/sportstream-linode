@@ -98,3 +98,21 @@
         flex-wrap: wrap;
     }
 }
+
+.AccountPageAuth__streamKey {
+    width: calc(100% - 32px);
+    margin: 4px auto;
+    margin-top: 8px;
+    background: var(--black);
+    color: var(--gray);
+    padding: 8px;
+    border: 0;
+    border-radius: 4px;
+
+    @media #{$tablet_breakpoint} {
+        input {
+            width: 60%;
+            margin-right: 12px;
+        }
+    }
+}

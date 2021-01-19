@@ -85,7 +85,10 @@ export function AccountPageAuth(props) {
                                     {props.account.stream_key.map((key) => {
                                             console.log('Here is key', key)
                                             return (
-                                                <p id={key} key={key}>
+                                                <p 
+                                                    className="AccountPageAuth__streamKey"
+                                                    id={key} key={key}
+                                                >
                                                     {key}
                                                 </p>
                                             )
