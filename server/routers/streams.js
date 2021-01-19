@@ -2,7 +2,8 @@
  * Router for handling stream based features
  */
 
- const axios = require('axios');
+const axios = require('axios');
+const http = require('http');
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
@@ -134,7 +135,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         }));
 
         // Get list of keys that are currently streaming
-        const usernamePasswordBuffer = Buffer.from(rtmp_auth.user + ":" + rtmp_auth.pass);
+        const usernamePasswordBuffer = `${rtmp_auth.user}:${rtmp_auth.pass}`;
         const base64data = usernamePasswordBuffer.toString('base64');
         const axiosObject = axios.create({
             headers: {
@@ -152,6 +153,10 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
             console.log('fail 1');
         });
 
+        console.log('API url', api_url);
+        console.log('Username being sent:', rtmp_auth.user);
+        console.log('Password being sent:', rtmp_auth.pass);
+
         stream_data = await axios.get(api_url,  {}, {
             withCredentials: true,
             auth: {
@@ -167,6 +172,36 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         .catch((err) => {
             console.log('fail 2');
         });
+
+        console.log('Trying fetch...');
+
+        let headers = new Headers();
+        headers.append('Accept', 'application/json');
+        headers.append('Authorization', `Basic ${base64data}`);
+
+        let req = new Request(api_url, {
+            method: 'GET',
+            headers: headers,
+            credentials: 'same-origin'
+        });
+
+        fetch(req)
+
+        .then((res) => {
+            if (res.ok) {
+                return res.json();
+            } else {
+                throw new Error('FUCK!');
+            }
+        })
+
+        .then((jsonData) => {
+            console.log('Callback chain data', jsonData);
+        })
+
+        .catch((err) => {
+            console.log('Fail 3');
+        })
 
         console.log('Here is stream api data', stream_data);
 
