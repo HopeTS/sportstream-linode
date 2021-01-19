@@ -6,20 +6,23 @@
         background: var(--background-color-light);
         padding-left: 0;
         border: 1px solid var(--background-color);
+        border-radius: 6px;
     }
 
     li {
         display: block;
         padding: 1em;
-
-        &:not(:last-child) {
-            border-bottom: 1px solid var(--background-color);
-        }
     }
 
     a {
         text-decoration: none;
         color: var(--text-color);
+        &:not(:last-child) {
+
+            li {
+                border-bottom: 1px solid var(--background-color);
+            }
+        }
     }
 
     &[data-active=false] {
