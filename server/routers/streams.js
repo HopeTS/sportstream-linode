@@ -123,8 +123,10 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         console.log('In current streams route');
         console.log('Trying user schema method');
         
-        const test_result = await User.findOne({_id: req.user}, async function() {
-            return req.user.getConnectedBusinesses();
+        const test_result = await User.findOne({_id: req.user}, async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc.getConnectedBusinesses();
+            return false;
         });
         console.log(test_result);
         
