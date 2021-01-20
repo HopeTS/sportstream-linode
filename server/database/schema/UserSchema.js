@@ -87,7 +87,7 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
     // For each business in connected businesses, get the raw business document
     const businesses = await Promise.all(this.connected_businesses.map(
         async function(business) {
-            return await mongoose.models['Business'].find(
+            return await mongoose.models['Business'].findOne(
                 {_id: business},
                 async function(err, doc) {
                     if (err) throw err;
