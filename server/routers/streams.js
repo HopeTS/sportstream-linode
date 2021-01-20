@@ -126,7 +126,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         const test_result = await User.findOne({_id: req.user}, async function(err, doc) {
             if (err) throw err;
             if (doc) {
-                doc.name = doc.getConnectedBusinesses();
+                doc.name = await doc.getConnectedBusinesses();
                 await doc.save();
                 return true;
             }
