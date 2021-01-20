@@ -96,8 +96,7 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
 
     console.log('here are the docs bruh', docs);
     // Create the public Business documents
-    const publicDocs;
-    return publicDocs;
+    return true;
 }
 
 /* Hooks */
