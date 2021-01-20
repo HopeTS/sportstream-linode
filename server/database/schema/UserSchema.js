@@ -74,6 +74,16 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
     return newConnections;
 }
 
+/**
+ * Get Business documents of all businesses connected to User
+ */
+UserSchema.methods.getConnectedBusinesses = async function(cb) {
+    let businessDocuments;
+    console.log('Get Connected Businesses called, here is this', this);
+
+    return businessDocuments;
+}
+
 /* Hooks */
 UserSchema.pre('save', async function(done) {
     if (this.isNew) {

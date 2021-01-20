@@ -55,17 +55,6 @@ export class Watch extends React.Component {
         });
     }
 
-    // http://192.168.1.244:8000/api/streams
-    /**
-     * Pulls the data for each RTMP stream
-     */
-    /* getStreamsInfo(live_streams) {
-        axios({
-            method: 'get',
-
-        })
-    } */
-
     render() {
         return (
             <div id="Watch">

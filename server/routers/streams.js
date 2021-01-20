@@ -120,11 +120,14 @@ router.get('/streams/user/connect-to-business', ensureLoggedIn(), async (req, re
 router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, res) => {
     try {
         if (!req.body) res.status(400).send('Empty request body');
-        console.log('In current streams route')
-        const data = req.body.encrypted_keys;
+        console.log('In current streams route');
+        console.log('Here is current user', req.user);
+        console.log('Trying user schema method');
+        req.user.getConnectedBusinesses();
+        const data = req.body.encrypted_keys;   
         let result;
 
-        // Get businesses with matching ids
+        // Get businesses (User.connected_businesses id == Business._id)
         const businesses = await Promise.all(data.map(async (business) => {
             return await Business.findOne({_id: business.id},
                 (err, doc) => {
@@ -136,7 +139,6 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         }));
 
         // Get list of keys that are currently streaming
-
         const axiosRes = await axios.get(api_url, {
             auth: {
                 username: rtmp_auth.user,
@@ -148,9 +150,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
             return res.status(500).send('Something went wrong with the stream api.');
         } 
 
-        console.log('Here is the axiosRes API data', axiosRes.data);
-
-        return res.send();
+        return res.status(200).send(axiosRes.data);
     }
 
     catch(e) {
