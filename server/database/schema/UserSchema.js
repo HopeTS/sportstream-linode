@@ -83,8 +83,26 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
  * }]
  */
 UserSchema.methods.getConnectedBusinesses = async function(cb) {
+    
+    // For each business in connected businesses, get the raw business document
+    const businesses = await Promise.all(this.connected_businesses.map(
+        async function(business) {
+            return await mongoose.models['Business'].find(
+                {_id: business},
+                async function(err, doc) {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return null;
+                }
+            );
+        }
+    ));
+
+    console.log('Here are the connected businesses:', businesses);
+
+
     // Get the Business documents
-    const businesses = await mongoose.models['Business'].find(
+    /* const businesses = await mongoose.models['Business'].find(
         {_id: [this.connected_businesses]}, 
         async function(err, docs) {
             if (err) throw err;
@@ -94,7 +112,7 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
         }
     );
 
-    console.log('here are the docs bruh', docs);
+    console.log('here are the docs bruh', docs); */
     // Create the public Business documents
     return true;
 }
