@@ -121,9 +121,13 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
     try {
         if (!req.body) res.status(400).send('Empty request body');
         console.log('In current streams route');
-        console.log('Here is current user', req.user);
         console.log('Trying user schema method');
-        req.user.getConnectedBusinesses();
+        
+        const test_result = await User.findOne({_id: req.user}, async function() {
+            return req.user.getConnectedBusinesses();
+        });
+        console.log(test_result);
+        
         const data = req.body.encrypted_keys;   
         let result;
 
