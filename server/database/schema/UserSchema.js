@@ -79,9 +79,7 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
  */
 UserSchema.methods.getConnectedBusinesses = async function(cb) {
     let businessDocuments;
-    console.log('Get Connected Businesses called, here is this', this);
-
-    return businessDocuments;
+    return 'AYYYYYYYYYYYYYY LMAO';
 }
 
 /* Hooks */
