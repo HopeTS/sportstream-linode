@@ -125,10 +125,23 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         
         const test_result = await User.findOne({_id: req.user}, async function(err, doc) {
             if (err) throw err;
-            if (doc) return doc.getConnectedBusinesses();
+            if (doc) {
+                doc.getConnectedBusinesses();
+                await doc.save();
+                return true;
+            }
             return false;
         });
         console.log(test_result);
+
+        const lets_see = await User.findOne({_id: req.user}, async function(err, doc) {
+            if (err) throw err;
+            if (doc) {
+                console.log('Let us see if it worked', doc);
+            }
+
+            return 1;
+        })
         
         const data = req.body.encrypted_keys;   
         let result;
