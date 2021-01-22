@@ -78,6 +78,8 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
  *  Get Business documents of all businesses connected to User. (Only return
  *  the Business' public data.)
  * 
+ *  @param {*} cb
+ * 
  *  @returns [{
  *      name: Business name
  * }]
@@ -97,24 +99,27 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
             );
         }
     ));
-
+        
     console.log('Here are the connected businesses:', businesses);
 
-
-    // Get the Business documents
-    /* const businesses = await mongoose.models['Business'].find(
-        {_id: [this.connected_businesses]}, 
-        async function(err, docs) {
-            if (err) throw err;
-            if (docs) {
-                return docs;
-            }
+    const userDocs = await Promise.all(businesses.map(
+        async function(business) {
+            return await business.getUserDoc;
         }
-    );
+    ));
 
-    console.log('here are the docs bruh', docs); */
-    // Create the public Business documents
+    console.log('Here are the userDocs', userDocs);
+
     return true;
+}
+
+/**
+ * 
+ * @param {*} cb 
+ */
+UserSchema.methods.getAvailableStreams = async function(cb) {
+    //TODO
+    return;
 }
 
 /* Hooks */
