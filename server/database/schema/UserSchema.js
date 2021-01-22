@@ -93,16 +93,21 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
                 {_id: business},
                 async function(err, doc) {
                     if (err) throw err;
-                    if (doc) return await doc.getUserDoc();
+                    if (doc) return doc.getUserDoc();
                     return null;
                 }
             );
         }
     ));
-        
-    console.log('Here are the connected businesses:', businesses);
 
-    return true;
+    // Get the userDocs
+    const userDocs = await Promise.all(businesses.map(
+        async function(business) {
+            return await business.getUserDoc();
+        }
+    ));
+
+    return userDocs;
 }
 
 /**

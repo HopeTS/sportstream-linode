@@ -132,6 +132,8 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         );
 
         const test = await user.getConnectedBusinesses();
+
+        console.log('Here is the test', test);
         
         /* const test_result = await User.findOne({_id: req.user}, async function(err, doc) {
             if (err) throw err;
