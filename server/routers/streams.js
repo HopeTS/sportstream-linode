@@ -122,11 +122,20 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
         if (!req.body) res.status(400).send('Empty request body');
         console.log('In current streams route');
         console.log('Trying user schema method');
+
+        const user = await User.findOne({_id: req.user},
+            async function(err, doc) {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+
+        const test = await user.getConnectedBusinesses();
         
-        const test_result = await User.findOne({_id: req.user}, async function(err, doc) {
+        /* const test_result = await User.findOne({_id: req.user}, async function(err, doc) {
             if (err) throw err;
             if (doc) {
-                doc.name = await doc.getConnectedBusinesses();
                 await doc.save();
                 return true;
             }
@@ -169,7 +178,7 @@ router.post('/streams/user/get-current-streams', ensureLoggedIn(), async (req, r
             return res.status(500).send('Something went wrong with the stream api.');
         } 
 
-        return res.status(200).send(axiosRes.data);
+        return res.status(200).send(axiosRes.data); */
     }
 
     catch(e) {
