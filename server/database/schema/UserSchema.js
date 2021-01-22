@@ -93,7 +93,7 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
                 {_id: business},
                 async function(err, doc) {
                     if (err) throw err;
-                    if (doc) return doc.getUserDoc();
+                    if (doc) return await doc.getUserDoc();
                     return null;
                 }
             );
