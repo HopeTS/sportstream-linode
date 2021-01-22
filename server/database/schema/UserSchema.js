@@ -104,7 +104,7 @@ UserSchema.methods.getConnectedBusinesses = async function(cb) {
 
     const userDocs = await Promise.all(businesses.map(
         async function(business) {
-            return await business.getUserDoc;
+            return await business.getUserDoc();
         }
     ));
 
