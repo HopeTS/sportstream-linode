@@ -62,6 +62,34 @@ BusinessSchema.methods.generateStreamKey = async function(length=12, cb) {
 }
 
 /**
+ * Returns public docs (information available to anyone)
+ * 
+ * @param {*} cb callback function 
+ */
+BusinessSchema.methods.getPublicDoc = async function(cb) {
+    const publicDoc = await {
+        name: this.name
+    }
+
+    return publicDoc;
+}
+
+/**
+ * Returns docs for connected user (only available to connected users)
+ * 
+ * @param {*} cb callback function 
+ */
+BusinessSchema.methods.getUserDoc = async function(cb) {
+    const userDoc = await {
+        name: this.name,
+        email: this.email,
+        stream_key: this.stream_key
+    }
+
+    return userDoc;
+}
+
+/**
  * Removes a given stream key from the business account
  * 
  * @param {*} streamKey stream key string to remove
