@@ -11,7 +11,7 @@ import {navMenu_Mobile__Toggle} from '../../../redux/actions/ui';
 import MobileNavigationLink from './MobileNavigationLink';
 
 
-/* Component */
+/** Master component for mobile navigation */
 export class MobileNavigation extends React.Component {
     constructor(props) {
         super(props);

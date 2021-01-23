@@ -18,10 +18,7 @@ import {loadState} from '../functions/auth/localStorage';
 import {accountMenu__Off} from '../redux/actions/ui';
 
 
-
-/**
- *  Master Router component
- */
+/** Master Router component */
 export class Router extends React.Component {
     constructor(props) {
         super(props);
@@ -32,9 +29,8 @@ export class Router extends React.Component {
     };
 
     componentWillMount() {
+        this.check_connection();
         this.fadein_animation();
-        //this.check_session(); //<- logging in from cookie too  risky
-        //console.log(loadState());
         this.load_localStorage();
     };
 
@@ -71,7 +67,6 @@ export class Router extends React.Component {
         
         // Check if user is authenticated
         const userData = loadState();
-
         if (userData) {
             if (userData.auth.isAuthenticated) {
             
@@ -84,7 +79,9 @@ export class Router extends React.Component {
                 }
     
             }
-        } else {
+        } 
+        
+        else {
             return;
         }
     }
@@ -94,6 +91,13 @@ export class Router extends React.Component {
         if (this.props.accountMenu) {
             this.props.accountMenu__Off();
         }
+    }
+
+    /**
+     * Ensure connection status of the user
+     */
+    check_connection = () => {
+
     }
 
     render() {

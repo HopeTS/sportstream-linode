@@ -1,16 +1,15 @@
-/* Packages */
 import React from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {NavLink} from 'react-router-dom';
+
 import config from '../../../config/default';
-
-
-/* Actions */
 import {page_ID__Set} from '../../redux/actions/page';
+import {logout} from '../../redux/actions/auth';
+import {clearState} from '../../functions/auth/localStorage';
+import {clearCookies} from '../../functions/auth/cookies';
 
-
-/* Component */
+/** Watch page (/watch) */
 export class Watch extends React.Component {
     constructor(props) {
         super(props);
