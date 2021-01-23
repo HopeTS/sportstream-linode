@@ -4,7 +4,7 @@ import axios from 'axios';
  * Check client/server connection status
  */
 export const check_connection = () => {
-    
+    console.log('check_connection called')
     // Ask server is user is authenticated
     axios.get('/ensure-login')
 

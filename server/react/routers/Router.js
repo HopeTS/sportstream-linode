@@ -30,7 +30,7 @@ export class Router extends React.Component {
     };
 
     componentWillMount() {
-        this.check_connection();
+        check_connection();
         this.fadein_animation();
         this.load_localStorage();
     };
@@ -92,13 +92,6 @@ export class Router extends React.Component {
         if (this.props.accountMenu) {
             this.props.accountMenu__Off();
         }
-    }
-
-    /**
-     * Ensure connection status of the user
-     */
-    check_connection = () => {
-        check_connection();
     }
 
     render() {
