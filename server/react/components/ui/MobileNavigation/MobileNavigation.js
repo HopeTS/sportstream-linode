@@ -1,13 +1,8 @@
-/* Packages */
 import React from 'react';
 import {connect} from 'react-redux';
 
-
-/* Actions */
 import {navMenu_Mobile__Toggle} from '../../../redux/actions/ui';
 
-
-/* Components */
 import MobileNavigationLink from './MobileNavigationLink';
 
 
