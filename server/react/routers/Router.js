@@ -15,6 +15,7 @@ import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
 import {loadState} from '../functions/auth/localStorage';
+import {check_connection} from '../functions/auth/connection';
 import {accountMenu__Off} from '../redux/actions/ui';
 
 
@@ -97,7 +98,7 @@ export class Router extends React.Component {
      * Ensure connection status of the user
      */
     check_connection = () => {
-
+        check_connection();
     }
 
     render() {

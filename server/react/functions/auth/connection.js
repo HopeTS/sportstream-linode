@@ -3,7 +3,7 @@ import axios from 'axios';
 /**
  * Check client/server connection status
  */
-export const checkConnection = () => {
+export const check_connection = () => {
     
     // Ask server is user is authenticated
     axios.get('/ensure-login')
