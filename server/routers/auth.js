@@ -244,7 +244,7 @@ router.post('/register-business', ensureLoggedOut(), (req, res) => {
  */
 router.get('/ensure-login', ensureLoggedIn(), (req, res) => {
     console.log('User is logged in')
-    res.status(202).send();
+    res.status(210).send();
 });
 
 

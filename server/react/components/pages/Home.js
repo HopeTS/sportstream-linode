@@ -16,6 +16,7 @@ export class Home extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Home');
+
     };
 
     render() {
@@ -51,6 +52,13 @@ export class Home extends React.Component {
 
 
 /* Connect to store */
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
+    };
+};
+
 const mapDispatchToProps = (dispatch) => ({
     page_ID__Set: (id) => {
         dispatch(page_ID__Set(id));
@@ -58,4 +66,4 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(undefined, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Home);
