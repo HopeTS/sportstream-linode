@@ -1,13 +1,12 @@
-/* Packages */
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
-
-/* Actions */
 import {page_ID__Set} from '../../redux/actions/page';
 import {login} from '../../redux/actions/auth';
+import {clearState} from '../../functions/auth/localStorage';
+import {clearCookies} from '../../functions/auth/cookies';
 
 
 /* Component */
@@ -20,6 +19,8 @@ export class Login extends React.Component {
             type: 'business',
             form_error: ''
         };
+
+        this.handleLogout();
     };
 
     componentWillMount() {
@@ -147,6 +148,15 @@ export class Login extends React.Component {
                 form_error: ''
             });    
         }
+    }
+
+    /**
+     *  A User cannot access the login route unless they are not logged into
+     *  the server, so the cookies and localStorage must be cleared.
+     */
+    handleLogout = () => {
+        clearCookies();
+        clearState();
     }
 
     render() {
