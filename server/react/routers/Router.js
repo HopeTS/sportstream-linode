@@ -15,7 +15,6 @@ import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
 import {loadState} from '../functions/auth/localStorage';
-import {check_connection} from '../functions/auth/connection';
 import {accountMenu__Off} from '../redux/actions/ui';
 
 
@@ -30,7 +29,6 @@ export class Router extends React.Component {
     };
 
     componentWillMount() {
-        check_connection();
         this.fadein_animation();
         this.load_localStorage();
     };
