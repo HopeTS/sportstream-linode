@@ -4,7 +4,7 @@ import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
-import {login} from '../../redux/actions/auth';
+import {login, logout} from '../../redux/actions/auth';
 import {clearState} from '../../functions/auth/localStorage';
 import {clearCookies} from '../../functions/auth/cookies';
 
@@ -155,6 +155,7 @@ export class Login extends React.Component {
      *  the server, so the cookies and localStorage must be cleared.
      */
     handleLogout = () => {
+        this.props.logout();
         clearCookies();
         clearState();
     }
@@ -246,7 +247,11 @@ const mapDispatchToProps = (dispatch) => ({
 
     login: (account) => {
         dispatch(login(account));
-    }
+    },
+
+    logout: (account) => {
+        dispatch(logout());
+    } 
 });
 
 
