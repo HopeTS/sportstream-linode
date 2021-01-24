@@ -94,7 +94,7 @@ const databaseConfig = async () => {
     // connect user to business
     let connectUser = await User.findOne({}, async function(err, user) {
         if (err) throw err;
-        await user.connect_business(business.connection_ids[0]);
+        await user.connect_business(connectBusiness.connection_ids[0]);
         return user;
     });
     
