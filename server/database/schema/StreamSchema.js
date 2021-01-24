@@ -11,6 +11,8 @@ const { Business } = require('./Schema');
  * 
  * **business:** Associated Business (id)
  * 
+ * **key:** Stream key
+ * 
  * **status:** Upcoming stream, current stream or previous stream
  */
 const StreamSchema = new Schema({
@@ -26,15 +28,49 @@ const StreamSchema = new Schema({
         type: String,
         enum: ['upcoming', 'current', 'previous'],
         required: true
+    },
+    key: {
+        type: String
     }
 });
+
+/**
+ * Generate stream key
+ * 
+ * @param {*} cb callback function
+ */
+StreamSchema.methods.generate_key = async function(cb) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let unique = false;   // Whether or not streamKey is shared by other businesses
+    let streamKeyArray = [];
+    let streamKey;
+
+    while (!unique) {
+        // Generate the key
+        for ( var i = 0; i < 12; i++ ) {
+            streamKeyArray.push(
+                characters.charAt(Math.floor(Math.random() * characters.length))
+            );
+        }
+        streamKey = streamKeyArray.join('');
+
+        // Ensure key is unique
+        await mongoose.models['Stream'].findOne({key: {"$in": [streamKey]}}, function(err, user) {
+            if (err) throw err;
+            if (!user) unique = true;
+        });    
+    }
+
+    console.log('[stream] created new stream key', streamKey);
+    return streamKey;
+}
 
 /**
  * Sets stream status to current
  * 
  * @param {*} cb callback function
  */
-StreamSchema.methods.startStream = async function(cb) {
+StreamSchema.methods.start_stream = async function(cb) {
     this.status = 'current';
     return await this.save(cb);
 }
@@ -44,7 +80,7 @@ StreamSchema.methods.startStream = async function(cb) {
  * 
  * @param {*} cb callback function
  */
-StreamSchema.methods.endStream = async function(cb) {
+StreamSchema.methods.end_stream = async function(cb) {
     this.status = 'previous';
     return await this.save(cb);
 }
