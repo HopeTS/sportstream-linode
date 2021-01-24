@@ -48,10 +48,11 @@ export class AccountCard extends React.Component {
 
     render() {
         return (
-            <div id="AccountCard" 
+            <div 
+                id="AccountCard" 
                 data-mobile_nav={this.props.mobile_nav}
                 data-active={this.props.accountMenu}
-
+                onClick={this.props.navMenu_Mobile__Off}
             >
                 {this.props.isAuthenticated ?
                     <AccountCardAuth />
