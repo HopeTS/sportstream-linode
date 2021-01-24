@@ -7,11 +7,11 @@ const { Business } = require('./Schema');
 /**
  * Schema for stream objects
  * 
- * __field:__ Field name
+ * **field:** Field name
  * 
- * __business:__ Associated Business (id)
+ * **business:** Associated Business (id)
  * 
- * __status:__ Upcoming stream, current stream or previous stream
+ * **status:** Upcoming stream, current stream or previous stream
  */
 const StreamSchema = new Schema({
     field: {

@@ -1,28 +1,28 @@
-/* Master schema file, wires up all document schema */
+/* Master schema file */
 
 const mongoose = require('mongoose');
 
 /**
  *  Account schema for athlete accounts
  * 
- * __name:__ Name of the user
+ * **name:** Name of the user
  * 
- * __email:__ Personal email
+ * **email:** Personal email
  * 
- * __password:__ User's password
+ * **password:** User's password
  * 
- * __connected_businesses:__ List of businesses that the user has access to
+ * **connected_businesses:** List of businesses that the user has access to
  */
 exports.User = mongoose.model('User', require('./UserSchema'));
 
 /**
  * Account schema for businesses
  * 
- * __name:__ Name of the company
+ * **name:** Name of the company
  * 
- * __email:__ Business email
+ * **email:** Business email
  * 
- * __password:__ Account password
+ * **password:** Account password
  * 
  * **stream_key:** Keys to establish an RTMP stream through OBS
  * 
@@ -30,3 +30,14 @@ exports.User = mongoose.model('User', require('./UserSchema'));
  * to the company streams
  */
 exports.Business = mongoose.model('Business', require('./BusinessSchema'));
+
+/**
+ * Schema for stream objects
+ * 
+ * **field:** Field name
+ * 
+ * **business:** Associated Business (id)
+ * 
+ * **status:** Upcoming stream, current stream or previous stream
+ */
+exports.Stream = mongoose.model('Stream', require('./StreamSchema'));
