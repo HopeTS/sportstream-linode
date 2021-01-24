@@ -73,15 +73,15 @@ const databaseConfig = async () => {
     let user_connection;
 
     await User.find({}, (err, docs) => {
-        docs.forEach((doc) => {
+        await Promise.all(docs.map(async (doc) => {
             console.log('[config] Here is a new saved user', doc);
-        });
+        }));
     });
 
-    await Business.find({}, (err, docs) => {
-        docs.forEach((doc) => {
+    await Business.find({}, async (err, docs) => {
+        await Promise.all(docs.map(async (doc) => {
             console.log('[config] Here is a new saved business', doc);
-        })
+        }));
     });
 
     // Get connection id for user to business connection
@@ -96,17 +96,17 @@ const databaseConfig = async () => {
     });
     
     const business_ids = await Business.find({}, async (err, docs) => {
-        docs.map(async (doc) => {
+        await Promise.all(docs.map(async (doc) => {
             return doc._id;
-        });
+        }));
     });
 
     console.log('[config] Here are the business ids', business_ids);
 
     const user_ids = await User.find({}, async (err, docs) => {
-        docs.map(async (doc) => {
+        await Promise.all(docs.map(async (doc) => {
             return doc._id;
-        });
+        }));
     });
     
     console.log('[config] Here are the user ids', user_ids);
