@@ -72,7 +72,7 @@ const databaseConfig = async () => {
 
     let user_connection;
 
-    await User.find({}, (err, docs) => {
+    await User.find({}, async (err, docs) => {
         await Promise.all(docs.map(async (doc) => {
             console.log('[config] Here is a new saved user', doc);
         }));
