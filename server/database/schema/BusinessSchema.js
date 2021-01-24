@@ -274,7 +274,8 @@ BusinessSchema.pre('save', async function(done) {
             current: [],
             previous: []
         };
-        this.connection_id = [];
+        this.connection_ids = [];
+        this.type = 'business';
     } 
 });
 

@@ -89,11 +89,12 @@ const databaseConfig = async () => {
 
         console.log('[config] business after connection generated', business);
         return business;
-    })
+    });
 
     // connect user to business
     let connectUser = await User.findOne({}, async function(err, user) {
         if (err) throw err;
+        console.log('Here is the connection id', connectBusiness.connection_ids[0])
         await user.connect_business(connectBusiness.connection_ids[0]);
         return user;
     });
