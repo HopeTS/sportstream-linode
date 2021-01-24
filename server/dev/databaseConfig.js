@@ -37,8 +37,6 @@ const databaseConfig = async () => {
         newUser.email = user.email;
         newUser.password = user.password;
         newUser.type = 'user';
-
-        console.log('[config] Here is new user', newUser);
         await newUser.save(); 
     });
 
@@ -96,27 +94,22 @@ const databaseConfig = async () => {
         if (err) throw err;
         await user.connectToBusiness(user_connection);
     });
-
-    let bus_id;
-
-    setTimeout(async function() {
-        await User.find({}, (err, docs) => {
-            if (err) throw err;
-            for (var i=0; i<docs.length; i++) {
-                if (docs[i].connected_businesses.length === 1) {
-                    bus_id = docs[i].connected_businesses[0];
-                }
-            }
+    
+    const business_ids = await Business.find({}, async (err, docs) => {
+        docs.map(async (doc) => {
+            return doc._id;
         });
+    });
 
-        Business.findOne({_id: bus_id}, async function(err, doc) {
-            if (err) throw err;
+    console.log('[config] Here are the business ids', business_ids);
 
-            if (doc) {
-                await doc.generateConnectionId();    
-            }
-        })
-    }, 3000)
+    const user_ids = await User.find({}, async (err, docs) => {
+        docs.map(async (doc) => {
+            return doc._id;
+        });
+    });
+    
+    console.log('[config] Here are the user ids', user_ids);
 
     // dont connect user to business
 }
