@@ -31,27 +31,26 @@ const databaseConfig = async () => {
     });
 
     // Add test users
-    User.insertMany(users, (err, docs) => {
-        if (err) throw err;
-    })
+    await users.map(async (user) => {
+        let newUser = new User;
+        newUser.name = user.name;
+        newUser.email = user.email;
+        newUser.password = user.password;
+        newUser.type = 'user';
+
+        console.log('[config] Here is new user', newUser);
+        await newUser.save(); 
+    });
 
     // Test businesses
     const businesses = [{
         name: 'Test business 1',
-        username: 'Test_business',
         email: 'business@gmail.com',
         password: await bcrypt.hash('1234', 10),
-        stream_key: [],
-        connection_id: '',
-        type: 'business'
     }, {
         name: 'Test business 2',
-        username: 'Test_business2',
         email: 'business2@gmail.com',
         password: await bcrypt.hash('1234', 10),
-        stream_key: [],
-        connection_id: '',
-       type: 'business'
     }];
 
     // Clear Business collection
@@ -65,12 +64,27 @@ const databaseConfig = async () => {
     });
 
     // Add test businesses
-    for (var i=0; i<businesses.length; i++) {
-        let newBusiness = new Business({...businesses[i]});
-        const result = await newBusiness.save();
-    }
+    await businesses.map(async (business) => {
+        let newBusiness = new Business;
+        newBusiness.name = business.name;
+        newBusiness.email = business.email;
+        newBusiness.password = business.password;
+        await newBusiness.save();
+    });
 
     let user_connection;
+
+    await User.find({}, (err, docs) => {
+        docs.forEach((doc) => {
+            console.log('[config] Here is a new saved user', doc);
+        });
+    });
+
+    await Business.find({}, (err, docs) => {
+        docs.forEach((doc) => {
+            console.log('[config] Here is a new saved business', doc);
+        })
+    });
 
     // Get connection id for user to business connection
     await Business.findOne({}, (err, user) => {
