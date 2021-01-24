@@ -70,8 +70,6 @@ const databaseConfig = async () => {
         await newBusiness.save();
     });
 
-    let user_connection;
-
     await User.find({}, async (err, docs) => {
         await Promise.all(docs.map(async (doc) => {
             console.log('[config] Here is a new saved user', doc);
@@ -96,17 +94,21 @@ const databaseConfig = async () => {
     });
     
     const business_ids = await Business.find({}, async (err, docs) => {
-        await Promise.all(docs.map(async (doc) => {
+        let ids = await Promise.all(docs.map(async (doc) => {
             return doc._id;
         }));
+
+        return ids;
     });
 
     console.log('[config] Here are the business ids', business_ids);
 
     const user_ids = await User.find({}, async (err, docs) => {
-        await Promise.all(docs.map(async (doc) => {
+        let ids = await Promise.all(docs.map(async (doc) => {
             return doc._id;
         }));
+
+        return ids;
     });
     
     console.log('[config] Here are the user ids', user_ids);
