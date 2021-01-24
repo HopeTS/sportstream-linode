@@ -7,11 +7,11 @@ const User = require('./Schema').User;
 /**
  *  Account schema for athlete accounts
  * 
- * __name:__ Name of the user
+ * **name:** Name of the user
  * 
- * __email:__ Personal email
+ * **email:** Personal email
  * 
- * __password:__ User's password
+ * **password:** User's password
  * 
  * **connected_businesses:** List of businesses that the user has access to
  */
@@ -20,11 +20,11 @@ const UserSchema = new Schema({
     email: String,
     password: String,
     type: String,
-    connected_businesses: Array,
+    connected_businesses: [String]
 });
 
 /**
- * Connect to user to a business with a matching connection_id
+ * Connect user to a business with a matching connection_id
  * 
  * @param {string} business_password the password to connection to a business
  *      with a matching business' connection_id
@@ -32,8 +32,32 @@ const UserSchema = new Schema({
  * 
  * @returns {boolean} true if connected to business, false if not
  */
-UserSchema.methods.connectToBusiness = async function(password="", cb) {
-    let newConnections = this.connected_businesses || [];
+UserSchema.methods.connect_business = async function(password=null, cb) {
+    if (!password) return false;
+
+    const business = await mongoose.models['Business'].findOne(
+        {connection_id: {"$in": [password]}},
+        async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+    if (!business) return false;
+
+    console.log('[user] found business to connect to', business)
+
+    // Connect business to user
+    this.connected_businesses.push(business._id);
+    await this.save(cb);
+    console.log('[user] here is user after connection', this);
+
+    // Connect user to business if not already
+    const index = business.connected_users.indexOf(this._id);
+    if (index === -1) await business.connect_user(this._id);
+    
+    return true;
+    /* let newConnections = this.connected_businesses || [];
     const user_id = this._id
     let newDoc = false; // Flag to determine if save should be called
 
@@ -71,7 +95,7 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
         this.connected_businesses = newConnections;
     }
 
-    return newConnections;
+    return newConnections; */
 }
 
 /**
@@ -84,7 +108,7 @@ UserSchema.methods.connectToBusiness = async function(password="", cb) {
  *      name: Business name
  * }]
  */
-UserSchema.methods.getConnectedBusinesses = async function(cb) {
+UserSchema.methods.get_connected_businesses = async function(cb) {
     
     // For each business in connected businesses, get the raw business document
     const businesses = await Promise.all(this.connected_businesses.map(
@@ -122,7 +146,10 @@ UserSchema.methods.getAvailableStreams = async function(cb) {
 /* Hooks */
 UserSchema.pre('save', async function(done) {
     if (this.isNew) {
-        this.connected_businesses = [];
+        if (this.connected_businesses = undefined) {
+            this.connected_businesses = [];
+        }
+        this.type = 'user';
     }
 });
 
