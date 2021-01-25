@@ -129,7 +129,7 @@ const databaseConfig = async () => {
     });
     
     await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
-    await user_ids[1].connect_business(business_ids[1].connection_ids[1]);
+    await user_ids[1].connect_business(business_ids[1].connection_ids[0]);
 
     console.log('[config] users after connection:', user_ids);
     console.log('[config] businesses after connection', business_ids);
