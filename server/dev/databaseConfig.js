@@ -157,7 +157,7 @@ const databaseConfig = async () => {
 
     // Test business start stream and user get available streams
     await business1.create_stream({
-        field: 'Test field 1
+        field: 'Test field 1'
     });
 
     console.log('Here is business1 after stream', business1);
