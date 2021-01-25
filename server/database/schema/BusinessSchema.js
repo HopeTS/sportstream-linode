@@ -1,158 +1,339 @@
 const mongoose = require('mongoose');
-const { Business } = require('./Schema');
 const Schema = mongoose.Schema;
 
+const { Stream, User } = require('./Schema');
+
+
 /**
- * Account schema for businesses
+ * Account schema for business accounts
  * 
- * __name:__ Name of the company
+ * **name:** Name of the Business
  * 
- * __email:__ Business email
+ * **email:** Business email
  * 
- * __password:__ Account password
+ * **password:** Account password
  * 
- * **stream_key:** Keys to establish an RTMP stream through OBS
+ * **type:** Account type
  * 
- * **connection_id:** String that user accounts need to enter to gain access
- * to the company streams
+ * **streams:** Business streams
+ *      **upcoming:** Future streams
+ *      **current:** Current streams
+ *      **previous:** Previous streams
+ * 
+ * **connection_ids:** Unused connection ids
+ * 
+ * **connected_users:** List of connected User accounts
  */
 const BusinessSchema = new Schema({
-    name: String,
-    username: String,
-    email: String,
-    password: String,
-    stream_key: Array,
-    connection_id: String,
-    type: String
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        default: 'business',
+    },
+    streams: {
+        upcoming: {
+            type: [String],
+            default: []
+        },
+        current: {
+            type: [String],
+            default: []
+        },
+        previous: {
+            type: [String],
+            default: []
+        }
+    },
+    connection_ids: {
+        type: [String],
+        default: []
+    },
+    connected_users: {
+        type: [String],
+        default: []
+    }
 });
 
+
 /**
- * Generates a single unique stream key for a Business document
+ * Adds a connection_id
  * 
- * @param {*} length length of the stream key
  * @param {*} cb callback function
  * 
- * @returns {string | false} stream key
+ * @returns {object} business
  */
-BusinessSchema.methods.generateStreamKey = async function(length=12, cb) {
+BusinessSchema.methods.generate_connection_id = async function(cb) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let unique = false;   // Whether or not streamKey is shared by other businesses
-    let streamKeyArray = [];
-    let streamKey;
-
-    // Generate the key
-    while (!unique) {
-        for ( var i = 0; i < length; i++ ) {
-            streamKeyArray.push(
-                characters.charAt(Math.floor(Math.random() * characters.length))
-            );
-        }
-        streamKey = streamKeyArray.join('');
-
-        // Ensure key is unique
-        await mongoose.models['Business'].findOne({stream_key: {"$in": [streamKey]}}, function(err, user) {
-            if (err) throw err;
-            if (!user) unique = true;
-        });    
-    }
-
-    // Add key to stream_key
-    this.stream_key.push(streamKey);
-    return streamKey;
-}
-
-/**
- * Returns public docs (information available to anyone)
- * 
- * @param {*} cb callback function 
- */
-BusinessSchema.methods.getPublicDoc = async function(cb) {
-    const publicDoc = await {
-        name: this.name
-    }
-
-    return publicDoc;
-}
-
-/**
- * Returns docs for connected user (only available to connected users)
- * 
- * @param {*} cb callback function 
- */
-BusinessSchema.methods.getUserDoc = async function(cb) {
-    const userDoc = await {
-        name: this.name,
-        email: this.email,
-        stream_key: this.stream_key
-    }
-
-    return userDoc;
-}
-
-/**
- * Removes a given stream key from the business account
- * 
- * @param {*} streamKey stream key string to remove
- * @param {*} cb callback function
- * 
- * @returns {boolean} true if deleted, else false
- */
-BusinessSchema.methods.deleteStreamKey = async function(streamKey="", cb) {
-    if (this.stream_key.includes(streamKey)) {
-        this.stream_key.splice(this.stream_key.indexOf(streamKey), 1);
-        return true;
-    }
-    return false;
-}
-
-/**
- * Generates a unique connection ID for a Business account
- * 
- * @param {*} length length of the id
- * @param {*} cb callback function
- * 
- * @returns {string} connection ID
- */
-BusinessSchema.methods.generateConnectionId = async function(length=12, cb) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let unique = false;
     let connectionIdArray = [];
     let connectionId;
-    let newDoc = false; // Flag to determine if save should be called
 
-    // Generate connection ID
     while (!unique) {
-        for ( var i = 0; i < length; i++ ) {
+        // Generate the key
+        for ( var i = 0; i < 12; i++ ) {
             connectionIdArray.push(
                 characters.charAt(Math.floor(Math.random() * characters.length))
             );
-        }    
+        }
         connectionId = connectionIdArray.join('');
 
-        // Ensure ID is unique
-        await mongoose.models['Business'].findOne({connection_id: connectionId}, function(err, user) {
-            if (err) throw err;
-            if (!user) unique = true;
-        })
+        // Ensure key is unique
+        await mongoose.models['Business'].findOne(
+            {connection_id: {"$in": [connectionId]}},
+            async function(err, user) {
+                if (err) throw err;
+                if (!user) unique = true;
+            }
+        );    
     }
 
-    // Add connection ID
-    this.connection_id = connectionId;
-    return this.connection_id;
+    await this.connection_ids.push(connectionId);
+    await this.save(cb);
+    return this;
 }
 
-/* Hooks */
-BusinessSchema.pre('save', async function(done) {
-    if (this.isNew) {
-        this.connection_id = this.generateConnectionId();
 
-        // Businesses start with 3 stream keys
-        for (let i=0; i<3; i++) {
-            await this.generateStreamKey();
-        } 
-        return done();    
+/**
+ * Adds a new upcoming stream to the business
+ * 
+ * @param {*} streamData stream data
+ * @param {*} cb callback function
+ * 
+ * @returns {object} business
+ */
+BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
+
+    // Create the stream
+    let stream = new Stream;
+    let streamId = stream._id;
+    stream.field = streamData.field ? streamData.field : 'New Stream';
+    stream.business = this._id;
+    stream.key = await stream.generate_key();
+    await stream.save();
+
+    // Add stream to upcoming streams
+    console.log('Here is the new stream id', streamId);
+    this.streams.upcoming.push(streamId);
+    await this.save(cb);
+    return this;
+}
+
+
+/**
+ * Starts a given stream
+ * 
+ * @param {*} stream stream key
+ * @param {*} cb callback function
+ * 
+ * @returns {object | false} business if stream started, else false
+ */
+BusinessSchema.methods.start_stream = async function(stream, cb) {
+    // Error handling
+    if (!stream) return false;
+    if (!this.streams.upcoming.includes(stream)) return false;
+    
+    // Get stream, set status to current
+    const streamObject = await mongoose.models['Stream'].findOne(
+        {_id: stream}, async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+    console.log('[business] streamObject:', streamObject);
+    if (!streamObject) return false;
+    await streamObject.start_stream();
+
+    // Move from 'upcoming' list to 'current' list
+    const index = this.streams.upcoming.indexOf(stream);
+    if (index !== -1) await this.streams.upcoming.splice(index, 1);
+    await this.streams.current.push(stream);
+
+    await this.save(cb);
+    return this;
+}
+
+
+/**
+ * Ends a given stream
+ * 
+ * @param {*} stream stream key
+ * @param {*} cb callback function
+ * 
+ * @returns {object | false} business if stream started, else false
+ */
+BusinessSchema.methods.end_stream = async function(stream, cb) {
+    // Error handling
+    if (!stream) return false;
+    if (!this.streams.current.includes(stream)) return false;
+    
+    // Get stream, set status to previous
+    const streamObject = await mongoose.models['Stream'].findOne(
+        {_id: stream}, async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+    console.log('[business] streamObject:', streamObject);
+    if (!streamObject) return false;
+    await streamObject.end_stream();
+
+    // Move from 'upcoming' list to 'current' list
+    const index = this.streams.current.indexOf(stream);
+    if (index !== -1) await this.streams.current.splice(index, 1);
+    await this.streams.previous.push(stream);
+
+    console.log('[business] ended the stream', this);
+
+    await this.save(cb);
+    return this;
+}
+
+
+/**
+ * Get all upcoming streams from the business. Returns stream objects.
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {[String]} upcoming streams
+ */
+BusinessSchema.methods.get_upcoming_streams = async function(cb) {
+    const upcomingStreams = await Promise.all(this.streams.upcoming.map(
+        async function(stream) {
+            return await mongoose.models['Stream'].findOne(
+                {_id: stream},
+                async function(err, doc) {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return null;
+                }  
+            );
+        }
+    ));
+
+    return upcomingStreams;
+}
+
+
+/**
+ * Get all current streams from the business. Returns stream objects.
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {[Stream]} current streams
+ */
+BusinessSchema.methods.get_current_streams = async function(cb) {
+    const currentStreams = await Promise.all(this.streams.current.map(
+        async function(stream) {
+            return await mongoose.models['Stream'].findOne(
+                {_id: stream},
+                async function(err, doc) {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return null;
+                }  
+            );
+        }
+    ));    
+    
+    return currentStreams;
+}
+
+
+/**
+ * Get all previous streams from the business. Returns stream objects.
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {[Stream]} previous streams
+ */
+BusinessSchema.methods.get_previous_streams = async function(cb) {
+    const previousStreams = await Promise.all(this.streams.previous.map(
+        async function(stream) {
+            return await mongoose.models['Stream'].findOne(
+                {_id: stream},
+                async function(err, doc) {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return null;
+                }  
+            );
+        }
+    ));    
+    
+    return previousStreams;
+}
+
+
+/**
+ * Get business doc information only available to users connected to the
+ * business
+ * 
+ * @param {*} id user id
+ * @param {*} cb callback function
+ * 
+ * @returns {object} user doc
+ */
+BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
+    const doc = {
+        name: this.name,
+        type: this.type,
+        streams: this.streams.current
+    }
+    return doc;
+}
+
+
+/**
+ * Connect business to a user with given id
+ * 
+ * @param {string} id the user id
+ * @param {*} cb callback function
+ * 
+ * @returns {object | false} business if connected to business, false if not
+ */
+BusinessSchema.methods.connect_user = async function(id=null, cb) {
+    // Error handling
+    if (!id) return false;
+    if (this.connected_users.includes(id)) return false;
+    if (!mongoose.isValidObjectId(id)) {
+        return false;
     }
 
-});
+    // Remove connection id
+    let index = this.connection_ids.indexOf(id);
+    if (index !== -1) this.connection_ids.splice(index, 1);
+
+    // Connect user
+    this.connected_users.push(id);
+
+    await this.save(cb);
+    return this;
+}
+
+
+/**
+ * Disonnect user from business with given id
+ * 
+ * @param {string} id the user id
+ * @param {*} cb callback function
+ * 
+ * @returns {boolean} true if connected to business, false if not
+ */
+BusinessSchema.methods.disconnect_user = async function(cb) {
+    // TODO
+}
 
 module.exports = BusinessSchema;
