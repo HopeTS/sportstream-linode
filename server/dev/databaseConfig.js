@@ -116,7 +116,7 @@ const databaseConfig = async () => {
     })
 
     // Get user and business docs
-    const user1 = await User.findOne(
+    let user1 = await User.findOne(
         {_id: user_ids[0]._id}, 
         async function(err, doc) {
             if (err) throw err;
@@ -124,7 +124,7 @@ const databaseConfig = async () => {
             return false;
         }
     );
-    const user2 = await User.findOne(
+    let user2 = await User.findOne(
         {_id: user_ids[1]._id}, 
         async function(err, doc) {
             if (err) throw err;
@@ -133,7 +133,7 @@ const databaseConfig = async () => {
         }
     );
 
-    const business1 = await Business.findOne(
+    let business1 = await Business.findOne(
         {_id: business_ids[0]._id}, 
         async function(err, doc) {
             if (err) throw err;
@@ -141,7 +141,7 @@ const databaseConfig = async () => {
             return false;
         }
     );
-    const business2 = await Business.findOne(
+    let business2 = await Business.findOne(
         {_id: business_ids[1]._id}, 
         async function(err, doc) {
             if (err) throw err;
@@ -160,6 +160,14 @@ const databaseConfig = async () => {
         field: 'Test field 1'
     });
 
+    business1 = await Business.find(
+        {_id: business1._id},
+        async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
     console.log('Here is business1 after stream', business1);
 
     const userDocs = await user1.get_connected_businesses();
