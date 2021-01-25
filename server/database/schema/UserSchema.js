@@ -37,7 +37,7 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
 
     console.log('[user] business password entered:', password)
     const business = await mongoose.models['Business'].findOne(
-        {connection_id: {"$in": [password]}},
+        {connection_ids: {"$in": [password]}},
         async function(err, doc) {
             if (err) throw err;
             if (doc) return doc;
