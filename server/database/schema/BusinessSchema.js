@@ -152,17 +152,10 @@ BusinessSchema.methods.start_stream = async function(stream, cb) {
 
     // Move from 'upcoming' list to 'current' list
     const index = this.streams.upcoming.indexOf(stream);
-    if (index !== -1) {
-        console.log('[bus] here is before upcoming stream', this.streams.upcoming[0]);
-        await this.streams.upcoming.splice(index, 1);
-        console.log('[bus] here is after upcoming stream', this.streams.upcoming[1]);        
-    }
-    console.log('[business] upcoming streams now', this.streams.upcoming);
+    if (index !== -1) await this.streams.upcoming.splice(index, 1);
     await this.streams.current.push(stream);
 
-    console.log('[business] started the stream', this);
     await this.save(cb);
-    console.log('[business] end of start_stream', this)
     return true;
 }
 

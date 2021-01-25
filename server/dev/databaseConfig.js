@@ -177,6 +177,7 @@ const databaseConfig = async () => {
 
     userDocs = await user1.get_connected_businesses();
     console.log('userDocs after start stream', userDocs);
+    console.log('Did business1 update?', business1);
 }
 
 module.exports = databaseConfig;
