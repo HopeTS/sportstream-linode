@@ -70,6 +70,8 @@ const BusinessSchema = new Schema({
  * Adds a connection_id
  * 
  * @param {*} cb callback function
+ * 
+ * @returns {object} business
  */
 BusinessSchema.methods.generate_connection_id = async function(cb) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -98,7 +100,7 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
 
     await this.connection_ids.push(connectionId);
     await this.save(cb);
-    return;
+    return this;
 }
 
 
@@ -107,6 +109,8 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
  * 
  * @param {*} streamData stream data
  * @param {*} cb callback function
+ * 
+ * @returns {object} business
  */
 BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
 
@@ -132,9 +136,10 @@ BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
  * @param {*} stream stream key
  * @param {*} cb callback function
  * 
- * @returns {boolean} true if stream started, else false
+ * @returns {object | false} business if stream started, else false
  */
 BusinessSchema.methods.start_stream = async function(stream, cb) {
+    // Error handling
     if (!stream) return false;
     if (!this.streams.upcoming.includes(stream)) return false;
     
@@ -156,7 +161,7 @@ BusinessSchema.methods.start_stream = async function(stream, cb) {
     await this.streams.current.push(stream);
 
     await this.save(cb);
-    return true;
+    return this;
 }
 
 
@@ -166,9 +171,10 @@ BusinessSchema.methods.start_stream = async function(stream, cb) {
  * @param {*} stream stream key
  * @param {*} cb callback function
  * 
- * @returns {boolean} true if stream started, else false
+ * @returns {object | false} business if stream started, else false
  */
 BusinessSchema.methods.end_stream = async function(stream, cb) {
+    // Error handling
     if (!stream) return false;
     if (!this.streams.current.includes(stream)) return false;
     
@@ -192,7 +198,7 @@ BusinessSchema.methods.end_stream = async function(stream, cb) {
     console.log('[business] ended the stream', this);
 
     await this.save(cb);
-    return true;
+    return this;
 }
 
 
@@ -200,6 +206,8 @@ BusinessSchema.methods.end_stream = async function(stream, cb) {
  * Get all upcoming streams from the business. Returns stream objects.
  * 
  * @param {*} cb callback function
+ * 
+ * @returns {[String]} upcoming streams
  */
 BusinessSchema.methods.get_upcoming_streams = async function(cb) {
     const upcomingStreams = await Promise.all(this.streams.upcoming.map(
@@ -223,6 +231,8 @@ BusinessSchema.methods.get_upcoming_streams = async function(cb) {
  * Get all current streams from the business. Returns stream objects.
  * 
  * @param {*} cb callback function
+ * 
+ * @returns {[Stream]} current streams
  */
 BusinessSchema.methods.get_current_streams = async function(cb) {
     const currentStreams = await Promise.all(this.streams.current.map(
@@ -246,6 +256,8 @@ BusinessSchema.methods.get_current_streams = async function(cb) {
  * Get all previous streams from the business. Returns stream objects.
  * 
  * @param {*} cb callback function
+ * 
+ * @returns {[Stream]} previous streams
  */
 BusinessSchema.methods.get_previous_streams = async function(cb) {
     const previousStreams = await Promise.all(this.streams.previous.map(
@@ -271,6 +283,8 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
  * 
  * @param {*} id user id
  * @param {*} cb callback function
+ * 
+ * @returns {object} user doc
  */
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
     const doc = {
@@ -288,19 +302,25 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
  * @param {string} id the user id
  * @param {*} cb callback function
  * 
- * @returns {boolean} true if connected to business, false if not
+ * @returns {object | false} business if connected to business, false if not
  */
 BusinessSchema.methods.connect_user = async function(id=null, cb) {
+    // Error handling
     if (!id) return false;
     if (this.connected_users.includes(id)) return false;
     if (!mongoose.isValidObjectId(id)) {
         return false;
     }
-    
-    this.connected_users.push(id);
-    await this.save(cb);
 
-    return true;
+    // Remove connection id
+    let index = this.connection_ids.indexOf(id);
+    if (index !== -1) this.connection_ids.splice(index, 1);
+
+    // Connect user
+    this.connected_users.push(id);
+
+    await this.save(cb);
+    return this;
 }
 
 

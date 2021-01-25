@@ -47,11 +47,13 @@ const UserSchema = new Schema({
  *      with a matching business' connection_id
  * @param {*} cb callback function
  * 
- * @returns {boolean} true if connected to business, false if not
+ * @returns {object | false} user if connected to business, false if not
  */
 UserSchema.methods.connect_business = async function(password=null, cb) {
+    // Error handling
     if (!password) return false;
 
+    // Only connect if Business exists
     const business = await mongoose.models['Business'].findOne(
         {connection_ids: {"$in": [password]}},
         async function(err, doc) {
@@ -68,7 +70,7 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
     await this.save(cb);
     await business.connect_user(this._id);
     
-    return true;
+    return this;
 }
 
 
@@ -78,8 +80,10 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
  * 
  *  @param {*} cb
  * 
- *  @returns [{
- *      name: Business name
+ *  @returns {object} [{
+ *      field: Business name
+ *      type: Business type
+ *      streams: Current streams
  * }]
  */
 UserSchema.methods.get_connected_businesses = async function(cb) {
@@ -98,6 +102,7 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
         }
     ));
 
+    // Get the user_doc for each connected business
     const userDocs = await Promise.all(businesses.map(
         async function(business) {
             return await business.get_user_doc();

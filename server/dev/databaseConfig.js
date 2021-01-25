@@ -1,3 +1,7 @@
+/*
+ *  Configure database for development environment and run some basic tests 
+ */
+
 const bcrypt = require('bcryptjs');
 
 const User = require('../database/schema/Schema').User;
