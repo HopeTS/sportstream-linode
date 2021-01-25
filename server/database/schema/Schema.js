@@ -4,6 +4,18 @@ const mongoose = require('mongoose');
 
 
 /**
+ * Schema for stream objects
+ * 
+ * **field:** Field name
+ * 
+ * **business:** Associated Business (id)
+ * 
+ * **status:** Upcoming stream, current stream or previous stream
+ */
+exports.Stream = mongoose.model('Stream', require('./StreamSchema'));
+
+
+/**
  *  Account schema for athlete accounts
  * 
  * **name:** Name of the user
@@ -40,15 +52,3 @@ exports.User = mongoose.model('User', require('./UserSchema'));
  * **connected_users:** List of connected User accounts
  */
 exports.Business = mongoose.model('Business', require('./BusinessSchema'));
-
-
-/**
- * Schema for stream objects
- * 
- * **field:** Field name
- * 
- * **business:** Associated Business (id)
- * 
- * **status:** Upcoming stream, current stream or previous stream
- */
-exports.Stream = mongoose.model('Stream', require('./StreamSchema'));
