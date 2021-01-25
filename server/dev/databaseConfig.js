@@ -86,6 +86,7 @@ const databaseConfig = async () => {
     // Get connection id for user to business connection
     let connectBusiness = await Business.findOne({}, async (err, business) => {
         if (err) throw err;
+        if (!business) return console.log('[config] business not found?!')
         await business.generate_connection_id();
         await business.save();
         connectBusinessId = business.connection_ids[0]
