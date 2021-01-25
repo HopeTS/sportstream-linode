@@ -160,7 +160,7 @@ const databaseConfig = async () => {
         field: 'Test field 1'
     });
 
-    business1 = await Business.find(
+    business1 = await Business.findOne(
         {_id: business1._id},
         async function(err, doc) {
             if (err) throw err;
