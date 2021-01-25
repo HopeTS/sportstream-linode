@@ -62,13 +62,14 @@ const databaseConfig = async () => {
     });
 
     // Add test businesses
-    await businesses.map(async (business) => {
+    await Promise.all(businesses.map(async (business) => {
         let newBusiness = new Business;
         newBusiness.name = business.name;
         newBusiness.email = business.email;
         newBusiness.password = business.password;
         await newBusiness.save();
-    });
+        return newBusiness;
+    }));
 
     /* await User.find({}, async (err, docs) => {
         await Promise.all(docs.map(async (doc) => {
