@@ -2,6 +2,7 @@
 
 const mongoose = require('mongoose');
 
+
 /**
  *  Account schema for athlete accounts
  * 
@@ -9,27 +10,37 @@ const mongoose = require('mongoose');
  * 
  * **email:** Personal email
  * 
- * **password:** User's password
+ * **password:** Account password
+ * 
+ * **type:** Account type
  * 
  * **connected_businesses:** List of businesses that the user has access to
  */
 exports.User = mongoose.model('User', require('./UserSchema'));
 
+
 /**
- * Account schema for businesses
+ * Account schema for business accounts
  * 
- * **name:** Name of the company
+ * **name:** Name of the Business
  * 
  * **email:** Business email
  * 
  * **password:** Account password
  * 
- * **stream_key:** Keys to establish an RTMP stream through OBS
+ * **type:** Account type
  * 
- * **connection_id:** String that user accounts need to enter to gain access
- * to the company streams
+ * **streams:** Business streams
+ *      **upcoming:** Future streams
+ *      **current:** Current streams
+ *      **previous:** Previous streams
+ * 
+ * **connection_ids:** Unused connection ids
+ * 
+ * **connected_users:** List of connected User accounts
  */
 exports.Business = mongoose.model('Business', require('./BusinessSchema'));
+
 
 /**
  * Schema for stream objects

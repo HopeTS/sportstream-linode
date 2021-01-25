@@ -3,6 +3,27 @@ const Schema = mongoose.Schema;
 
 const { Stream, User } = require('./Schema');
 
+
+/**
+ * Account schema for business accounts
+ * 
+ * **name:** Name of the Business
+ * 
+ * **email:** Business email
+ * 
+ * **password:** Account password
+ * 
+ * **type:** Account type
+ * 
+ * **streams:** Business streams
+ *      **upcoming:** Future streams
+ *      **current:** Current streams
+ *      **previous:** Previous streams
+ * 
+ * **connection_ids:** Unused connection ids
+ * 
+ * **connected_users:** List of connected User accounts
+ */
 const BusinessSchema = new Schema({
     name: {
         type: String,
@@ -13,6 +34,10 @@ const BusinessSchema = new Schema({
         required: true
     },
     password: {
+        type: String,
+        required: true
+    },
+    type: {
         type: String,
         required: true
     },
@@ -36,6 +61,7 @@ const BusinessSchema = new Schema({
     }
 });
 
+
 /**
  * Adds a new upcoming stream to the business
  * 
@@ -58,6 +84,7 @@ BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
     this.streams.upcoming.push(streamId);
     return await this.save(cb);
 }
+
 
 /**
  * Adds a connection_id
@@ -94,6 +121,7 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
     return;
 }
 
+
 /**
  * Starts a given stream
  * 
@@ -128,6 +156,7 @@ BusinessSchema.methods.start_stream = async function(stream, cb) {
     await this.save(cb);
     return true;
 }
+
 
 /**
  * Ends a given stream
@@ -164,6 +193,7 @@ BusinessSchema.methods.end_stream = async function(stream, cb) {
     return true;
 }
 
+
 /**
  * Get all upcoming streams from the business. Returns stream objects.
  * 
@@ -185,6 +215,7 @@ BusinessSchema.methods.get_upcoming_streams = async function(cb) {
 
     return upcomingStreams;
 }
+
 
 /**
  * Get all current streams from the business. Returns stream objects.
@@ -208,6 +239,7 @@ BusinessSchema.methods.get_current_streams = async function(cb) {
     return currentStreams;
 }
 
+
 /**
  * Get all previous streams from the business. Returns stream objects.
  * 
@@ -230,6 +262,20 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
+
+/**
+ * Get business doc information only available to users connected to the
+ * business
+ * 
+ * @param {*} id user id
+ * @param {*} cb callback function
+ */
+BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
+    let doc;
+    return doc;
+}
+
+
 /**
  * Connect business to a user with given id
  * 
@@ -242,20 +288,28 @@ BusinessSchema.methods.connect_user = async function(id=null, cb) {
     if (!id) return false;
     if (this.connected_users.includes(id)) return false;
     if (!mongoose.isValidObjectId(id)) {
-        console.log('It s not a valid id')
         return false;
     }
     
     this.connected_users.push(id);
-    console.log('[business] inside of connect user', this)
     await this.save(cb);
 
     return true;
 }
 
+
+/**
+ * Disonnect user from business with given id
+ * 
+ * @param {string} id the user id
+ * @param {*} cb callback function
+ * 
+ * @returns {boolean} true if connected to business, false if not
+ */
 BusinessSchema.methods.disconnect_user = async function(cb) {
     // TODO
 }
+
 
 /* Hooks */
 BusinessSchema.pre('save', async function(done) {

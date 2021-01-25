@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const Business = require('./Schema').Business;
 const User = require('./Schema').User;
 
+
 /**
  *  Account schema for athlete accounts
  * 
@@ -11,17 +12,32 @@ const User = require('./Schema').User;
  * 
  * **email:** Personal email
  * 
- * **password:** User's password
+ * **password:** Account password
+ * 
+ * **type:** Account type
  * 
  * **connected_businesses:** List of businesses that the user has access to
  */
 const UserSchema = new Schema({
-    name: String,
-    email: String,
-    password: String,
-    type: String,
+    name: {
+        type: String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    type: {
+        type: String,
+        required: true
+    },
     connected_businesses: [String]
 });
+
 
 /**
  * Connect user to a business with a matching connection_id
@@ -35,7 +51,6 @@ const UserSchema = new Schema({
 UserSchema.methods.connect_business = async function(password=null, cb) {
     if (!password) return false;
 
-    console.log('[user] business password entered:', password)
     const business = await mongoose.models['Business'].findOne(
         {connection_ids: {"$in": [password]}},
         async function(err, doc) {
@@ -46,55 +61,15 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
     );
     if (!business) return false;
 
-    console.log('[user] found business to connect to', business)
 
     // Connect business to user
     this.connected_businesses.push(business._id);
     await this.save(cb);
     await business.connect_user(this._id);
-    console.log('[user] here is user after connection', this);
     
     return true;
-    /* let newConnections = this.connected_businesses || [];
-    const user_id = this._id
-    let newDoc = false; // Flag to determine if save should be called
-
-    // Find business (if exists)
-    await mongoose.models['Business'].findOne({connection_id: password}, 
-        async function(err, user) {
-            if (err) throw err;
-            if (!user) return false;
-
-            // If business found
-            newConnections.push(user._id);
-        }
-    );
-
-
-    mongoose.models['User'].findOne({_id: user_id}, async function (err, doc) {
-        if (err) throw err;
-
-        // If User is not new
-        if (doc) {
-            doc.connected_businesses = newConnections;
-            doc.markModified('connected_businesses');
-            await doc.save(function(err, news) {
-                if (err) throw err;
-            });
-        }
-
-        // If user is new
-        else {
-            newDoc = true;       
-        }
-    });
-
-    if (newDoc) {
-        this.connected_businesses = newConnections;
-    }
-
-    return newConnections; */
 }
+
 
 /**
  *  Get Business documents of all businesses connected to User. (Only return
@@ -125,21 +100,26 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
     // Get the userDocs
     const userDocs = await Promise.all(businesses.map(
         async function(business) {
-            return await business.getUserDoc();
+            return await business.get_user_doc();
         }
     ));
 
     return userDocs;
 }
 
+
 /**
+ * Get stream keys of current streams of businesses the user is connected to
  * 
  * @param {*} cb 
+ * 
+ * @returns {[String]} stream keys
  */
-UserSchema.methods.getAvailableStreams = async function(cb) {
+UserSchema.methods.get_available_streams = async function(cb) {
     //TODO
     return;
 }
+
 
 /* Hooks */
 UserSchema.pre('save', async function(done) {
