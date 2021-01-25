@@ -241,7 +241,10 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
 BusinessSchema.methods.connect_user = async function(id=null, cb) {
     if (!id) return false;
     if (this.connected_users.includes(id)) return false;
-    if (!mongoose.isValidObjectId(id)) return false;
+    if (!mongoose.isValidObjectId(id)) {
+        console.log('It s not a valid id')
+        return false;
+    }
     
     this.connected_users.push(id);
     await this.save(cb);
