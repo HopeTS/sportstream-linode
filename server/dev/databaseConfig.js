@@ -175,7 +175,7 @@ const databaseConfig = async () => {
 
     await business1.start_stream();
 
-    const userDocs = await user1.get_connected_businesses();
+    userDocs = await user1.get_connected_businesses();
     console.log('userDocs after start stream', userDocs);
 }
 
