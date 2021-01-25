@@ -141,8 +141,46 @@ const databaseConfig = async () => {
         if (err) throw err;
         if (docs) console.log('business docs', docs)
     })
-    console.log('[config] businesses after connection', business_ids);
-    // dont connect user to business
+
+    // Get user and business docs
+    const user1 = await User.findOne(
+        {_id: user_ids[0]._id}, 
+        async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+    const user2 = await User.findOne(
+        {_id: user_ids[1]._id}, 
+        async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+
+    const business1 = await Business.findOne(
+        {_id: business_ids[0]._id}, 
+        async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+    const business2 = await Business.findOne(
+        {_id: business_ids[1]._id}, 
+        async function(err, doc) {
+            if (err) throw err;
+            if (doc) return doc;
+            return false;
+        }
+    );
+
+    console.log('user1', user1);
+    console.log('user2', user2);
+    console.log('business1', business1);
+    console.log('business2', business2);
 }
 
 module.exports = databaseConfig;
