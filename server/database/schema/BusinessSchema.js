@@ -81,7 +81,8 @@ BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
     // Add stream to upcoming streams
     console.log('Here is the new stream id', streamId);
     this.streams.upcoming.push(streamId);
-    return await this.save(cb);
+    await this.save(cb);
+    return this;
 }
 
 
@@ -270,7 +271,11 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
  * @param {*} cb callback function
  */
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
-    let doc;
+    const doc = {
+        name: this.name,
+        type: this.type,
+        streams: this.streams.current
+    }
     return doc;
 }
 

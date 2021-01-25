@@ -96,22 +96,6 @@ const databaseConfig = async () => {
         return business;
     });
 
-    // connect user to business
-    /* let connectUser = await User.findOne({}, async function(err, user) {
-        if (err) throw err;
-        console.log('Here is the connection id', connectBusinessId)
-        await user.connect_business(connectBusinessId);
-        return user;
-    });
-    
-    const business_ids = await Business.find({}, async (err, docs) => {
-        let ids = await Promise.all(docs.map(async (doc) => {
-            return doc._id;
-        }));
-
-        return ids;
-    }); */
-
     const user_ids = await User.find({}, async (err, docs) => {
         let ids = await Promise.all(docs.map(async (doc) => {
             return doc._id;
@@ -181,6 +165,15 @@ const databaseConfig = async () => {
     console.log('user2', user2);
     console.log('business1', business1);
     console.log('business2', business2);
+
+    // Test business start stream and user get available streams
+    await business1.create_stream({
+        field: 'Test field 1',
+    });
+
+    console.log('Here is business1 after stream', business1);
+
+    console.log(await user1.get_connected_businesses());
 }
 
 module.exports = databaseConfig;

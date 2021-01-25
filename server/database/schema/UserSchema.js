@@ -108,19 +108,6 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
 }
 
 
-/**
- * Get stream keys of current streams of businesses the user is connected to
- * 
- * @param {*} cb 
- * 
- * @returns {[String]} stream keys
- */
-UserSchema.methods.get_available_streams = async function(cb) {
-    //TODO
-    return;
-}
-
-
 /* Hooks */
 UserSchema.pre('save', async function(done) {
     if (this.isNew) {
