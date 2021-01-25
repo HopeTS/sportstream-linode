@@ -230,8 +230,6 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
-BusinessSchema.methods.get_
-
 /**
  * Connect business to a user with given id
  * 
@@ -242,7 +240,7 @@ BusinessSchema.methods.get_
  */
 BusinessSchema.methods.connect_user = async function(id=null, cb) {
     if (!id) return false;
-    if (this.connected_users.contains(id)) return false;
+    if (this.connected_users.includes(id)) return false;
     if (!mongoose.isValidObjectId(id)) return false;
     
     this.connected_users.push(id);
