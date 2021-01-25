@@ -38,8 +38,7 @@ const BusinessSchema = new Schema({
         required: true
     },
     type: {
-        type: String,
-        required: true
+        type: String
     },
     streams: {
         upcoming: {
