@@ -120,6 +120,14 @@ const databaseConfig = async () => {
 
         return ids;
     });
+
+    const business_ids = await Business.find({}, async (err, docs) => {
+        let ids = await Promise.all(docs.map(async (doc) => {
+            return doc._id;
+        }));
+
+        return ids;
+    });
     
     await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
     await user_ids[1].connect_business(business_ids[1].connection_ids[1]);
