@@ -134,7 +134,12 @@ const databaseConfig = async () => {
     console.log('[config] users after connection:');
     await User.find({}, async (err, docs) => {
         if (err) throw err;
-        if (docs) console.log('docs', docs)
+        if (docs) console.log('user docs', docs)
+    })
+
+    await Business.find({}, async (err, docs) => {
+        if (err) throw err;
+        if (docs) console.log('business docs', docs)
     })
     console.log('[config] businesses after connection', business_ids);
     // dont connect user to business
