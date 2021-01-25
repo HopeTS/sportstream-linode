@@ -23,10 +23,17 @@ const MongoD = require('./database/mongod');
 const databaseConfig = require('./dev/databaseConfig');
 const node_media_server = require('./media_server');
 
-const clientRouter = require('./routers/client');
+/* const clientRouter = require('./routers/client');
 const authRouter = require('./routers/auth');
 const settingsRouter = require('./routers/settings');
-const streamsRouter = require('./routers/streams');
+const streamsRouter = require('./routers/streams'); */
+const homeRouter = require('./routers/home');
+const dashboardRouter = require('./routers/dashboard');
+const loginRouter = require('./routers/login');
+const logoutRouter = require('./routers/logout');
+const registerRouter = require('./routers/register');
+const userRouter = require('./routers/user');
+const businessRouter = require('./routers/business');
 const wildcardRouter = require('./routers/wildcard');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
@@ -70,10 +77,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 require('./auth/passport')(passport);
 
-app.use(clientRouter);
-app.use(authRouter);
-app.use(settingsRouter);
-app.use(streamsRouter);
+app.use(homeRouter);
+app.use(dashboardRouter);
+app.use(loginRouter);
+app.use(logoutRouter);
+app.use(registerRouter);
+app.use(userRouter);
+app.use(businessRouter);
 app.use(wildcardRouter);
 if (process.env.NAME === 'development') {
     databaseConfig();
