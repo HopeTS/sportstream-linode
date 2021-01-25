@@ -4,6 +4,7 @@ export {};
  */
 
 const NodeMediaServer = require('node-media-server');
+const chalk = require('chalk');
 
 const config = require('./config/default').nms;
 const Business = require('./database/schema/Schema').Business;
@@ -18,11 +19,30 @@ nms.on('preConnect', (id: any, args: any) => {
 });
 
 nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
-    let stream_key = getStreamKeyFromStreamPath(StreamPath);
     console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
 
+    // Get stream key
+    let streamKey = get_stream_key_from_stream_path(StreamPath);
+
+    // Check for upcoming streams
+    await Business.findOne(
+        {streams: {upcoming: {"$in": [streamKey]}}},
+        async function(err: any, doc: any) {
+            if (err) throw err;
+            if (!doc) {
+                console.log(chalk.yellow('[nms] Invalid business key'));
+                return nms.getSession(id).reject();
+            }
+            await doc.start_stream(streamKey);
+            return console.log(chalk.green(
+                `[nms] ${streamKey} is connected to business ${doc.email}`
+            ))
+
+        }
+    );
+
     // TODO: Fix this for new database schema
-    await Business.findOne({stream_key: stream_key}, (err: any, user: any) => {
+    /* await Business.findOne({stream_key: stream_key}, (err: any, user: any) => {
         console.log('[nms] Ran the nms query');
         if (err) {
             return console.log(err);
@@ -32,12 +52,11 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
             return nms.getSession(id).reject();
         }
         return console.log(`[nms] ${stream_key} is connected to business ${user.email}`);
-    });
+    }); */
 });
 
-const getStreamKeyFromStreamPath = (path: string) => {
+const get_stream_key_from_stream_path = (path: string) => {
     let parts = path.split('/');
-    console.log('Here are the parts', parts)
     return parts[2];
 };  
 
