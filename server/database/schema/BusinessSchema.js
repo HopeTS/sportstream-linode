@@ -230,6 +230,8 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
+BusinessSchema.methods.get_
+
 /**
  * Connect business to a user with given id
  * 
@@ -241,23 +243,10 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
 BusinessSchema.methods.connect_user = async function(id=null, cb) {
     if (!id) return false;
     if (this.connected_users.contains(id)) return false;
-
-
-    const user = await mongoose.models['User'].findOne(
-        {_id: id},
-        async function(err, doc) {
-            if (err) throw err;
-            if (doc) return doc;
-            return false;
-        }
-    );
-    if (!user) return false;
+    if (!mongoose.isValidObjectId(id)) return false;
     
-    // Connect user
-    console.log('[business] found user to connect to', user);
     this.connected_users.push(id);
     await this.save(cb);
-    console.log('[business] here is business after connection', this);
 
     return true;
 }

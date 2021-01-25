@@ -35,6 +35,7 @@ const UserSchema = new Schema({
 UserSchema.methods.connect_business = async function(password=null, cb) {
     if (!password) return false;
 
+    console.log('[user] business password entered:', password)
     const business = await mongoose.models['Business'].findOne(
         {connection_id: {"$in": [password]}},
         async function(err, doc) {
@@ -50,11 +51,8 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
     // Connect business to user
     this.connected_businesses.push(business._id);
     await this.save(cb);
+    await business.connect_user(this._id);
     console.log('[user] here is user after connection', this);
-
-    // Connect user to business if not already
-    const index = business.connected_users.indexOf(this._id);
-    if (index === -1) await business.connect_user(this._id);
     
     return true;
     /* let newConnections = this.connected_businesses || [];

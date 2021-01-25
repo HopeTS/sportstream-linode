@@ -70,7 +70,7 @@ const databaseConfig = async () => {
         await newBusiness.save();
     });
 
-    await User.find({}, async (err, docs) => {
+    /* await User.find({}, async (err, docs) => {
         await Promise.all(docs.map(async (doc) => {
             console.log('[config] Here is a new saved user', doc);
         }));
@@ -80,7 +80,7 @@ const databaseConfig = async () => {
         await Promise.all(docs.map(async (doc) => {
             console.log('[config] Here is a new saved business', doc);
         }));
-    });
+    }); */
 
     let connectBusinessId;
     // Get connection id for user to business connection
@@ -95,7 +95,7 @@ const databaseConfig = async () => {
     });
 
     // connect user to business
-    let connectUser = await User.findOne({}, async function(err, user) {
+    /* let connectUser = await User.findOne({}, async function(err, user) {
         if (err) throw err;
         console.log('Here is the connection id', connectBusinessId)
         await user.connect_business(connectBusinessId);
@@ -108,7 +108,7 @@ const databaseConfig = async () => {
         }));
 
         return ids;
-    });
+    }); */
 
     console.log('[config] Here are the business ids', business_ids);
 
@@ -120,8 +120,11 @@ const databaseConfig = async () => {
         return ids;
     });
     
-    console.log('[config] Here are the user ids', user_ids);
+    await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
+    await user_ids[1].connect_business(business_ids[1].connection_ids[1]);
 
+    console.log('[config] users after connection:', user_ids);
+    console.log('[config] businesses after connection', business_ids);
     // dont connect user to business
 }
 
