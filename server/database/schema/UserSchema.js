@@ -33,9 +33,10 @@ const UserSchema = new Schema({
     },
     type: {
         type: String,
-        required: true
+        default: 'user'
     },
-    connected_businesses: [String]
+    connected_businesses: [String],
+    default: []
 });
 
 
@@ -106,26 +107,5 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
 
     return businesses;
 }
-
-
-/* Hooks */
-UserSchema.pre('save', async function(done) {
-    if (this.isNew) {
-        if (this.connected_businesses = undefined) {
-            this.connected_businesses = [];
-        }
-        this.type = 'user';
-    }
-});
-
-UserSchema.post('insertMany', async function(docs, next) {
-    docs.forEach((doc) => {
-        // TODO: connect to business if applicable
-    });
-});
-
-UserSchema.post('insert', (err, next) => {
-    // TODO: connect to business if applicable
-});
 
 module.exports = UserSchema;

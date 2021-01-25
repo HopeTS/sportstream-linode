@@ -27,10 +27,11 @@ const StreamSchema = new Schema({
     status: {
         type: String,
         enum: ['upcoming', 'current', 'previous'],
-        required: true
+        default: 'upcoming'
     },
     key: {
-        type: String
+        type: String,
+        default: ''
     }
 });
 

@@ -38,25 +38,30 @@ const BusinessSchema = new Schema({
         required: true
     },
     type: {
-        type: String
+        type: String,
+        default: 'business',
     },
     streams: {
         upcoming: {
-            type: [String]
+            type: [String],
+            default: []
         },
         current: {
-            type: [String]
+            type: [String],
+            default: []
         },
         previous: {
-            type: [String]
+            type: [String],
+            default: []
         }
     },
     connection_ids: {
         type: [String],
-        required: true
+        default: []
     },
     connected_users: {
-        type: [String]
+        type: [String],
+        default: []
     }
 });
 
@@ -111,7 +116,6 @@ BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
     stream.field = streamData.field ? streamData.field : 'New Stream';
     stream.business = this._id;
     stream.key = await stream.generate_key();
-    stream.status = 'upcoming';
     await stream.save();
 
     // Add stream to upcoming streams
@@ -314,20 +318,5 @@ BusinessSchema.methods.connect_user = async function(id=null, cb) {
 BusinessSchema.methods.disconnect_user = async function(cb) {
     // TODO
 }
-
-
-/* Hooks */
-BusinessSchema.pre('save', async function(done) {
-    if (this.isNew) {
-        this.streams = {
-            upcoming: [],
-            current: [],
-            previous: []
-        };
-        this.connection_ids = [];
-        this.connected_users = [];
-        this.type = 'business';
-    } 
-});
 
 module.exports = BusinessSchema;
