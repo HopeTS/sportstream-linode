@@ -162,7 +162,8 @@ const databaseConfig = async () => {
 
     console.log('Here is business1 after stream', business1);
 
-    console.log(await user1.get_connected_businesses());
+    const userDocs = await user1.get_connected_businesses();
+    console.log('userDocs', userDocs);
 }
 
 module.exports = databaseConfig;
