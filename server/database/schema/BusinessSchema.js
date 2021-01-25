@@ -62,31 +62,6 @@ const BusinessSchema = new Schema({
 
 
 /**
- * Adds a new upcoming stream to the business
- * 
- * @param {*} streamData stream data
- * @param {*} cb callback function
- */
-BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
-
-    // Create the stream
-    let stream = new Stream;
-    let streamId = stream._id;
-    stream.field = streamData.field ? streamData.field : 'New Stream';
-    stream.business = this._id;
-    stream.key = stream.generate_key();
-    stream.status = 'upcoming';
-    stream.save(callback);
-
-    // Add stream to upcoming streams
-    console.log('Here is the new stream id', streamId);
-    this.streams.upcoming.push(streamId);
-    await this.save(cb);
-    return this;
-}
-
-
-/**
  * Adds a connection_id
  * 
  * @param {*} cb callback function
@@ -119,6 +94,31 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
     await this.connection_ids.push(connectionId);
     await this.save(cb);
     return;
+}
+
+
+/**
+ * Adds a new upcoming stream to the business
+ * 
+ * @param {*} streamData stream data
+ * @param {*} cb callback function
+ */
+BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
+
+    // Create the stream
+    let stream = new Stream;
+    let streamId = stream._id;
+    stream.field = streamData.field ? streamData.field : 'New Stream';
+    stream.business = this._id;
+    stream.key = stream.generate_key();
+    stream.status = 'upcoming';
+    await stream.save();
+
+    // Add stream to upcoming streams
+    console.log('Here is the new stream id', streamId);
+    this.streams.upcoming.push(streamId);
+    await this.save(cb);
+    return this;
 }
 
 

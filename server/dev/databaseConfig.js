@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
+const Stream = require('../database/schema/Schema').Stream;
 
 /**
  * Configure database for development
@@ -70,18 +71,6 @@ const databaseConfig = async () => {
         await newBusiness.save();
         return newBusiness;
     }));
-
-    /* await User.find({}, async (err, docs) => {
-        await Promise.all(docs.map(async (doc) => {
-            console.log('[config] Here is a new saved user', doc);
-        }));
-    });
-
-    await Business.find({}, async (err, docs) => {
-        await Promise.all(docs.map(async (doc) => {
-            console.log('[config] Here is a new saved business', doc);
-        }));
-    }); */
 
     let connectBusinessId;
     // Get connection id for user to business connection
@@ -168,7 +157,7 @@ const databaseConfig = async () => {
 
     // Test business start stream and user get available streams
     await business1.create_stream({
-        field: 'Test field 1',
+        field: 'Test field 1
     });
 
     console.log('Here is business1 after stream', business1);
