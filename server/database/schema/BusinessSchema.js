@@ -262,6 +262,7 @@ BusinessSchema.pre('save', async function(done) {
             previous: []
         };
         this.connection_ids = [];
+        this.connected_users = [];
         this.type = 'business';
     } 
 });
