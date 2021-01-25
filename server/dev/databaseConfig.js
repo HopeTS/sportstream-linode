@@ -111,8 +111,6 @@ const databaseConfig = async () => {
         return ids;
     }); */
 
-    console.log('[config] Here are the business ids', business_ids);
-
     const user_ids = await User.find({}, async (err, docs) => {
         let ids = await Promise.all(docs.map(async (doc) => {
             return doc._id;
