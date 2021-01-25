@@ -247,6 +247,7 @@ BusinessSchema.methods.connect_user = async function(id=null, cb) {
     }
     
     this.connected_users.push(id);
+    console.log('[business] inside of connect user', this)
     await this.save(cb);
 
     return true;
