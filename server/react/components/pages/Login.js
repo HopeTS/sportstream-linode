@@ -65,40 +65,6 @@ export class Login extends React.Component {
         else this.handle_form_error('Something went wrong on our end. Try again in a few minutes.');
     }
 
-    /** Handles login for Business account */
-    login_business = () => {
-        axios.post('/login-business', { 
-            email: this.state.email,
-            password: this.state.password
-        })
-        
-        .then((res) => {
-            if (res.status === 202) {
-                const stream_key = res.data.stream_key || [];
-                const connection_id = res.data.connection_id || [];
-                this.props.login({
-                    name: res.data.name,
-                    email: res.data.email,
-                    stream_key: stream_key,
-                    connection_id: connection_id,
-                    type: 'business'
-                });
-                this.props.history.push('/');
-            }
-
-            else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-            }
-        })
-
-        .catch((err) => {
-            if (err.response.status === 404) {
-                return this.handleFormError("Invalid email/password");
-            }
-            return this.handleFormError(error.response.status);
-        });
-    }
-
     /** Handles login for User account */
     handle_login_user = () => {
         const user = server_login_user(this.state.email, this.state.password);
