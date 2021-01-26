@@ -67,24 +67,32 @@ export class Login extends React.Component {
 
     /** Handles login for User account */
     handle_login_user = () => {
-        server_login_user(this.state.email, this.state.password)
+        const account = server_login_user(this.state.email, this.state.password)
         .then((user) => {
-            console.log('user after login', user)
+            console.log('user after login', user);
+            return user;
         })
         .catch((err) => {
-            console.log(err)
-        })
+            console.log(err);
+            return false;
+        });
+
+        console.log('Here is account', account);
     }
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        server_login_business(this.state.email, this.state.password)
+        const account = server_login_business(this.state.email, this.state.password)
         .then((business) => {
-            console.log('business after login', business)
+            console.log('business after login', business);
+            return business;
         })
         .catch((err) => {
-            console.log(err)
+            console.log(err);
+            return false;
         })
+
+        console.log('Here is account', account);
     }
 
     /** Handles form error */
