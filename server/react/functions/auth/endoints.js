@@ -26,7 +26,7 @@ export const server_login_user = (email, password) => {
     }
 
     // Send login post
-    const res = axios.post('/login/user', {
+    const user = axios.post('/login/user', {
         email: email,
         password: password
     })
@@ -43,7 +43,7 @@ export const server_login_user = (email, password) => {
         return false;
     });
 
-    return res;
+    return user;
 }
 
 /**
@@ -72,7 +72,7 @@ export const server_login_business = (email, password)  => {
     }
 
     // Send login post
-    axios.post('/login/business', {
+    const business = axios.post('/login/business', {
         email: email,
         password: password
     })
@@ -84,7 +84,10 @@ export const server_login_business = (email, password)  => {
 
     .catch((error) => {
         console.log('something went wrong on /login/business endpoint');
-    })
+        return false;
+    });
+
+    return business;
 }
 
 export const server_logout = () => {
