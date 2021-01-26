@@ -52,7 +52,7 @@ router.get('/user/business-info', (req, res) => {
  * 
  * @returns {boolean} true if successful, else false
  */
-Router.get('/user/connect-to-business', (req, res) => {
+router.get('/user/connect-to-business', (req, res) => {
     // TODO
 })
 
