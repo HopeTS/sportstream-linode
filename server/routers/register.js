@@ -5,6 +5,7 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
 const http2https = require('../middleware/http2https');
 const config = require('../config/default');
