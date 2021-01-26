@@ -47,4 +47,14 @@ router.get('/user/business-info', (req, res) => {
 });
 
 
+/**
+ * Connect a user to a business
+ * 
+ * @returns {boolean} true if successful, else false
+ */
+Router.get('/user/connect-to-business', (req, res) => {
+    // TODO
+})
+
+
 module.exports = router;

@@ -10,6 +10,7 @@ const http2https = require('../middleware/http2https');
 const config = require('../config/default');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
+const Stream = require('../database/schema/Schema').Stream;
 
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
@@ -34,8 +35,10 @@ router.use(bodyParser.urlencoded({extended: true}));
  *      connected users (the business public docs)
  * }
  */
-router.get('/business/info', (req, res) => {
+router.get('/business/info', ensureLoggedIn(), (req, res) => {
     // TODO
+    console.log('business/info called')
+    return res.send();
 });
 
 
