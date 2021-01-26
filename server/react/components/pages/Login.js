@@ -23,7 +23,7 @@ export class Login extends React.Component {
             formError: ''
         };
 
-        this.handleLogout();
+        this.handle_logout();
     };
 
     componentWillMount() {
