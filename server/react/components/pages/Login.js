@@ -68,10 +68,14 @@ export class Login extends React.Component {
 
     /** Handles login for User account */
     handle_login_user = () => {
-        const account = server_login_user(this.state.email, this.state.password)
+        server_login_user(this.state.email, this.state.password)
         .then((user) => {
             console.log('user after login', user);
             return user;
+        })
+        .then((user) => {
+            console.log('user after login', user)
+            this.props.login(user);
         })
         .catch((err) => {
             console.log(err);
@@ -83,7 +87,7 @@ export class Login extends React.Component {
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        const account = server_login_business(this.state.email, this.state.password)
+        server_login_business(this.state.email, this.state.password)
         .then((business) => {
             console.log('business after login', business);
             if (!business) throw new Error('Business not logged in');
@@ -95,9 +99,7 @@ export class Login extends React.Component {
         .catch((err) => {
             console.log(err);
             return false;
-        })
-
-        console.log('Here is account', account);
+        });
     }
 
     /** Handles form error */
