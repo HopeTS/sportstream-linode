@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login} from '../../redux/actions/auth';
+import {clear_state} from '../../functions/auth/local_storage';
+import {clear_cookies} from '../../functions/auth/cookies';
 import {
     server_login_user, server_login_business
 } from '../../functions/auth/server_login';
@@ -29,6 +31,8 @@ export class Register extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Register');
+        clear_state();
+        clear_cookies();
     };
 
     /**

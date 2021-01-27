@@ -28,7 +28,8 @@ export class Login extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Login');
-
+        clear_state();
+        clear_cookies();
     };
 
     /** Handler for account type input field */
@@ -82,10 +83,14 @@ export class Login extends React.Component {
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        const account = server_login_business(this.state.email, this.state.password)
+        server_login_business(this.state.email, this.state.password)
         .then((business) => {
             console.log('business after login', business);
+            if (!business) throw new Error('Business not logged in');
             return business;
+        })
+        .then((business) => {
+            this.props.login(business);
         })
         .catch((err) => {
             console.log(err);

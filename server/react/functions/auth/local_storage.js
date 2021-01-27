@@ -2,13 +2,13 @@ const axios = require('axios');
 
 
 /**
- * Loads the Redux store from localStorage if it exists
+ * Loads the Redux store from local_storage if it exists
  * 
  * @returns {*|undefined} The Redux store
  */
-export const loadState = () => {
+export const load_state = () => {
     try {
-        // Pull state from localStorage
+        // Pull state from local_storage
         const serializedState = localStorage.getItem('state');
         if (serializedState === null) return undefined;
        
@@ -29,7 +29,7 @@ export const loadState = () => {
 
 
 /**
- * Stores the Redux state in localStorage
+ * Stores the Redux state in local_storage
  * 
  * @param {*} state The Redux store
  */
@@ -47,7 +47,7 @@ export const save_state = (state) => {
 
 
 /**
- * Clears the Redux state from localStorage
+ * Clears the Redux state from local_storage
  */
 export const clear_state = () => {
     localStorage.clear();
