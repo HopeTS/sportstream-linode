@@ -2,8 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
-import config from '../../../config/default';
-
 export function BusinessDashboard() {
     return (
         <div className="BusinessDashboard">

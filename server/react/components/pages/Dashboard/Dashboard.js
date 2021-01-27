@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
-import config from '../../../config/default';
 import {page_ID__Set} from '../../../redux/actions/page';
 import BusinessDashboard from './BusinessDashboard';
 import UserDashboard from './UserDashboard';
