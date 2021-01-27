@@ -5,11 +5,11 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login, logout} from '../../redux/actions/auth';
-import {clearState} from '../../functions/auth/localStorage';
+import {clearState} from '../../functions/auth/local_storage';
 import {clearCookies} from '../../functions/auth/cookies';
 import {
     server_login_user, server_login_business
-} from '../../functions/auth/endoints';
+} from '../../functions/auth/server_login';
 
 
 /* Component */
@@ -136,7 +136,7 @@ export class Login extends React.Component {
                     className="Login__form"
                 >
                     <div className="Login__account-type">
-                        <label htmlFor="account_type">I am a...</label>
+                        <label htmlFor="account_type">I am addd...</label>
 
                         <select 
                             name="account_type" 

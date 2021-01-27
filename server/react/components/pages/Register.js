@@ -5,7 +5,12 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login} from '../../redux/actions/auth';
-
+import {
+    server_login_user, server_login_business
+} from '../../functions/auth/server_login';
+import {
+    server_register_user, server_register_business
+} from '../../functions/auth/server_register';
 
 /* Component */
 export class Register extends React.Component {
@@ -33,13 +38,13 @@ export class Register extends React.Component {
      *  the config of the express server in order for the business account to 
      *  successfully register
      */
-    setBusinessKey = (business_key) => {
+    set_business_key = (business_key) => {
         this.setState({
             ...this.state,
             business_key: business_key
         });
 
-        this.clearFormError();
+        this.clear_form_error();
     }
 
     /**
@@ -49,13 +54,13 @@ export class Register extends React.Component {
      *  with the corresponding business' connection_id to give the user access
      *  to the business streams
      */
-    setBusinessPassword = (business_password) => {
+    set_business_password = (business_password) => {
         this.setState({
             ...this.state,
             business_password: business_password
         });
 
-        this.clearFormError();
+        this.clear_form_error();
     }
 
     /** Handler for name input field */
@@ -65,7 +70,7 @@ export class Register extends React.Component {
             name: name
         });
 
-        this.clearFormError();
+        this.clear_form_error();
     }
 
     /** Handler for email input field */
@@ -75,7 +80,7 @@ export class Register extends React.Component {
             email: email
         });
 
-        this.clearFormError();
+        this.clear_form_error();
     }
 
     /** Handler for password input field */
@@ -85,7 +90,7 @@ export class Register extends React.Component {
             password: password
         });
 
-        this.clearFormError();
+        this.clear_form_error();
     }
 
     /** Handler for account type input field */
@@ -95,85 +100,61 @@ export class Register extends React.Component {
             type: type
         });
 
-        this.clearFormError();
+        this.clear_form_error();
     }
 
     /** Handle registration form submission */
     register = () => {
         if (this.state.type === 'business') {
-            this.registerBusiness();
+            this.handle_register_business();
         } else {
-            this.registerUser();
+            this.handle_register_user();
         }
     }
 
     /** Handle registration for business account */
-    registerBusiness = () => {
-        axios({
-            method: "post",
-            data: {
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password,
-                business_key: this.state.business_key
-            },
-            withCredentials: true,
-            url: `${window.location.origin}/register-${this.state.type}`,
+    handle_register_business = () => {
+        const account = server_register_business({
+            name: this.state.name,
+            email: this.state.email,
+            password: this.state.password,
+            business_key: this.state.business_key
         })
-        
-        .then((res) => {
-            if (res.status === 201) {
-                this.loginBusiness();
-            }
 
-            // Other error
-            else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-            }
+        .then((business) => {
+            console.log(business);
+            if (!business) throw new Error();
+            this.handle_login_business(business.email, business.password)
         })
 
         .catch((error) => {
-            this.handleFormError(error.response.data);
-        });
+            this.handle_form_error('Something went wrong on our end. Please try again in a few minutes.');
+            return;
+        })
     }
 
-    /** Handles login for Business account */
-    loginBusiness = () => {
-        axios.post('/login-business', { 
-            email: this.state.email,
-            password: this.state.password
-        })
-        
+    /** 
+     * Handles login for Business account 
+     * 
+     * @param {string} email account email address
+     * @param {string} password account password
+     * 
+     */
+    handle_login_business = (email, password) => {
+        server_login_business(email, password)
+
         .then((res) => {
-            if (res.status === 202) {
-                console.log('Here is the business', res.data);
-
-                const stream_key = res.data.stream_key || [];
-                const connection_id = res.data.connection_id || [];
-                this.props.login({
-                    name: res.data.name,
-                    email: res.data.email,
-                    stream_key: stream_key,
-                    connection_id: connection_id,
-                    type: 'business'
-                });
-                this.props.history.push('/');
-            }
-
-            else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-            }
+            console.log('front end business login succccess')
         })
 
-        .catch((error) => {
-            console.log(error)
-            //this.handleFormError(error.response.data);
-        });
+        .catch((err) => {
+            console.log('something went wrong handle business login')
+        })
     }
 
     /** Handle registration for user account */
-    registerUser = () => {
-        axios({
+    handle_register_user = () => {
+        const account = axios({
             method: "post",
             data: {
                 name: this.state.name,
@@ -187,64 +168,55 @@ export class Register extends React.Component {
         
         .then((res) => {
             if (res.status === 201) {
-                this.loginUser();
+                this.handle_login_user(
+                    account.email,
+                    account.password
+                );
             }
 
             // Other error
             else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
+                this.handle_form_error('Something went wrong on our end. Try again in a few minutes.');
             }
         })
 
         .catch((error) => {
-            this.handleFormError(error.response.data);
+            this.handle_form_error(error.response.data);
         });
     }
 
-    /** Handles login for User account */
-    loginUser = () => {
-        axios.post('/login-user', { 
-            email: this.state.email,
-            password: this.state.password
-        })
-        
+    /** 
+     * Handles login for User account 
+     * 
+     * @param {string} email account email address
+     * @param {string} password account password
+     */
+    handle_login_user = (email, password) => {
+        server_login_user(email, password)
+
         .then((res) => {
-            if (res.status === 202) {
-                this.props.login({
-                    name: res.data.name,
-                    email: res.data.email,
-                    type: 'user'
-                });
-                this.props.history.push('/');
-            }
-
-            else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-            }
+            console.log('front end user login succccess')
         })
 
-        .catch((error) => {
-            console.log(error);
-            let errorMessage = error.response ? 
-                error.response.data : 'Something went wrong';
-            this.handleFormError(errorMessage);
-        });
+        .catch((err) => {
+            console.log('something went wrong handle user login')
+        })
     }
 
     /** Handles form error */
-    handleFormError = (errorMessage) => {
+    handle_form_error = (errorMessage) => {
         this.setState({
             ...this.state,
             form_error: errorMessage
         });
 
         setTimeout(() => {
-            this.clearFormError();
+            this.clear_form_error();
         }, 2000)
     }
 
     /** Clears form error */
-    clearFormError = () => {
+    clear_form_error = () => {
         if (this.state.form_error) {
             this.setState({
                 ...this.state,
@@ -315,7 +287,7 @@ export class Register extends React.Component {
                             type="text"
                             name="business_password"
                             id="business_password"
-                            onChange={(e) => this.setBusinessPassword(e.target.value)}
+                            onChange={(e) => this.set_business_password(e.target.value)}
                         />
                     </div>
 
@@ -329,7 +301,7 @@ export class Register extends React.Component {
                             type="text"
                             name="business_key"
                             id="business_key"
-                            onChange={(e) => this.setBusinessKey(e.target.value)}
+                            onChange={(e) => this.set_business_key(e.target.value)}
                         />
                     </div>
 
