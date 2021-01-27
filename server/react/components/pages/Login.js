@@ -83,7 +83,7 @@ export class Login extends React.Component {
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        server_login_business(this.state.email, this.state.password)
+        const account = server_login_business(this.state.email, this.state.password)
         .then((business) => {
             console.log('business after login', business);
             if (!business) throw new Error('Business not logged in');
