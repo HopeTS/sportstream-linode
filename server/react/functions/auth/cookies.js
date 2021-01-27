@@ -1,7 +1,7 @@
 /**
  * Clears the user's cookies from the browser
  */
-export const clearCookies = () => {
+export const clear_cookies = () => {
 
     // Get the user cookie
     let userCookie;

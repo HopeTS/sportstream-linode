@@ -33,7 +33,7 @@ export const loadState = () => {
  * 
  * @param {*} state The Redux store
  */
-export const saveState = (state) => {
+export const save_state = (state) => {
 
     try {
         const serializedState = JSON.stringify(state);
@@ -49,7 +49,7 @@ export const saveState = (state) => {
 /**
  * Clears the Redux state from localStorage
  */
-export const clearState = () => {
+export const clear_state = () => {
     localStorage.clear();
     return;
 }

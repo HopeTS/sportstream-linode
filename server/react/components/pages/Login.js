@@ -5,8 +5,8 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login, logout} from '../../redux/actions/auth';
-import {clearState} from '../../functions/auth/local_storage';
-import {clearCookies} from '../../functions/auth/cookies';
+import {clear_state} from '../../functions/auth/local_storage';
+import {clear_cookies} from '../../functions/auth/cookies';
 import {
     server_login_user, server_login_business
 } from '../../functions/auth/server_login';
@@ -125,8 +125,8 @@ export class Login extends React.Component {
      */
     handle_logout = () => {
         this.props.logout();
-        clearCookies();
-        clearState();
+        clear_cookies();
+        clear_state();
     }
 
     render() {

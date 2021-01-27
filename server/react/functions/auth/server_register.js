@@ -8,7 +8,6 @@ import axios from 'axios';
  * @returns {object | false} account info if registration successful, else false
  */
 export const server_register_user = (credentials) => {
-    // TODO
     const account = axios({
         method: "post",
         data: {

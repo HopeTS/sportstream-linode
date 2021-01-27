@@ -7,8 +7,8 @@ import {
     navMenu_Mobile__Off, accountMenu__Off
 } from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
-import { clearState } from '../../../functions/auth/localStorage';
-import { clearCookies } from '../../../functions/auth/cookies';
+import { clear_state } from '../../../functions/auth/localStorage';
+import { clear_cookies } from '../../../functions/auth/cookies';
 
 
 /**
@@ -34,8 +34,8 @@ export class AccountCardAuthMenuBusiness extends React.Component {
         });
 
         // client logout
-        clearState();
-        clearCookies();
+        clear_state();
+        clear_cookies();
         this.props.logout();
     }
 

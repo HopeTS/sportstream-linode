@@ -6,8 +6,8 @@ import {NavLink} from 'react-router-dom';
 import config from '../../../config/default';
 import {page_ID__Set} from '../../redux/actions/page';
 import {logout} from '../../redux/actions/auth';
-import {clearState} from '../../functions/auth/localStorage';
-import {clearCookies} from '../../functions/auth/cookies';
+import {clear_state} from '../../functions/auth/localStorage';
+import {clear_cookies} from '../../functions/auth/cookies';
 
 /** Watch page (/watch) */
 export class Watch extends React.Component {
