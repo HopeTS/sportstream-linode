@@ -126,7 +126,7 @@ export class Login extends React.Component {
 
     /**
      *  A User cannot access the login route unless they are not logged into
-     *  the server, so the cookies and localStorage must be cleared.
+     *  the server, so the cookies and local_storage must be cleared.
      */
     handle_logout = () => {
         this.props.logout();

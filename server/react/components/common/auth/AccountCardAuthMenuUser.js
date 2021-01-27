@@ -7,7 +7,7 @@ import {
     navMenu_Mobile__Off, accountMenu__Off
 } from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
-import { clear_state } from '../../../functions/auth/localStorage';
+import { clear_state } from '../../../functions/auth/local_storage';
 import { clear_cookies } from '../../../functions/auth/cookies';
 
 /**
@@ -20,7 +20,7 @@ export class AccountCardAuthMenuUser extends React.Component {
     }
 
     /**
-     * Logs user out from server and clears localStorage and cookie 
+     * Logs user out from server and clears local_storage and cookie 
      * authentication data
      */
     logout = () => {
