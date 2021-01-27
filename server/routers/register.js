@@ -34,7 +34,7 @@ router.get('/register', ensureLoggedOut(), (req, res) => {
 });
 
 
-router.post('/register/user', ensureLoggedOut(), (req, res) => {
+router.post('/register/user', ensureLoggedOut(), async (req, res) => {
     try {
         console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
         
@@ -102,7 +102,7 @@ router.post('/register/user', ensureLoggedOut(), (req, res) => {
 });
 
 
-router.post('/register/business', ensureLoggedOut(), (req, res) => {
+router.post('/register/business', ensureLoggedOut(), async (req, res) => {
     try {
         console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
 
