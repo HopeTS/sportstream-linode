@@ -6,7 +6,7 @@ import {page_ID__Set} from '../../../redux/actions/page';
 import BusinessDashboard from './BusinessDashboard';
 import UserDashboard from './UserDashboard';
 
-export function Dashboard() {
+export function Dashboard(props) {
     return (
         <div className="Dashboard">
             {/* Add section for account information */}
