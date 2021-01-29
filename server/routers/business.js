@@ -43,13 +43,16 @@ router.get('/business/info', ensureLoggedIn(), async (req, res) => {
             {_id: req.user},
             async (err, doc) => {
                 if (err) throw err;
-                if (doc) return await doc.get_personal_doc();
+                if (doc) return doc;
                 return false;
             }
         );
         if (!business) return res.status(500).send();
 
-        return res.status(200).send(business);
+        const personalDoc = await business.get_personal_doc();
+        console.log('Found business doc, here is personal doc', personalDoc);
+
+        return res.status(200).send(personalDoc);
     } 
     
     catch (e) {
