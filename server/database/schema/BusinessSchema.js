@@ -276,6 +276,33 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
+BusinessSchema.methods.get_personal_doc = async function(cb) {
+    let personalDoc= {};
+
+    // Static data
+    personalDoc.name = this.name;
+    personalDoc.email = this.email;
+    personalDoc.type = this.type;
+
+    // Stream data
+    const upcomingStreams = await this.get_upcoming_streams();
+    const currentStreams = await this.get_current_streams();
+    const previousStreams = await this.get_previous_streams();
+
+    personalDoc.streams = {
+        upcoming: upcomingStreams,
+        current: currentStreams,
+        previous: previousStreams
+    };
+
+    // Get User / connection data
+    personalDoc.connection_ids = this.connection_ids;
+    personalDoc.connected_users =  await this.get_connected_users();
+
+    console.log('Here is the business personal doc', personalDoc);
+    return personalDoc;
+}
+
 
 /**
  * Get business doc information only available to users connected to the
@@ -295,6 +322,25 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
     return doc;
 }
 
+/**
+ * Get docs of all connected users
+ */
+Business.methods.get_connected_users = async function(cb) {
+    const users = await Promise.all(
+        this.connected_users.map(async (user) => {
+            mongoose.models['User'].findOne(
+                {_id: user}, async (err, doc) => {
+                    if (err) throw err;
+                    if (!doc) return false;
+                    return doc;
+                }
+            )
+        })
+    );
+
+    console.log('Here are the results of get_users', users);
+    return users;
+}
 
 /**
  * Connect business to a user with given id

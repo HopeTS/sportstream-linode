@@ -43,7 +43,7 @@ router.get('/business/info', ensureLoggedIn(), async (req, res) => {
             {_id: req.user},
             async (err, doc) => {
                 if (err) throw err;
-                if (doc) return doc;
+                if (doc) return await doc.get_personal_doc();
                 return false;
             }
         );
