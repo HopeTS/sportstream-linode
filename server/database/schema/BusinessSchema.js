@@ -325,7 +325,7 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
 /**
  * Get docs of all connected users
  */
-Business.methods.get_connected_users = async function(cb) {
+BusinessSchema.methods.get_connected_users = async function(cb) {
     const users = await Promise.all(
         this.connected_users.map(async (user) => {
             mongoose.models['User'].findOne(
