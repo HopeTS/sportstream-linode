@@ -276,6 +276,13 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
+/**
+ * Get Business information only available to the specific business
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {object} personal doc
+ */
 BusinessSchema.methods.get_personal_doc = async function(cb) {
     let personalDoc= {};
 

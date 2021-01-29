@@ -20,7 +20,7 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
-router.get('/dashboard', (req, res) => {
+router.get('/dashboard', ensureLoggedIn(), (req, res) => {
     res.sendFile(appRoute);
 });
 

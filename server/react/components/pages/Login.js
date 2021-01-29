@@ -76,7 +76,7 @@ export class Login extends React.Component {
         .then((user) => {
             console.log('user after login', user)
             this.props.login(user);
-            this.props.history.push('/');
+            this.props.history.push('/dashboard');
         })
         .catch((err) => {
             console.log(err);
