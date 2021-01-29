@@ -33,7 +33,7 @@ export function BusinessDashboard(props) {
         // TODO
         axios.get('/business/info')
         .then((res) => {
-            console.log('/business/info body', res.body)
+            console.log('/business/info body', res)
         })
         if (!loaded) setLoaded(true);
         return;
