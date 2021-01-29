@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
+import axios from 'axios';
 
 import {get_business_info_personal} from '../../../functions/get/fetch_info'
 
