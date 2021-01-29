@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
-export function UserDashboard() {
+export function UserDashboard(props) {
     return (
         <div className="UserDashboard">
             {/*

@@ -6,7 +6,7 @@ import {get_business_info_personal} from '../../../functions/get/fetch_info'
 
 import StreamInfoCard from '../../StreamInfoCard';
 
-export function BusinessDashboard() {
+export function BusinessDashboard(props) {
 
     const [loaded, setLoaded] = useState(false);
     
