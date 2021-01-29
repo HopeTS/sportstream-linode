@@ -9,7 +9,8 @@ import UserDashboard from './UserDashboard';
 export function Dashboard() {
     return (
         <div className="Dashboard">
-            {props.account.type}
+            {/* Add section for account information */}
+
             {props.account.type === 'user' ?
                 <UserDashboard />
                 :

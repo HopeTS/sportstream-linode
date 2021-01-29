@@ -33,13 +33,42 @@ router.use(bodyParser.urlencoded({extended: true}));
  *          current
  *          previous
  *      connected users (the business public docs)
+ *      connection IDs
  * }
  */
 router.get('/business/info', ensureLoggedIn(), (req, res) => {
+    try {
+        // Find Business account
+        const business = await Business.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!business) return res.status(500).send();
+
+        // Get business info
+        const info = await 
+    } 
+    
+    catch (e) {
+        return res.status(500).send();
+    }
     // TODO
     console.log('business/info called')
     return res.send();
 });
+
+/**
+ * Creates a stream with the given data
+ */
+router.post('/business/create-stream', ensureLoggedIn, async (req, res) => {
+    // TODO (req.body.stream)
+});
+
+
 
 
 module.exports = router;

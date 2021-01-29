@@ -5,7 +5,11 @@ import {NavLink} from 'react-router-dom';
 export function UserDashboard() {
     return (
         <div className="UserDashboard">
-            {props.account.type}
+            {/*
+                Requirements
+                    View connected Businesses
+                    View all currently available streams
+            */}
         </div>
     );
 }
