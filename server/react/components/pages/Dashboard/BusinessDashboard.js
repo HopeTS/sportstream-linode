@@ -28,7 +28,7 @@ export function BusinessDashboard() {
     /**
      * Fetches Account data from server to populate state
      */
-    get_data() {
+    get_data = () => {
         // TODO
         axios.get('/business/info')
         .then((res) => {
@@ -41,7 +41,7 @@ export function BusinessDashboard() {
     /**
      * Generates a new upcoming stream
      */
-    add_stream() {
+    add_stream = () => {
         // TODO
 
     }
