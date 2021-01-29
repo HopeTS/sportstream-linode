@@ -49,8 +49,7 @@ router.get('/business/info', ensureLoggedIn(), async (req, res) => {
         );
         if (!business) return res.status(500).send();
 
-        // Get business info
-        const info = await 
+        return res.status(200).send(business);
     } 
     
     catch (e) {
