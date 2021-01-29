@@ -36,7 +36,7 @@ router.use(bodyParser.urlencoded({extended: true}));
  *      connection IDs
  * }
  */
-router.get('/business/info', ensureLoggedIn(), (req, res) => {
+router.get('/business/info', ensureLoggedIn(), async (req, res) => {
     try {
         // Find Business account
         const business = await Business.findOne(
