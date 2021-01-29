@@ -38,6 +38,7 @@ router.use(bodyParser.urlencoded({extended: true}));
  */
 router.get('/business/info', ensureLoggedIn(), async (req, res) => {
     try {
+        console.log('business/info endpoint req', req)
         // Find Business account
         const business = await Business.findOne(
             {_id: req.user},
