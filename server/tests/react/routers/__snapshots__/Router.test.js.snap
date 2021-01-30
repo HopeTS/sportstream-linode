@@ -6,8 +6,9 @@ exports[`Render Router 1`] = `
     data-loaded={false}
     data-loading={false}
     id="Router"
+    onClick={[Function]}
   >
-    <Header />
+    <Connect(Header) />
     <Switch>
       <Route
         component={[Function]}
@@ -17,7 +18,27 @@ exports[`Render Router 1`] = `
       <Route
         component={[Function]}
         exact={true}
-        path="/StyleGuide"
+        path="/login"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/register"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/dashboard"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/watch"
+      />
+      <Route
+        component={[Function]}
+        exact={true}
+        path="/account"
       />
       <Route
         component={[Function]}

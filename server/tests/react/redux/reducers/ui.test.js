@@ -1,14 +1,15 @@
-/* Reducer */
 import UI_Reducer from '../../../../react/redux/reducers/ui';
 
+const uiDefaultState = {
+    navMenu_Mobile: false,
+    accountMenu: false
+}
 
-/* Tests */
+
 test('UI_Reducer default state', () => {
     const state = UI_Reducer(undefined, {type: '@@init'});
 
-    expect(state).toEqual({
-        navMenu_Mobile: false
-    });
+    expect(state).toEqual(uiDefaultState);
 });
 
 
@@ -21,7 +22,7 @@ test('Toggle mobile nav', () => {
 
 test('Toggle mobile nav on', () => {
     const state = UI_Reducer(
-        {navMenu_Mobile: false}, 
+        {...uiDefaultState, navMenu_Mobile: false}, 
         {type: "MOBILE_NAV__ON"}
     );
 
@@ -31,8 +32,35 @@ test('Toggle mobile nav on', () => {
 
 test('Toggle mobile nav off', () => {
     const state = UI_Reducer(
-        {navMenu_Mobile: true},
+        {...uiDefaultState, navMenu_Mobile: true},
         {type: "MOBILE_NAV__OFF"});
 
     expect(state.navMenu_Mobile).toBe(false);
+});
+
+
+test('Toggle account menu', () => {
+    const state = UI_Reducer(undefined, {type: "ACCOUNT_MENU__TOGGLE"});
+
+    expect(state.accountMenu).toBe(true);
+})
+
+
+test('Toggle account menu on', () => {
+    const state = UI_Reducer(
+        {...uiDefaultState, accountMenu: false},
+        {type: "ACCOUNT_MENU__ON"}
+    );
+
+    expect(state.accountMenu).toBe(true);
+});
+
+
+test('Toggle account menu off', () => {
+    const state = UI_Reducer(
+        {...uiDefaultState, accountMenu: true},
+        {type: 'ACCOUNT_MENU__OFF'}
+    );
+
+    expect(state.accountMenu).toBe(false);
 });

@@ -159,11 +159,6 @@ const databaseConfig = async () => {
         }
     );
 
-    console.log('user1', user1);
-    console.log('user2', user2);
-    console.log('business1', business1);
-    console.log('business2', business2);
-
     // Test business start stream and user get available streams
     await business1.create_stream({
         field: 'Test field 1'
@@ -191,6 +186,10 @@ const databaseConfig = async () => {
 
     userDocs = await user1.get_connected_businesses();
     console.log('userDocs after end stream', userDocs);
+
+    const busGetConnectedUsers = await business1.get_connected_users();
+    console.log('Business get_connected_users', busGetConnectedUsers);
+
     return;
 }
 

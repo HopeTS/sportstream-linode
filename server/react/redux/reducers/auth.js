@@ -2,12 +2,10 @@
  *  Reducer for handling authentication in Redux
  */
 
-
-/* Reducer */
 const AuthDefaultState = {
     isAuthenticated: false,
     account: {
-        type: undefined,
+        type: '',
         name: '',
         email: ''
     }
@@ -33,7 +31,7 @@ export default (state = AuthDefaultState, action) => {
                 ...state,
                 isAuthenticated: false,
                 account: {
-                    type: undefined,
+                    type: '',
                     name: '',
                     email: ''
                 }

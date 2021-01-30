@@ -14,19 +14,9 @@ exports[`Render Navigation component 1`] = `
           "text": "Home",
         },
         Object {
-          "href": "/StyleGuide",
+          "href": "/watch",
           "internal": true,
-          "text": "Style Guide",
-        },
-        Object {
-          "href": "https://bergers.dev",
-          "internal": false,
-          "text": "Meet the Dev",
-        },
-        Object {
-          "href": "https://github.com/RobbyB97/JavascriptReactBoilerplate",
-          "internal": false,
-          "text": "View on GitHub",
+          "text": "Watch",
         },
       ]
     }
@@ -40,19 +30,9 @@ exports[`Render Navigation component 1`] = `
           "text": "Home",
         },
         Object {
-          "href": "/StyleGuide",
+          "href": "/watch",
           "internal": true,
-          "text": "Style Guide",
-        },
-        Object {
-          "href": "https://bergers.dev",
-          "internal": false,
-          "text": "Meet the Dev",
-        },
-        Object {
-          "href": "https://github.com/RobbyB97/JavascriptReactBoilerplate",
-          "internal": false,
-          "text": "View on GitHub",
+          "text": "Watch",
         },
       ]
     }
