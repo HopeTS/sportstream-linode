@@ -333,6 +333,7 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
  * Get docs of all connected users
  */
 BusinessSchema.methods.get_connected_users = async function(cb) {
+    console.log('get_connected_users called');
     const users = await Promise.all(
         this.connected_users.map(async (user) => {
             console.log('Here is the user in get_connected_users', user)

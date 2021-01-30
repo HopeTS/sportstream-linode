@@ -23,6 +23,11 @@ const databaseConfig = async () => {
         email: 'user2@gmail.com',
         password: await bcrypt.hash('1234', 10),
         connected_businesses: []
+    }, {
+        name: 'Test3',
+        email: 'user3@gmail.com',
+        password: await bcrypt.hash('1234', 10),
+        connected_businesses: []
     }];
 
     // Clear User collection
