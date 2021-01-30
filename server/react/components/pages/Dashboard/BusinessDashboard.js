@@ -3,8 +3,8 @@ import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
-import {get_business_info_personal} from '../../../functions/get/fetch_info'
-
+import server_business_get_personal_doc from 
+    '../../../functions/business/server_business_get_personal_doc';
 import StreamInfoCard from '../../StreamInfoCard';
 
 export function BusinessDashboard(props) {
@@ -30,12 +30,7 @@ export function BusinessDashboard(props) {
      * Fetches Account data from server to populate state
      */
     const get_data = () => {
-        // TODO
-        axios.get('/business/info')
-        .then((res) => {
-            console.log('/business/info body', res)
-        })
-        if (!loaded) setLoaded(true);
+        server_business_get_personal_doc();
         return;
     }
 
