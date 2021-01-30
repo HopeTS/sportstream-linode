@@ -12,15 +12,6 @@ import server_login_business from '../../functions/login/server_login_business';
 import server_register_user from '../../functions/register/server_register_user';
 import server_register_business from '../../functions/register/server_register_business'; 
 
-import {clear_state} from '../../functions/auth/local_storage';
-import {clear_cookies} from '../../functions/auth/cookies';
-import {
-    server_login_user, server_login_business
-} from '../../functions/auth/server_login';
-import {
-    server_register_user, server_register_business
-} from '../../functions/auth/server_register';
-
 /* Component */
 export class Register extends React.Component {
     constructor(props) {
@@ -38,8 +29,8 @@ export class Register extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Register');
-        clear_state();
-        clear_cookies();
+        clear_localStorage();
+        cookie_logout();
     };
 
     /**
