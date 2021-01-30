@@ -15,7 +15,7 @@ import Watch from '../components/pages/Watch';
 import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
-import load_localStorage from '../functions/localStorage';
+import load_localStorage from '../functions/localStorage/load_localStorage';
 import {accountMenu__Off} from '../redux/actions/ui';
 
 
