@@ -35,8 +35,10 @@ const UserSchema = new Schema({
         type: String,
         default: 'user'
     },
-    connected_businesses: [String],
-    default: []
+    connected_businesses: {
+        type: [String],
+        default: []
+    }
 });
 
 
@@ -71,6 +73,19 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
     await business.connect_user(this._id);
     
     return this;
+}
+
+/**
+ * Returns all data available to Businesses that this User is connected to
+ * 
+ * @param {*} cb callback function
+ */
+UserSchema.methods.get_business_doc = async function(cb) {
+    const businessDoc = {
+        name: this.name,
+        email: this.email,
+        type: this.type
+    }
 }
 
 
