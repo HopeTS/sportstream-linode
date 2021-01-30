@@ -15,7 +15,7 @@ import Watch from '../components/pages/Watch';
 import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
-import {load_state} from '../functions/auth/local_storage';
+import load_localStorage from '../functions/localStorage';
 import {accountMenu__Off} from '../redux/actions/ui';
 
 
@@ -66,7 +66,7 @@ export class Router extends React.Component {
     load_local_storage = () => {
         
         // Check if user is authenticated
-        const userData = load_state();
+        const userData = load_localStorage();
         if (userData) {
             if (userData.auth.isAuthenticated) {
             
