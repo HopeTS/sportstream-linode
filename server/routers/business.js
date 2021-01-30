@@ -23,7 +23,8 @@ router.use(bodyParser.urlencoded({extended: true}));
 
 
 /**
- * Get all information available to business account
+ * Get all information available to business account.
+ * (endpoint for Business.get_personal_doc())
  * 
  * @returns {object} {
  *      name
@@ -36,7 +37,7 @@ router.use(bodyParser.urlencoded({extended: true}));
  *      connection IDs
  * }
  */
-router.get('/business/info', ensureLoggedIn(), async (req, res) => {
+router.get('/business/get-personal-doc', ensureLoggedIn(), async (req, res) => {
     try {
         // Find Business account
         const business = await Business.findOne(
@@ -47,7 +48,7 @@ router.get('/business/info', ensureLoggedIn(), async (req, res) => {
                 return false;
             }
         );
-        if (!business) return res.status(500).send();
+        if (!business) return res.status(404).send();
 
         const personalDoc = await business.get_personal_doc();
         console.log('Found business doc, here is personal doc', personalDoc);
@@ -58,16 +59,121 @@ router.get('/business/info', ensureLoggedIn(), async (req, res) => {
     catch (e) {
         return res.status(500).send();
     }
-    // TODO
-    console.log('business/info called')
-    return res.send();
+});
+
+/**
+ * Returns Business information available to Users connected to the Business
+ */
+router.get('/business/get-user-doc', ensureLoggedIn(), async (req, res) => {
+    try {
+        // Find Business account
+        const business = await Business.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!business) return res.status(404).send();
+
+        const userDoc = await business.get_user_doc();
+        console.log('Found business doc, here is user doc', userDoc);
+
+        return res.status(200).send(userDoc);
+    } 
+    
+    catch (e) {
+        return res.status(500).send();
+    }
+});
+
+/**
+ * Returns User business information for all Users connected to the Business
+ */
+router.get('/business/get-connected-users', ensureLoggedIn(), async (req, res) => {
+    try {
+        // Find Business account
+        const business = await Business.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!business) return res.status(404).send();
+
+        const connectedUsers = await business.get_connected_users();
+        console.log('Found connected users', connectedUsers);
+
+        return res.status(200).send(connectedUsers);
+    } 
+    
+    catch (e) {
+        return res.status(500).send();
+    }
 });
 
 /**
  * Creates a stream with the given data
  */
-router.post('/business/create-stream', ensureLoggedIn, async (req, res) => {
+router.post('/business/create-stream', ensureLoggedIn(), async (req, res) => {
     // TODO (req.body.stream)
+    console.log('create stream called', req.body.stream);
+    return res.status(200).send();
+});
+
+router.get('/business/get-upcoming-streams', ensureLoggedIn(), async (req, res) => {
+    try {
+        // Find Business account
+        const business = await Business.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!business) return res.status(404).send();
+
+        const upcomingStreams = await business.get_upcoming_streams();
+        console.log('Found upcoming streams', upcomingStreams);
+
+        return res.status(200).send(upcomingStreams);
+    }
+
+    catch(e) {
+        return res.status(500).send();
+    }
+});
+
+/**
+ * Connects User to Business (DO NOT USE YET, connections only supported from
+ * User to Business)
+ */
+router.post('business/connect-user', ensureLoggedIn(), async (err, doc) => {
+    if (!req.body.user) return res.status(400).send();
+
+    try {
+        // Find Business account
+        const business = await Business.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!business) return res.status(404).send();
+
+        const saveStatus = await business.connect_user(req.body.user);
+        if (!saveStatus) return res.status(400).send();
+    }
+
+    catch(e) {
+        return res.status(500).send(); 
+    }
 });
 
 
