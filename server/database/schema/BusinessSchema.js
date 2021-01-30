@@ -336,8 +336,8 @@ BusinessSchema.methods.get_connected_users = async function(cb) {
     console.log('get_connected_users called');
     const users = await Promise.all(
         this.connected_users.map(async (user) => {
-            console.log('Here is the user in get_connected_users', user)
-            mongoose.models['User'].findOne(
+            console.log('Here is the user in get_connected_users', user);
+            return await mongoose.models['User'].findOne(
                 {_id: user}, async (err, doc) => {
                     if (err) throw err;
                     if (!doc) return false;
