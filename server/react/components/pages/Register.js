@@ -5,6 +5,13 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login} from '../../redux/actions/auth';
+import clear_localStorage from '../../functions/localStorage/clear_localStorage';
+import cookie_logout from '../../functions/logout/cookie_logout';
+import server_login_user from '../../functions/login/server_login_user';
+import server_login_business from '../../functions/login/server_login_business';
+import server_register_user from '../../functions/register/server_register_user';
+import server_register_business from '../../functions/register/server_register_business'; 
+
 import {clear_state} from '../../functions/auth/local_storage';
 import {clear_cookies} from '../../functions/auth/cookies';
 import {
@@ -145,10 +152,14 @@ export class Register extends React.Component {
      * 
      */
     handle_login_business = (email, password) => {
-        server_login_business(email, password)
+        server_login_business({
+            email: email,
+            password: password
+        })
 
         .then((res) => {
-            console.log('front end business login succccess')
+            console.log('front end business login succccess', res);
+            this.props.history.push('/dashboard');
         })
 
         .catch((err) => {
@@ -196,10 +207,14 @@ export class Register extends React.Component {
      * @param {string} password account password
      */
     handle_login_user = (email, password) => {
-        server_login_user(email, password)
+        server_login_user({
+            email: email,
+            password: password
+        })
 
         .then((res) => {
-            console.log('front end user login succccess')
+            console.log('front end user login succccess', res);
+            this.props.history.push('/dashboard')
         })
 
         .catch((err) => {

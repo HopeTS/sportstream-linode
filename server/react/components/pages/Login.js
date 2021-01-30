@@ -5,14 +5,12 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login, logout} from '../../redux/actions/auth';
-import {clear_state} from '../../functions/auth/local_storage';
-import {clear_cookies} from '../../functions/auth/cookies';
-import {
-    server_login_user, server_login_business
-} from '../../functions/auth/server_login';
+import clear_localStorage from '../../functions/localStorage/clear_localStorage';
+import cookie_logout from '../../functions/logout/cookie_logout';
+import server_login_user from '../../functions/login/server_login_user';
+import server_login_business from '../../functions/login/server_login_business';
 
 
-/* Component */
 export class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -68,7 +66,9 @@ export class Login extends React.Component {
 
     /** Handles login for User account */
     handle_login_user = () => {
-        server_login_user(this.state.email, this.state.password)
+        server_login_user({
+            email: this.state.email, password: this.state.password
+        })
         .then((user) => {
             console.log('user after login', user);
             return user;
@@ -88,7 +88,9 @@ export class Login extends React.Component {
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        server_login_business(this.state.email, this.state.password)
+        server_login_business({
+            email: this.state.email, password: this.state.password
+        })
         .then((business) => {
             console.log('business after login', business);
             if (!business) throw new Error('Business not logged in');
@@ -134,8 +136,8 @@ export class Login extends React.Component {
      */
     handle_logout = () => {
         this.props.logout();
-        clear_cookies();
-        clear_state();
+        cookie_logout();
+        clear_localStorage();
     }
 
     render() {

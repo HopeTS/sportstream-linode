@@ -1,7 +1,6 @@
-/**
- * Clears the user's cookies from the browser
- */
-export const clear_cookies = () => {
+import axios from 'axios';
+
+export default () => {
 
     // Get the user cookie
     let userCookie;
@@ -12,7 +11,6 @@ export const clear_cookies = () => {
             userCookie = cookie[1];
         }
     })
-    if (!userCookie) return;
 
     // Clear the user cookie
     document.cookie = 'user' + '=;'
