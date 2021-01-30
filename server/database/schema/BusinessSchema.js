@@ -72,7 +72,7 @@ const BusinessSchema = new Schema({
  * 
  * @param {*} cb callback function
  * 
- * @returns {object} business
+ * @returns {String | false} Connection ID if successful, else false
  */
 BusinessSchema.methods.generate_connection_id = async function(cb) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -80,28 +80,35 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
     let connectionIdArray = [];
     let connectionId;
 
-    while (!unique) {
-        // Generate the key
-        for ( var i = 0; i < 12; i++ ) {
-            connectionIdArray.push(
-                characters.charAt(Math.floor(Math.random() * characters.length))
-            );
-        }
-        connectionId = connectionIdArray.join('');
-
-        // Ensure key is unique
-        await mongoose.models['Business'].findOne(
-            {connection_id: {"$in": [connectionId]}},
-            async function(err, user) {
-                if (err) throw err;
-                if (!user) unique = true;
+    try {
+        while (!unique) {
+            // Generate the key
+            for ( var i = 0; i < 12; i++ ) {
+                connectionIdArray.push(
+                    characters.charAt(Math.floor(Math.random() * characters.length))
+                );
             }
-        );    
+            connectionId = connectionIdArray.join('');
+    
+            // Ensure key is unique
+            await mongoose.models['Business'].findOne(
+                {connection_id: {"$in": [connectionId]}},
+                async function(err, user) {
+                    if (err) throw err;
+                    if (!user) unique = true;
+                }
+            );    
+        }
+    
+        await this.connection_ids.push(connectionId);
+        await this.save(cb);
+        return connectionId;
     }
 
-    await this.connection_ids.push(connectionId);
-    await this.save(cb);
-    return this;
+    catch(e) {
+        console.error(e);
+        return false;
+    }
 }
 
 
@@ -111,23 +118,30 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
  * @param {*} streamData stream data
  * @param {*} cb callback function
  * 
- * @returns {object} business
+ * @returns {{Stream} | false} stream object
  */
 BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
 
-    // Create the stream
-    let stream = new Stream;
-    let streamId = stream._id;
-    stream.field = streamData.field ? streamData.field : 'New Stream';
-    stream.business = this._id;
-    stream.key = await stream.generate_key();
-    await stream.save();
+    try {
+        // Create the stream
+        let stream = new Stream;
+        let streamId = stream._id;
+        stream.field = streamData.field ? streamData.field : 'New Stream';
+        stream.business = this._id;
+        stream.key = await stream.generate_key();
+        await stream.save();
 
-    // Add stream to upcoming streams
-    console.log('Here is the new stream id', streamId);
-    this.streams.upcoming.push(streamId);
-    await this.save(cb);
-    return this;
+        // Add stream to upcoming streams
+        console.log('Here is the new stream id', streamId);
+        this.streams.upcoming.push(streamId);
+        await this.save(cb);
+        return stream;
+    }
+
+    catch(e) {
+        console.error(e);
+        return res.status(500).send();
+    }
 }
 
 

@@ -20,13 +20,10 @@ const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
-const databaseConfig = require('./dev/databaseConfig');
 const node_media_server = require('./media_server');
 
-/* const clientRouter = require('./routers/client');
-const authRouter = require('./routers/auth');
-const settingsRouter = require('./routers/settings');
-const streamsRouter = require('./routers/streams'); */
+const {devDatabaseConfig} = require('./startupScripts/devDatabaseConfig');
+
 const homeRouter = require('./routers/home');
 const dashboardRouter = require('./routers/dashboard');
 const loginRouter = require('./routers/login');
@@ -39,7 +36,7 @@ const wildcardRouter = require('./routers/wildcard');
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 
 
-/* Connect to MongoDB */
+// Connect to MongoDB
 const mongod = new MongoD(config.mongodb);
 mongod.create_connection();
 mongoose.connect(
@@ -55,7 +52,7 @@ db.once('open', () => {
 });    
 
 
-/* Configure express */
+// Configure express
 const app = express();
 app.use(http2https);
 app.use(express.static(publicPath));
@@ -85,54 +82,63 @@ app.use(registerRouter);
 app.use(userRouter);
 app.use(businessRouter);
 app.use(wildcardRouter);
-if (process.env.NAME === 'development') {
-    databaseConfig();
-}  
 
 
-/* Run server */
-if (process.env.NAME === 'development') {
-    http.createServer(app).listen(process.env.HTTP_PORT, () => {        
-        console.log(chalk.underline.green('Development HTTP server has connected.'));
-        console.log(
-            chalk.bold('HTTP Port:'),
-            chalk.blue(process.env.HTTP_PORT)
-        );
-    });
+// Run startup scripts
+switch (process.env.NAME) {
 
-    node_media_server.run();
+    case 'development':
+        console.log(chalk.blue('Setting up development database'));
+        devDatabaseConfig();
+
+    default:
+        console.log(chalk.blue('Not running any startup scripts.'))
 }
 
-else if (process.env.NAME === 'https_production') {
-    const httpsOptions = {
-        key: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8'),
-        cert: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8'),
-        ca: fs.readFileSync(`${process.env.SSL_DIR}chain.pem`, 'utf8')
-    };
 
-    https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
-        console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
-        console.log(chalk.bold('HTTPS Port:'), chalk.blue(process.env.HTTPS_PORT));
-    });
+// Run server
+switch (process.env.NAME) {
 
-    http.createServer(app).listen(process.env.HTTP_PORT, () => {
-        console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
-        console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
-    });
+    case 'development':
+        http.createServer(app).listen(process.env.HTTP_PORT, () => {        
+            console.log(chalk.underline.green('Development HTTP server has connected.'));
+            console.log(
+                chalk.bold('HTTP Port:'),
+                chalk.blue(process.env.HTTP_PORT)
+            );
+        });
+        node_media_server.run();
 
-    node_media_server.run();
-}
 
-else if (process.env.NAME === 'http_production') {
-    http.createServer(app).listen(process.env.HTTP_PORT, () => {
-        console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
-        console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
-    });
-}
+    case 'https_production':
+        const httpsOptions = {
+            key: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8'),
+            cert: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8'),
+            ca: fs.readFileSync(`${process.env.SSL_DIR}chain.pem`, 'utf8')
+        };
+    
+        https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
+            console.log(chalk.underline.green(`${process.env.NAME} HTTPS server has connected.`));
+            console.log(chalk.bold('HTTPS Port:'), chalk.blue(process.env.HTTPS_PORT));
+        });
+    
+        http.createServer(app).listen(process.env.HTTP_PORT, () => {
+            console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
+            console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
+        });
+    
+        node_media_server.run();
 
-else {
-    console.log(chalk.red(
-    chalk.bold('Error: invalid environment'),
-        'did you forget to add an environment name?'        
-    ));
+
+    case 'http_production':
+        http.createServer(app).listen(process.env.HTTP_PORT, () => {
+            console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
+            console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
+        });
+    
+    default:
+        console.log(chalk.red(
+            chalk.bold('Error: invalid environment'),
+            'did you forget to add an environment name?'        
+        ));
 }
