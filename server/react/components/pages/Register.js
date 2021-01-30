@@ -160,16 +160,9 @@ export class Register extends React.Component {
 
     /** Handle registration for user account */
     handle_register_user = () => {
-        const account = axios({
-            method: "post",
-            data: {
-                name: this.state.name,
-                email: this.state.email,
-                password: this.state.password,
-                business_password: this.state.business_password
-            },
-            withCredentials: true,
-            url: `${window.location.origin}/register-user`,
+        server_login_user({
+            email: this.state.email,
+            password: this.state.password
         })
         
         .then((res) => {
