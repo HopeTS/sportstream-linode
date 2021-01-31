@@ -46,5 +46,7 @@ export default () => {
         type: rawData.type
     }
 
+    console.log('Here is personalDoc', personalDoc)
+
     return personalDoc;
 }

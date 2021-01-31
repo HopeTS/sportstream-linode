@@ -34,6 +34,8 @@ export function BusinessDashboard(props) {
         // Get data
         const personalData = server_business_get_personal_doc();
 
+        console.log('Here is personalData', personalData)
+
         // Populate state
         set_upcoming_streams(personalData.streams.upcoming);
         set_current_streams(personalData.streams.current);
