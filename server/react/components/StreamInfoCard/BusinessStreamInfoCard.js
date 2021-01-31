@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react';
 
 export function BusinessStreamInfoCard(props) {
+
     useEffect(() => {
         console.log(props)
     }, [])
+    
     return (
         <div className="StreamInfoCard" data-type="business">
             <section>

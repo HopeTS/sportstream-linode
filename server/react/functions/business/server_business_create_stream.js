@@ -16,7 +16,9 @@ import axios from 'axios';
  */
 export default (streamData) => {
     return axios.post('/business/create-stream', {
-        field: streamData.field
+        stream: {
+            field: streamData.field
+        }
     }, {
         withCredentials: true
     })
