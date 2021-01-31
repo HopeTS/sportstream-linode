@@ -47,12 +47,15 @@ export function BusinessDashboard(props) {
             set_current_streams(personalData.streams.current);
             set_previous_streams(personalData.streams.previous);
             set_connection_ids(personalData.connection_ids);
-            set_connected_users(personalData.connected_users);    
+            set_connected_users(personalData.connected_users);
+
+            set_loaded(true);
             return;
         })
 
         .catch((err) => {
             set_network_error(true);
+            set_loaded(true);
             return;
         })
     }
@@ -73,7 +76,7 @@ export function BusinessDashboard(props) {
                     <button></button>
                 </section>
 
-                {upcomingStreams.length > 0 ?
+                {loaded ?
                     <section className="BusinessDashboard__stream">
                         <h2>Upcoming Streams</h2>
                         {upcomingStreams.map((stream) => {
@@ -88,7 +91,7 @@ export function BusinessDashboard(props) {
                     </section>
                 }
 
-                {currentStreams.length > 0 ?
+                {loaded ?
                     <section className="BusinessDashboard__controls">
                         <h2>Current Streams</h2>
                         {currentStreams.map((stream) => {
@@ -103,7 +106,7 @@ export function BusinessDashboard(props) {
                     </section>
                 }
 
-                {previousStreams.length > 0 ?
+                {loaded ?
                     <section className="BusinessDashboard__loading">
                         {previousStreams.map((stream) => {
                             <p>{stream.key}</p>
@@ -116,27 +119,6 @@ export function BusinessDashboard(props) {
                         <LoadingSpinner />
                     </section>
                 }
-                
-                <section>
-                    <h3>Current Streams</h3>
-                    {currentStreams.map((stream) => (
-                        <StreamInfoCard {...stream} />
-                    ))}
-                </section>
-    
-                <section>
-                    <h3>Upcoming Streams</h3>
-                    {upcomingStreams.map((stream) => (
-                        <StreamInfoCard {...stream}/>
-                    ))}
-                </section>
-
-                <section>
-                    <h3>Previous Streams</h3>
-                    {previousStreams.map((stream) => (
-                        <StreamInfoCard {...stream} />
-                    ))}
-                </section>
             </article>
 
             <article className="BusinessDashboard__connections">
