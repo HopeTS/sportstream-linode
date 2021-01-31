@@ -50,10 +50,6 @@ export function BusinessDashboard(props) {
             set_connection_ids(personalData.connection_ids);
             set_connected_users(personalData.connected_users);
 
-            console.log('upcoming streams', upcomingStreams)
-            console.log('current streams', currentStreams)
-            console.log('previous streams', previousStreams)
-
             set_loaded(true);
             return;
         })
@@ -84,9 +80,9 @@ export function BusinessDashboard(props) {
                 {loaded ?
                     <section className="BusinessDashboard__stream">
                         <h2>Upcoming Streams</h2>
-                        {upcomingStreams.map((stream) => {
+                        {upcomingStreams.map((stream) => (
                             <p>{stream.key}</p>
-                        })
+                        ))
 
                         }
                     </section>
@@ -114,7 +110,7 @@ export function BusinessDashboard(props) {
                 {loaded ?
                     <section className="BusinessDashboard__stream">
                         {previousStreams.map((stream) => {
-                            <p>{stream.key}</p>
+                            
                         })
 
                         }
