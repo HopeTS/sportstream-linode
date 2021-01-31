@@ -22,7 +22,7 @@ const config = require('./config/default');
 const MongoD = require('./database/mongod');
 const node_media_server = require('./media_server');
 
-const {devDatabaseConfig} = require('./startupScripts/devDatabaseConfig');
+const devDatabaseConfig = require('./startupScripts/devDatabaseConfig');
 
 const homeRouter = require('./routers/home');
 const dashboardRouter = require('./routers/dashboard');
