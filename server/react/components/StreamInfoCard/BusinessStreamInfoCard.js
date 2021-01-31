@@ -9,7 +9,7 @@ export function BusinessStreamInfoCard(props) {
             <section>
                 <p className="StreamInfoCard__field">{props.field}</p>
                 <p className="StreamInfoCard__status">{props.status}</p>
-                <p className="StreamInfoCard__key">{props.key}</p>
+                <p className="StreamInfoCard__key">{props.streamKey}</p>
             </section>
         </div>
     )

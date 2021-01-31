@@ -15,7 +15,7 @@ export function BusinessDashboard(props) {
     // Account data
     const [upcomingStreams, set_upcoming_streams] = useState([]);
     const [currentStreams, set_current_streams] = useState([]);
-    const [previousStreams, set_previous_streams] = useState([]);
+    const [previousStreams, set_previous_streams] = useState([])
     const [connectionIds, set_connection_ids] = useState([]);
     const [connectedUsers, set_connected_users] = useState([]);
 
