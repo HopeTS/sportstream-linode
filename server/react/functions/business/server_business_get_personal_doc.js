@@ -34,12 +34,12 @@ export default () => {
 
     // Clean data
     const personalDoc = {
-        connected_users: res.data.connected_users,
-        connection_ids: res.data.connection_ids,
-        email: res.data.email,
-        name: res.data.name,
-        streams: res.data.streams,
-        type: res.data.type
+        connected_users: rawData.connected_users,
+        connection_ids: rawData.connection_ids,
+        email: rawData.email,
+        name: rawData.name,
+        streams: rawData.streams,
+        type: rawData.type
     }
 
     return personalDoc;
