@@ -6,7 +6,11 @@ export function BusinessStreamInfoCard(props) {
     }, [])
     return (
         <div className="StreamInfoCard" data-type="business">
-            {/* TODO */}
+            <section>
+                <p className="StreamInfoCard__field">{props.field}</p>
+                <p className="StreamInfoCard__status">{props.status}</p>
+                <p className="StreamInfoCard__key">{props.key}</p>
+            </section>
         </div>
     )
 };

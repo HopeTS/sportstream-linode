@@ -82,7 +82,10 @@ export function BusinessDashboard(props) {
                         {upcomingStreams.map((stream) => (
                             <StreamInfoCard 
                                 type='business'
-                                {...stream}
+                                field={stream.field}
+                                streamKey={stream.key}
+                                status={stream.status}
+                                key={stream.key}
                             />
     
                         ))}
@@ -99,7 +102,10 @@ export function BusinessDashboard(props) {
                         {currentStreams.map((stream) => (
                             <StreamInfoCard 
                                 type="business"
-                                {...stream}
+                                field={stream.field}
+                                streamKey={stream.key}
+                                status={stream.status}
+                                key={stream.key}
                             />
                         ))}
                     </section>
@@ -114,7 +120,10 @@ export function BusinessDashboard(props) {
                         {previousStreams.map((stream) => (
                             <StreamInfoCard 
                                 type="business"
-                                {...stream}
+                                field={stream.field}
+                                streamKey={stream.key}
+                                status={stream.status}
+                                key={stream.key}
                             />
                         ))}
                     </section>
