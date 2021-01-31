@@ -11,7 +11,7 @@ const Stream = require('../database/schema/Schema').Stream;
 /**
  * Configure database for development
  */
-export default async () => {
+export async function devDatabaseConfig() {
     // Test users
     const users = [{
         name: 'Test1',
@@ -204,3 +204,5 @@ export default async () => {
 
     return true;
 }
+
+module.exports = devDatabaseConfig;
