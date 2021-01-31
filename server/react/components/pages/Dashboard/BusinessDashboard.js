@@ -97,24 +97,30 @@ export function BusinessDashboard(props) {
                     <section className="BusinessDashboard__stream">
                         <h2>Current Streams</h2>
                         {currentStreams.map((stream) => (
-                            <p>{stream.key}</p>
+                            <StreamInfoCard 
+                                type="business"
+                                {...stream}
+                            />
                         ))}
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-
+                        <StreamInfoCard />
                     </section>
                 }
 
                 {loaded ?
                     <section className="BusinessDashboard__stream">
                         {previousStreams.map((stream) => (
-                            <p>{stream.key}</p>
+                            <StreamInfoCard 
+                                type="business"
+                                {...stream}
+                            />
                         ))}
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-                        <LoadingSpinner />
+                        <StreamInfoCard />
                     </section>
                 }
             </article>
