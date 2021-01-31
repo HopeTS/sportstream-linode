@@ -98,7 +98,7 @@ export class Login extends React.Component {
         })
         .then((business) => {
             this.props.login(business);
-            this.props.history.push('/');
+            this.props.history.push('/dashboard');
         })
         .catch((err) => {
             console.log(err);
