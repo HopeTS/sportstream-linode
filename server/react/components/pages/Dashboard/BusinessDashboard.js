@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {cloneElement, useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
@@ -49,6 +49,10 @@ export function BusinessDashboard(props) {
             set_connection_ids(personalData.connection_ids);
             set_connected_users(personalData.connected_users);
 
+            console.log('upcoming streams', upcomingStreams)
+            console.log('current streams', currentStreams)
+            console.log('previous streams', previousStreams)
+
             set_loaded(true);
             return;
         })
@@ -92,7 +96,7 @@ export function BusinessDashboard(props) {
                 }
 
                 {loaded ?
-                    <section className="BusinessDashboard__controls">
+                    <section className="BusinessDashboard__stream">
                         <h2>Current Streams</h2>
                         {currentStreams.map((stream) => {
                             <p>{stream.key}</p>
@@ -107,7 +111,7 @@ export function BusinessDashboard(props) {
                 }
 
                 {loaded ?
-                    <section className="BusinessDashboard__loading">
+                    <section className="BusinessDashboard__stream">
                         {previousStreams.map((stream) => {
                             <p>{stream.key}</p>
                         })
