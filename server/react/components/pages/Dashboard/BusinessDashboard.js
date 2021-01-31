@@ -5,8 +5,7 @@ import axios from 'axios';
 
 import server_business_get_personal_doc from 
     '../../../functions/business/server_business_get_personal_doc';
-import StreamInfoCard from '../../StreamInfoCard';
-import LoadingSpinner from '../../LoadingSpinner';
+import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
 
 export function BusinessDashboard(props) {
 
@@ -81,12 +80,16 @@ export function BusinessDashboard(props) {
                     <section className="BusinessDashboard__stream">
                         <h2>Upcoming Streams</h2>
                         {upcomingStreams.map((stream) => (
-                            <p>{stream.key}</p>
+                            <StreamInfoCard 
+                                type='business'
+                                {...stream}
+                            />
+    
                         ))}
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-                        <LoadingSpinner />
+                        <StreamInfoCard />
                     </section>
                 }
 

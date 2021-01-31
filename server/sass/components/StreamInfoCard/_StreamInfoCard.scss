@@ -1,0 +1,10 @@
+.StreamInfoCard {
+    width: 300px;
+    display: block;
+    margin: 0 auto;
+    background-image: linear-gradient(to bottom right, #414141, #3f3f3f, #3a3a3a);
+ 
+    &[data-type=loading] {
+        height: 50px;
+    }
+}
