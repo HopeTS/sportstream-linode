@@ -30,7 +30,7 @@ export function BusinessDashboard(props) {
      * Fetches Account data from server to populate state
      */
     const get_data = () => {
-        server_business_get_personal_doc();
+        const personalData = server_business_get_personal_doc()
         return;
     }
 
