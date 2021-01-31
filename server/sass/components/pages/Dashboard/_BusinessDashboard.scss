@@ -14,10 +14,12 @@
     @include form;
 
     &[data-active=false] {
+        display: none;
         height: 0;
     }
 
     &[data-active=true] {
+        display: block;
         height: auto;
     }
 }

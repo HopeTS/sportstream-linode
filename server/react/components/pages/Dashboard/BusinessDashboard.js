@@ -122,7 +122,8 @@ export function BusinessDashboard(props) {
                     <button
                         className="BusinessDashboard__formSubmit"
                         onClick={handle_create_stream}
-                        disabled={fieldName.length > 3}
+                        data-active={!fieldName}
+                        disabled={!fieldName}
                     >
                         Submit
                     </button>
