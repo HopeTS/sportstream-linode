@@ -102,7 +102,7 @@ export function BusinessDashboard(props) {
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-                        <LoadingSpinner />
+
                     </section>
                 }
 
