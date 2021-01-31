@@ -38,7 +38,11 @@ export default () => {
         connection_ids: rawData.connection_ids,
         email: rawData.email,
         name: rawData.name,
-        streams: rawData.streams,
+        streams: {
+            upcoming: rawData.streams.upcoming,
+            current: rawData.streams.current,
+            previous: rawData.streams.previous
+        },
         type: rawData.type
     }
 
