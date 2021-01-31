@@ -71,65 +71,80 @@ export function BusinessDashboard(props) {
     return (
         <div className="BusinessDashboard">
             <h2>Streams</h2>
-            <article className="BusinessDashboard__streams">
+            <article className="BusinessDashboard__streamsSection">
                 <section className="BusinessDashboard__controls">
                     <button></button>
                 </section>
 
                 {loaded ?
-                    <section className="BusinessDashboard__streams">
+                    <section className="BusinessDashboard__streamsList">
                         <h2>Upcoming Streams</h2>
-                        {upcomingStreams.map((stream) => (
-                            <StreamInfoCard 
-                                type='business'
-                                field={stream.field}
-                                streamKey={stream.key}
-                                status={stream.status}
-                                key={stream.key}
-                            />
-    
-                        ))}
+                        <div className="BusinessDashboard__streams">
+                            {upcomingStreams.map((stream) => (
+                                <StreamInfoCard 
+                                    type='business'
+                                    field={stream.field}
+                                    streamKey={stream.key}
+                                    status={stream.status}
+                                    key={stream.key}
+                                />
+                            ))}
+                        </div>
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-                        <StreamInfoCard />
+                        <div className="BusinessDashboard__streams">
+                            <StreamInfoCard />
+                            <StreamInfoCard />
+                        </div>
                     </section>
                 }
 
                 {loaded ?
-                    <section className="BusinessDashboard__stream">
+                    <section className="BusinessDashboard__streamsList">
                         <h2>Current Streams</h2>
-                        {currentStreams.map((stream) => (
-                            <StreamInfoCard 
-                                type="business"
-                                field={stream.field}
-                                streamKey={stream.key}
-                                status={stream.status}
-                                key={stream.key}
-                            />
-                        ))}
+                        <div className="BusinessDashboard__streams">
+                            {currentStreams.map((stream) => (
+                                <StreamInfoCard 
+                                    type="business"
+                                    field={stream.field}
+                                    streamKey={stream.key}
+                                    status={stream.status}
+                                    key={stream.key}
+                                />
+                            ))}
+                        </div>
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-                        <StreamInfoCard />
+                        <div className="BusinessDashboard__streams">
+                            <StreamInfoCard />
+                            <StreamInfoCard />
+                        </div>
                     </section>
                 }
 
                 {loaded ?
-                    <section className="BusinessDashboard__stream">
-                        {previousStreams.map((stream) => (
-                            <StreamInfoCard 
-                                type="business"
-                                field={stream.field}
-                                streamKey={stream.key}
-                                status={stream.status}
-                                key={stream.key}
-                            />
-                        ))}
+                    <section className="BusinessDashboard__streamsList">
+                        <h2>Previous Streams</h2>
+                        <div className="BusinessDashboard__streams">
+                            {previousStreams.map((stream) => (
+                                <StreamInfoCard 
+                                    type="business"
+                                    field={stream.field}
+                                    streamKey={stream.key}
+                                    status={stream.status}
+                                    key={stream.key}
+                                />
+                            ))}
+                        </div>
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
-                        <StreamInfoCard />
+                        <div className="BusinessDashboard__streams">
+                            <StreamInfoCard />
+                            <StreamInfoCard />
+                        </div>
                     </section>
                 }
             </article>

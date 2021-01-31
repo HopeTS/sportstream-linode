@@ -2,12 +2,19 @@
     @include dashboardContent;
 }
 
+.BusinessDashboard__streamsSection {
+
+}
+
+.BusinessDashboard__streamsList {
+    
+}
+
 .BusinessDashboard__streams {
     @media #{$tablet_breakpoint} {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-evenly;
-        color: red;
     }
 }
