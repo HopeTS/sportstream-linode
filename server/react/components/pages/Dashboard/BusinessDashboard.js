@@ -30,7 +30,15 @@ export function BusinessDashboard(props) {
      * Fetches Account data from server to populate state
      */
     const get_data = () => {
-        const personalData = server_business_get_personal_doc()
+        // Get data
+        const personalData = server_business_get_personal_doc();
+
+        // Populate state
+        set_upcoming_streams(personalData.streams.upcoming);
+        set_current_streams(personalData.streams.current);
+        set_previous_streams(personalData.streams.previous);
+        set_connection_ids(personalData.connection_ids);
+        set_connected_users(personalData.connected_users);
         return;
     }
 
@@ -49,6 +57,50 @@ export function BusinessDashboard(props) {
                 <section className="BusinessDashboard__controls">
                     <button></button>
                 </section>
+
+                {upcomingStreams.length > 0 ?
+                    <section className="BusinessDashboard__stream">
+                        <h2>Upcoming Streams</h2>
+                        {upcomingStreams.map((stream) => {
+                            <p>{stream.key}</p>
+                        })
+
+                        }
+                    </section>
+                    :
+                    <section className="BusinessDashboard__loading">
+                        <LoadingSpinner />
+                    </section>
+                }
+
+                {currentStreams.length > 0 ?
+                    <section className="BusinessDashboard__controls">
+                        <h2>Current Streams</h2>
+                        {currentStreams.map((stream) => {
+                            <p>{stream.key}</p>
+                        })
+
+                        }
+                    </section>
+                    :
+                    <section className="BusinessDashboard__loading">
+                        <LoadingSpinner />
+                    </section>
+                }
+
+                {previousStreams.length > 0 ?
+                    <section className="BusinessDashboard__loading">
+                        {previousStreams.map((stream) => {
+                            <p>{stream.key}</p>
+                        })
+
+                        }
+                    </section>
+                    :
+                    <section className="BusinessDashboard__loading">
+                        <LoadingSpinner />
+                    </section>
+                }
                 
                 <section>
                     <h3>Current Streams</h3>
