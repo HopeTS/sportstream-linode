@@ -20,33 +20,32 @@ import axios from 'axios';
 export default () => {
 
     // Get raw data
-    const rawData = axios.get(
+    const data = axios.get(
         '/business/get-personal-doc', {withCredentials: true}
     )
+
+    // Clean data
     .then((res) => {
-        console.log('get-personal-doc response', res);
-        return res;
+        return {
+            connected_users: res.data.connected_users,
+            connection_ids: res.data.connection_ids,
+            email: res.data.email,
+            name: res.data.name,
+            streams: {
+                upcoming: res.data.streams.upcoming,
+                current: res.data.streams.current,
+                previous: res.data.streams.previous
+            },
+            type: res.data.type
+        }
     })
+
     .catch((err) => {
         console.log(err);
         return false;
     })
 
-    // Clean data
-    const personalDoc = {
-        connected_users: rawData.connected_users,
-        connection_ids: rawData.connection_ids,
-        email: rawData.email,
-        name: rawData.name,
-        streams: {
-            upcoming: rawData.streams.upcoming,
-            current: rawData.streams.current,
-            previous: rawData.streams.previous
-        },
-        type: rawData.type
-    }
+    console.log('Here is data after promise chain', data)
 
-    console.log('Here is personalDoc', personalDoc)
-
-    return personalDoc;
+    return data;
 }
