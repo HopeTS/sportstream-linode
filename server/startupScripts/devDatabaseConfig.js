@@ -11,7 +11,7 @@ const Stream = require('../database/schema/Schema').Stream;
 /**
  * Configure database for development
  */
-const devDatabaseConfig = async () => {
+export default async () => {
     // Test users
     const users = [{
         name: 'Test1',
@@ -72,46 +72,58 @@ const devDatabaseConfig = async () => {
     });
 
     // Add test businesses
-    await Promise.all(businesses.map(async (business) => {
-        let newBusiness = new Business;
-        newBusiness.name = business.name;
-        newBusiness.email = business.email;
-        newBusiness.password = business.password;
-        await newBusiness.save();
-        return newBusiness;
-    }));
-
-    let connectBusinessId;
-    // Get connection id for user to business connection
-    let connectBusiness = await Business.findOne({}, async (err, business) => {
-        if (err) throw err;
-        if (!business) return console.log('[config] business not found?!')
-        await business.generate_connection_id();
-        await business.save();
-        connectBusinessId = business.connection_ids[0]
-
-        console.log('[config] business after connection generated', business);
-        return business;
-    });
-
-    const user_ids = await User.find({}, async (err, docs) => {
-        let ids = await Promise.all(docs.map(async (doc) => {
-            return doc._id;
+    try {
+        await Promise.all(businesses.map(async (business) => {
+            let newBusiness = new Business;
+            newBusiness.name = business.name;
+            newBusiness.email = business.email;
+            newBusiness.password = business.password;
+            await newBusiness.save();
+            return newBusiness;
         }));
+    }
 
-        return ids;
-    });
+    catch(e) {
+        console.log('Error adding businesses');
+        return false;
+    }
 
-    const business_ids = await Business.find({}, async (err, docs) => {
-        let ids = await Promise.all(docs.map(async (doc) => {
-            return doc._id;
-        }));
-
-        return ids;
-    });
+    // Get User/Business IDs
+    let user_ids;
+    let business_ids;
+    try {
+        user_ids = await User.find({}, async (err, docs) => {
+            let ids = await Promise.all(docs.map(async (doc) => {
+                return doc._id;
+            }));
     
-    await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
-    await user_ids[1].connect_business(business_ids[1].connection_ids[0]);
+            return ids;
+        });
+    
+        business_ids = await Business.find({}, async (err, docs) => {
+            let ids = await Promise.all(docs.map(async (doc) => {
+                return doc._id;
+            }));
+    
+            return ids;
+        });
+    }
+
+    catch(e) {
+        console.log(chalk.red('Error finding accounts'));
+        return false;
+    }
+    
+    // Connect businesses
+    try {
+        await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
+        await user_ids[1].connect_business(business_ids[1].connection_ids[0]);    
+    }
+
+    catch(e) {
+        console.log(chalk.red('Error connecting businesses'));
+        return false;
+    }
 
     console.log('[config] users after connection:');
     await User.find({}, async (err, docs) => {
@@ -190,7 +202,5 @@ const devDatabaseConfig = async () => {
     const busGetConnectedUsers = await business1.get_connected_users();
     console.log('Business get_connected_users', busGetConnectedUsers);
 
-    return;
+    return true;
 }
-
-module.exports = devDatabaseConfig;

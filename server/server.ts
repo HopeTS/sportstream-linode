@@ -89,7 +89,16 @@ switch (process.env.NAME) {
 
     case 'development':
         console.log(chalk.blue('Setting up development database'));
-        devDatabaseConfig();
+        devDatabaseConfig()
+        
+        .then((res: boolean) => {
+            if (res) console.log(chalk.green('Dev DB config successful'));
+            else console.log(chalk.red('Dev DB config unsuccessful'));
+        })
+        
+        .catch((err: any) => {
+            console.log(chalk.red('Something went wrong with dev DB config'));
+        });
 
     default:
         console.log(chalk.blue('Not running any startup scripts.'))
