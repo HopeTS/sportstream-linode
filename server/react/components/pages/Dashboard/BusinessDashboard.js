@@ -36,7 +36,7 @@ export function BusinessDashboard(props) {
     /**
      * Fetches Account data from server to populate state
      */
-    get_data = () => {
+    const get_data = () => {
         // Get data
         server_business_get_personal_doc()
 
@@ -62,10 +62,18 @@ export function BusinessDashboard(props) {
         })
     }
 
-    /**
-     * Handles creating a stream
-     */
-    handle_create_stream = () => {
+    /** Handler for set_create_stream_form */
+    const handle_set_create_stream_form = () => {
+        set_create_stream_form(!createStreamForm)
+    }
+
+    /** Handler for set_field_name */
+    const handle_set_field_name = (name) => {
+        set_field_name(name);
+    }
+
+    /** Handles creating a stream */
+    const handle_create_stream = () => {
 
         // Server endpoint
         server_business_create_stream({field: fieldName})
@@ -89,7 +97,7 @@ export function BusinessDashboard(props) {
                 <section className="BusinessDashboard__controls">
                     <button 
                         className="BusinessDashboard__control"
-                        onClick={set_create_stream_form(!createStreamForm)}
+                        onClick={handle_set_create_stream_form}
                         data-active={!createStreamForm}
                     >
                         Add new stream
@@ -106,7 +114,7 @@ export function BusinessDashboard(props) {
                             type="text"
                             id="field"
                             name="field"
-                            onChange={(e) => set_field_name(e.target.value)}
+                            onChange={(e) => handle_set_field_name(e.target.value)}
                             required
                         />
                     </div>
