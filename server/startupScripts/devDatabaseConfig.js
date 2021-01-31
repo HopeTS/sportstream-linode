@@ -11,7 +11,7 @@ const Stream = require('../database/schema/Schema').Stream;
 /**
  * Configure database for development
  */
-export async function devDatabaseConfig() {
+async function devDatabaseConfig() {
     // Test users
     const users = [{
         name: 'Test1',
