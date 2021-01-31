@@ -11,7 +11,6 @@ const config = require('../config/default');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 const Stream = require('../database/schema/Schema').Stream;
-const { Stream } = require('stream');
 
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
