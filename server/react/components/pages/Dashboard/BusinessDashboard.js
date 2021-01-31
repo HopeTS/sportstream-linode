@@ -36,7 +36,7 @@ export function BusinessDashboard(props) {
     /**
      * Fetches Account data from server to populate state
      */
-    const get_data = () => {
+    get_data = () => {
         // Get data
         server_business_get_personal_doc()
 
@@ -65,7 +65,7 @@ export function BusinessDashboard(props) {
     /**
      * Handles creating a stream
      */
-    const handle_create_stream = () => {
+    handle_create_stream = () => {
 
         // Server endpoint
         server_business_create_stream({field: fieldName})
@@ -73,10 +73,11 @@ export function BusinessDashboard(props) {
         // Add to state
         .then((stream) => {
             console.log('Stream in BusinessDashboard cb', stream);
+            return true;
         })
 
         .catch((err) => {
-
+            return false;
         })
 
     }

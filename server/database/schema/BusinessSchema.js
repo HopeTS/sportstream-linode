@@ -115,7 +115,9 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
 /**
  * Adds a new upcoming stream to the business
  * 
- * @param {*} streamData stream data
+ * @param {{
+ *      field: String
+ * }} streamData stream data
  * @param {*} cb callback function
  * 
  * @returns {{Stream} | false} stream object
