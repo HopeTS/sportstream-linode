@@ -29,7 +29,7 @@ export function BusinessDashboard(props) {
     }, []);
 
     useEffect(() => {
-        console.log('Multiple useEffect hooks');
+        console.log('Multiple useEffect hooks', console.log(previousStreams));
     })
 
     /**
