@@ -1,3 +1,5 @@
+import React from 'react';
+
 import BusinessStreamInfoCard from './BusinessStreamInfoCard';
 import LoadingStreamInfoCard from './LoadingStreamInfoCard';
 import UserStreamInfoCard from './UserStreamInfoCard';

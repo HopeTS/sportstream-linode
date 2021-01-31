@@ -1,4 +1,6 @@
 import React from 'react';
+import React from 'react';
+
 import LoadingSpinner from '../LoadingSpinner';
 
 export function LoadingStreamInfoCard(props) {
