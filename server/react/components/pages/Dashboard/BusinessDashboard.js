@@ -41,6 +41,7 @@ export function BusinessDashboard(props) {
 
         .then((personalData) => {
             console.log('Here is personalData', personalData)
+            console.log('personalData previous streams', personalData.streams.previous)
 
             // Populate state
             set_upcoming_streams(personalData.streams.upcoming);
