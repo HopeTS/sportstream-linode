@@ -77,7 +77,7 @@ export function BusinessDashboard(props) {
                 </section>
 
                 {loaded ?
-                    <section className="BusinessDashboard__stream">
+                    <section className="BusinessDashboard__streams">
                         <h2>Upcoming Streams</h2>
                         {upcomingStreams.map((stream) => (
                             <StreamInfoCard 

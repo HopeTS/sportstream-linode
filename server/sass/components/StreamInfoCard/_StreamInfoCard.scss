@@ -3,7 +3,12 @@
     max-width: 300px;
     display: block;
     margin: 0 auto;
-    background-image: linear-gradient(to bottom right, #0f0f0e, #11110f, #14140f);
+    background-image: linear-gradient(
+        to bottom right,   
+        lighten(#0e0e10, 10%), 
+        lighten(#0e0e10, 14%), 
+        lighten(#0e0e10, 16%)
+    );
     padding: 20px;
     border-radius: 10px;
  
@@ -13,9 +18,7 @@
     }
 
     @media #{$tablet_breakpoint} {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        
+        display: inline
+
     }
 }
