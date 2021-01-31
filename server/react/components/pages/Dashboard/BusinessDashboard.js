@@ -26,7 +26,9 @@ export function BusinessDashboard(props) {
 
     useEffect(() => {
         get_data();
-    });
+    }, [() => {
+        console.log('Is this recursive?')
+    }]);
 
     /**
      * Fetches Account data from server to populate state
