@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import server_business_get_personal_doc from 
     '../../../functions/business/server_business_get_personal_doc';
+import server_business_create_stream from 
+    '../../../functions/business/server_business_create_stream';
 import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
 
 export function BusinessDashboard(props) {
@@ -21,15 +23,15 @@ export function BusinessDashboard(props) {
 
     // Controls
     const [addingStream, set_adding_stream] = useState(false);
+
+    // Create stream form data
+    const [createStreamForm, set_create_stream_form] = useState(false);
+    const [fieldName, set_field_name] = useState('');
     
 
     useEffect(() => {
         get_data();
     }, []);
-
-    useEffect(() => {
-        console.log('Multiple useEffect hooks', console.log(previousStreams));
-    })
 
     /**
      * Fetches Account data from server to populate state
@@ -61,10 +63,21 @@ export function BusinessDashboard(props) {
     }
 
     /**
-     * Generates a new upcoming stream
+     * Handles creating a stream
      */
-    const add_stream = () => {
-        // TODO
+    const handle_create_stream = () => {
+
+        // Server endpoint
+        server_business_create_stream({field: fieldName})
+
+        // Add to state
+        .then((stream) => {
+            console.log('Stream in BusinessDashboard cb', stream);
+        })
+
+        .catch((err) => {
+
+        })
 
     }
 
@@ -73,8 +86,38 @@ export function BusinessDashboard(props) {
             <h2>Streams</h2>
             <article className="BusinessDashboard__streamsSection">
                 <section className="BusinessDashboard__controls">
-                    <button></button>
+                    <button 
+                        className="BusinessDashboard__control"
+                        onClick={set_create_stream_form(!createStreamForm)}
+                        data-active={!createStreamForm}
+                    >
+                        Add new stream
+                    </button>
                 </section>
+
+                <form
+                    className="BusinessDashboard__form"
+                    data-active={createStreamForm}
+                >
+                    <div className="BusinessDashboard__formField">
+                        <label htmlFor="field">Field</label>
+                        <input 
+                            type="text"
+                            id="field"
+                            name="field"
+                            onChange={(e) => set_field_name(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <button
+                        className="BusinessDashboard__formSubmit"
+                        onClick={handle_create_stream}
+                        disabled={fieldName.length > 3}
+                    >
+                        Submit
+                    </button>
+                </form>
 
                 {loaded ?
                     <section className="BusinessDashboard__streamsList">

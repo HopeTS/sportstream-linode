@@ -147,7 +147,7 @@ export class Login extends React.Component {
                     className="Login__form"
                 >
                     <div className="Login__account-type">
-                        <label htmlFor="account_type">I am addd...</label>
+                        <label htmlFor="account_type">I am a...</label>
 
                         <select 
                             name="account_type" 

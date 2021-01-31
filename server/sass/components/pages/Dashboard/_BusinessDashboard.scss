@@ -2,6 +2,43 @@
     @include dashboardContent;
 }
 
+.BusinessDashboard__controls {
+
+}
+
+.BusinessDashboard__control {
+
+}
+
+.BusinessDashboard__form {
+    @include form;
+
+    &[data-active=false] {
+        height: 0;
+    }
+
+    &[data-active=true] {
+        height: auto;
+    }
+}
+
+.BusinessDashboard__formField {
+
+}
+
+.BusinessDashboard__formSubmit {
+    
+    &[data-active=false] {
+        background-color: var(--dark-gray);
+        transition: 200ms;
+    }
+
+    &[data-active=true] {
+        background-color: var(--button-color);
+        transition: 200ms;
+    }
+}
+
 .BusinessDashboard__streamsSection {
 
 }
