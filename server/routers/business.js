@@ -11,6 +11,7 @@ const config = require('../config/default');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 const Stream = require('../database/schema/Schema').Stream;
+const { Stream } = require('stream');
 
 const publicPath = path.join(__dirname, '../../public/');
 const appRoute = path.join(publicPath, 'index.html');
@@ -116,14 +117,8 @@ router.get('/business/get-connected-users', ensureLoggedIn(), async (req, res) =
 });
 
 /**
- * Creates a stream with the given data
+ * Gets upcoming streams
  */
-router.post('/business/create-stream', ensureLoggedIn(), async (req, res) => {
-    // TODO (req.body.stream)
-    console.log('create stream called', req.body.stream);
-    return res.status(200).send();
-});
-
 router.get('/business/get-upcoming-streams', ensureLoggedIn(), async (req, res) => {
     try {
         // Find Business account
@@ -146,6 +141,48 @@ router.get('/business/get-upcoming-streams', ensureLoggedIn(), async (req, res) 
     catch(e) {
         return res.status(500).send();
     }
+});
+
+/**
+ * Creates a stream with the given data
+ * 
+ * @param {{
+ *      field: String,
+ * }}
+ */
+router.post('/business/create-stream', ensureLoggedIn(), async (req, res) => {
+    // TODO (req.body.stream)
+    console.log('create stream called', req.data);
+    
+    try {
+        // Find Business account
+        const business = await Business.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!business) return res.status(404).send();
+
+        const stream = await business.create_stream(req.body.stream);
+        console.log('Here is the generated stream', stream);
+
+        return res.status(201).send(stream);
+    }
+
+    catch(e) {
+        console.error(e);
+        return res.status(500).send();
+    }
+});
+
+/**
+ * Generates and sends new connection ID
+ */
+router.post('/business/generate-connection-id', ensureLoggedIn(), async (req, res) => {
+
 });
 
 /**
