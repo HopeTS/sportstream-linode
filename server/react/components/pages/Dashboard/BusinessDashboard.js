@@ -10,7 +10,8 @@ import LoadingSpinner from '../../LoadingSpinner';
 
 export function BusinessDashboard(props) {
 
-    const [loaded, setLoaded] = useState(false);
+    const [loaded, set_loaded] = useState(false);
+    const [networkError, set_network_error] = useState(false);
     
     // Account data
     const [upcomingStreams, set_upcoming_streams] = useState([]);
@@ -32,17 +33,24 @@ export function BusinessDashboard(props) {
      */
     const get_data = () => {
         // Get data
-        const personalData = server_business_get_personal_doc();
+        server_business_get_personal_doc()
 
-        console.log('Here is personalData', personalData)
+        .then((personalData) => {
+            console.log('Here is personalData', personalData)
 
-        // Populate state
-        set_upcoming_streams(personalData.streams.upcoming);
-        set_current_streams(personalData.streams.current);
-        set_previous_streams(personalData.streams.previous);
-        set_connection_ids(personalData.connection_ids);
-        set_connected_users(personalData.connected_users);
-        return;
+            // Populate state
+            set_upcoming_streams(personalData.streams.upcoming);
+            set_current_streams(personalData.streams.current);
+            set_previous_streams(personalData.streams.previous);
+            set_connection_ids(personalData.connection_ids);
+            set_connected_users(personalData.connected_users);    
+            return;
+        })
+
+        .catch((err) => {
+            set_network_error(true);
+            return;
+        })
     }
 
     /**

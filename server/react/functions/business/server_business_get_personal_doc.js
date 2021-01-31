@@ -20,7 +20,7 @@ import axios from 'axios';
 export default () => {
 
     // Get raw data
-    const data = axios.get(
+    return axios.get(
         '/business/get-personal-doc', {withCredentials: true}
     )
 
@@ -44,8 +44,4 @@ export default () => {
         console.log(err);
         return false;
     })
-
-    console.log('Here is data after promise chain', data)
-
-    return data;
 }
