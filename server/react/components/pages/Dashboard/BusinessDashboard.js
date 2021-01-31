@@ -82,9 +82,7 @@ export function BusinessDashboard(props) {
                         <h2>Upcoming Streams</h2>
                         {upcomingStreams.map((stream) => (
                             <p>{stream.key}</p>
-                        ))
-
-                        }
+                        ))}
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
@@ -95,11 +93,9 @@ export function BusinessDashboard(props) {
                 {loaded ?
                     <section className="BusinessDashboard__stream">
                         <h2>Current Streams</h2>
-                        {currentStreams.map((stream) => {
+                        {currentStreams.map((stream) => (
                             <p>{stream.key}</p>
-                        })
-
-                        }
+                        ))}
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
@@ -109,11 +105,9 @@ export function BusinessDashboard(props) {
 
                 {loaded ?
                     <section className="BusinessDashboard__stream">
-                        {previousStreams.map((stream) => {
-                            
-                        })
-
-                        }
+                        {previousStreams.map((stream) => (
+                            <p>{stream.key}</p>
+                        ))}
                     </section>
                     :
                     <section className="BusinessDashboard__loading">
