@@ -26,8 +26,8 @@ export class Login extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Login');
-        clear_state();
-        clear_cookies();
+        clear_localStorage();
+        cookie_logout();
     };
 
     /** Handler for account type input field */
