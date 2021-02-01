@@ -83,13 +83,13 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     }); */
 });
 
-nms.on('postConnect', async (id: any, StreamPath: any, args: any) => {
-    console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+nms.on('postConnect', async (id: any, args: any) => {
+    console.log('[nms]', `id=${id} args=${JSON.stringify(args)}`);
     console.log('[nms] post connct')
 })
 
-nms.on('postConnect', async (id: any, StreamPath: any, args: any) => {
-    console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
+nms.on('doneConnect', async (id: any, args: any) => {
+    console.log('[nms]', `id=${id} args=${JSON.stringify(args)}`);
     console.log('[nms] done connct')
 })
 
