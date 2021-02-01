@@ -19,7 +19,7 @@ export function UserDashboard(props) {
 
     // Connect to business form data
     const [connectToBusinessForm, set_connect_to_business_form] = useState(false);
-    const [businessPassword, set_business_password] = useStaste('');
+    const [businessPassword, set_business_password] = useState('');
 
     useEffect(() => {
         get_data();
