@@ -159,7 +159,9 @@ export function BusinessDashboard(props) {
                     <h3>Upcoming Streams</h3>
                     
                     {loaded ?
-                        <article className="BusinessDashboard__contentBlock">
+                        <article 
+                            className="BusinessDashboard__contentBlock small"
+                        >
                             {upcomingStreams.map((stream) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
@@ -188,7 +190,9 @@ export function BusinessDashboard(props) {
                     <h3>Current Streams</h3>
 
                     {loaded ?
-                        <article className="BusinessDashboard__contentBlock">
+                        <article 
+                            className="BusinessDashboard__contentBlock small"
+                        >
                             {currentStreams.map((stream) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
@@ -217,7 +221,9 @@ export function BusinessDashboard(props) {
                     <h3>Previous Streams</h3>
                     
                     {loaded ?
-                        <article className="BusinessDashboard__contentBlock">
+                        <article 
+                            className="BusinessDashboard__contentBlock small"
+                        >
                             {previousStreams.map((stream) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
@@ -260,7 +266,9 @@ export function BusinessDashboard(props) {
                     <h3>Available Connection IDs</h3>
 
                     {loaded ?
-                        <article className="BusinessDashboard__contentBlock">
+                        <article 
+                            className="BusinessDashboard__contentBlock small"
+                        >
                             {connectionIds.map((connectionId) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
