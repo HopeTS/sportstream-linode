@@ -42,7 +42,7 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
 
     // Match streamObject id with upcoming stream
     await Business.findOne(
-        {streams: {upcoming: {"$in": [streamObject._id]}}},
+        {'streams.upcoming': {"$in": [streamObject._id]}},
         async function(err: any, doc: any) {
             if (err) throw err;
             if (!doc) {
