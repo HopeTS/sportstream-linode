@@ -94,7 +94,7 @@ async function devDatabaseConfig() {
     try {
         user_ids = await User.find({}, async (err, docs) => {
             let ids = await Promise.all(docs.map(async (doc) => {
-                return doc._id;
+                return doc;
             }));
     
             return ids;
@@ -102,7 +102,7 @@ async function devDatabaseConfig() {
     
         business_ids = await Business.find({}, async (err, docs) => {
             let ids = await Promise.all(docs.map(async (doc) => {
-                return doc._id;
+                return doc;
             }));
     
             return ids;
@@ -112,6 +112,19 @@ async function devDatabaseConfig() {
     catch(e) {
         console.log(chalk.red('Error finding accounts'));
         return false;
+    }
+
+    // Generate business Connection IDs
+    let connectionKey1;
+    let connectionKey2;
+    try {
+        connectionKey1 = await business_ids[0].generate_connection_id();
+        connectionKey2 = await business_ids[1].generate_connection_id();
+
+    }
+
+    catch(e) {
+        console.error(e)
     }
     
     // Connect businesses
