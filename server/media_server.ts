@@ -8,6 +8,7 @@ const chalk = require('chalk');
 
 const config = require('./config/default').nms;
 const Business = require('./database/schema/Schema').Business;
+const Stream = require('./database/schema/Schema').Stream;
 //const helpers = require('./helpers/helpers');
 
 
@@ -24,16 +25,24 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     // Get stream key
     let streamKey = get_stream_key_from_stream_path(StreamPath);
 
-    await Business.find({}, async function(err: any, docs: any) {
-        if (err) throw err;
-        await Promise.all(docs.map((doc: any) => {
-            console.log(doc.streams.upcoming);
-        }))
-    })
+    // Check for stream with matching key
+    const streamObject = await Stream.findOne({key: streamKey},
+        async function (err: any, doc: any) {
+            if (err) throw err;
+            if (!doc) {
+                console.log(
+                    chalk.yellow('[nms] No stream with matching key', streamKey)
+                );
+                return nms.getSession(id).reject();
+            }
+            return doc;
 
-    // Check for upcoming streams
+        }
+    );
+
+    // Match streamObject id with upcoming stream
     await Business.findOne(
-        {streams: {upcoming: {"$in": [streamKey]}}},
+        {streams: {upcoming: {"$in": [streamObject._id]}}},
         async function(err: any, doc: any) {
             if (err) throw err;
             if (!doc) {
