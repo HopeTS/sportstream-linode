@@ -23,6 +23,7 @@ export default () => {
 
     // Clean data
     .then((res) => {
+        console.log('get personal doc user data', res.data);
         return res.data;
     })
 

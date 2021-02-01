@@ -335,7 +335,11 @@ BusinessSchema.methods.get_personal_doc = async function(cb) {
  * @param {*} id user id
  * @param {*} cb callback function
  * 
- * @returns {object} user doc
+ * @returns {{
+ *      name: String,
+ *      type: String,
+ *      streams: [String]
+ * }} user doc
  */
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
     const doc = {
