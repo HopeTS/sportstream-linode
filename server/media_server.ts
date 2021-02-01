@@ -26,7 +26,9 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
 
     await Business.find({}, async function(err: any, docs: any) {
         if (err) throw err;
-        console.log(docs);
+        await Promise.all(docs.map((doc: any) => {
+            console.log(doc.streams.upcoming);
+        }))
     })
 
     // Check for upcoming streams
