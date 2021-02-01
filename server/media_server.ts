@@ -35,7 +35,7 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
                 );
                 return nms.getSession(id).reject();
             }
-            console.log(chalk.blue('[nms] Stream with matching id found:'), streamObject._id)
+            console.log(chalk.blue('[nms] Stream with matching id found:'), doc._id)
             return doc;
         }
     );
