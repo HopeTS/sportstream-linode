@@ -212,20 +212,27 @@ export function BusinessDashboard(props) {
                     <button
                         onClick={handle_generate_connection_id}
                     >
-
+                        Create new connection password
                     </button>
                 </article>
+
+                <article className="BusinessDashboard__contentSec">
+                    <h3>Available Connection IDs</h3>
+
+                    {loaded ?
+                        <article className="BusinessDashboard__contentBlock">
+                            {connectionIds.map((connectionId) => (
+                                <section className="BusinessDashboard__contentRow">
+                                    <div>
+                                        <h4>ID:</h4>
+                                        <p>{connectionId}</p>
+                                    </div>
+                                </section>
+                            ))}
+                        </article>
+                    }
+                </article>
             </div>
-
-            <article className="BusinessDashboard__connections">
-                <section className="BusinessDashboard__controls">
-
-                </section>
-
-                <section>
-                    <h3>Connection IDs</h3>
-                </section>
-            </article>
             {/*
 
                 Requirements:
