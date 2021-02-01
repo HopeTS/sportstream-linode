@@ -30,7 +30,7 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
         async function(err: any, doc: any) {
             if (err) throw err;
             if (!doc) {
-                console.log(chalk.yellow('[nms] Invalid business key'));
+                console.log(chalk.yellow('[nms] Invalid business key', streamKey));
                 return nms.getSession(id).reject();
             }
             await doc.start_stream(streamKey);

@@ -119,6 +119,7 @@ export function BusinessDashboard(props) {
     return (
         <div className="BusinessDashboard">
             <h1>Welcome, {props.account.name}</h1>
+            
             <div className="BusinessDashboard__content">
                 <h2>My Streams</h2>
 
