@@ -1,5 +1,5 @@
 .BusinessDashboard {
-    @include dashboardContent;
+
 }
 
 .BusinessDashboard__controls {
@@ -42,7 +42,7 @@
 }
 
 .BusinessDashboard__streamsSection {
-
+    @include dashboardContent;
 }
 
 .BusinessDashboard__streamsList {
