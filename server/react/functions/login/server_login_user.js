@@ -30,7 +30,7 @@ export default (credentials) => {
     // Send login post
     const user = axios.post('/login/user', {
         email: credentials.email,
-        password: credentials.cpassword
+        password: credentials.password
     })
 
     .then((res) => {
