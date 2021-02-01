@@ -180,9 +180,31 @@ router.post('/business/create-stream', ensureLoggedIn(), async (req, res) => {
 /**
  * Generates and sends new connection ID
  */
-router.post('/business/generate-connection-id', ensureLoggedIn(), async (req, res) => {
+router.post('/business/generate-connection-id', ensureLoggedIn(), 
+    async (req, res) => {
+        try {
+            // Find Business account
+            const business = await Business.findOne(
+                {_id: req.user},
+                async (err, doc) => {
+                    if (err) throw err;
+                    if (doc) return doc;
+                    return false;
+                }
+            );
+            if (!business) return res.status(404).send();
 
-});
+            const newId = await business.generate_connection_id();
+            if (!newId) return res.status(500).send();
+            return res.status(201).send(newId);
+        }
+
+        catch(e) {
+            console.log(e);
+            return res.status(500).send(); 
+        }
+    }
+);
 
 /**
  * Connects User to Business (DO NOT USE YET, connections only supported from
@@ -208,6 +230,7 @@ router.post('business/connect-user', ensureLoggedIn(), async (err, doc) => {
     }
 
     catch(e) {
+        console.log(e);
         return res.status(500).send(); 
     }
 });

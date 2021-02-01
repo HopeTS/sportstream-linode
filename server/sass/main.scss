@@ -11,7 +11,10 @@
     './mixins/innerContent',
     './mixins/form',
     './mixins/page',
-    './mixins/dashboardContent',
+    './mixins/dashboardContent/dashboardContent',
+    './mixins/dashboardContent//dashboardContentBlock',
+    './mixins/dashboardContent/dashboardContentSection',
+    './mixins/dashboardContent/dashboardContentRow',
     './mixins/accountPage';
 
 
@@ -54,9 +57,7 @@
     './components/pages/AccountPage/AccountPage',
     './components/pages/AccountPage/AccountPageAuth',
     './components/pages/AccountPage/AccountPageNoAuth',
-    './components/pages/Wildcard';
-
-@import
     './components/pages/Dashboard/Dashboard',
     './components/pages/Dashboard/BusinessDashboard',
-    './components/pages/Dashboard/UserDashboard';
+    './components/pages/Dashboard/UserDashboard',
+    './components/pages/Wildcard';

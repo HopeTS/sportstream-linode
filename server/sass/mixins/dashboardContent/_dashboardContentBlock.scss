@@ -1,0 +1,7 @@
+@mixin dashboardContentBlock {
+
+}
+
+.dashboardContentBlock {
+    @include dashboardContentBlock;
+}

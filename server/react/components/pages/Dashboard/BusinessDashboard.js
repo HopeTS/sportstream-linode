@@ -7,6 +7,8 @@ import server_business_get_personal_doc from
     '../../../functions/business/server_business_get_personal_doc';
 import server_business_create_stream from 
     '../../../functions/business/server_business_create_stream';
+import server_business_generate_connection_id from 
+    '../../../functions/business/server_business_generate_connection_id';
 import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
 
 export function BusinessDashboard(props) {
@@ -60,9 +62,26 @@ export function BusinessDashboard(props) {
         })
     }
 
+    /** Handler for generate_connection_id */
+    const handle_generate_connection_id = () => {
+        server_business_generate_connection_id()
+        
+        .then((connectionId) => {
+            console.log('generate_connection_id cb dashboard', connectionId);
+            // Add to connection ids
+            const newIds = connectionIds;
+            newIds.push(connectionId);
+            set_connection_ids(newIds);
+        })
+
+        .catch((err) => {
+            set_network_error(true);
+        });
+    }
+
     /** Handler for set_create_stream_form */
     const handle_set_create_stream_form = () => {
-        set_create_stream_form(!createStreamForm)
+        set_create_stream_form(!createStreamForm);
     }
 
     /** Handler for set_field_name */
@@ -90,115 +109,113 @@ export function BusinessDashboard(props) {
 
     return (
         <div className="BusinessDashboard">
-            <h2>Streams</h2>
-            <article className="BusinessDashboard__streamsSection">
-                <section className="BusinessDashboard__controls">
+
+            <div className="BusinessDashboard__content">
+                <h2>My Streams</h2>
+
+                <article 
+                    className="BusinessDashboard__contentInteractive"
+                >
                     <button 
-                        className="BusinessDashboard__control"
                         onClick={handle_set_create_stream_form}
                         data-active={!createStreamForm}
                     >
                         Add new stream
                     </button>
-                </section>
+                </article>
 
-                <section
-                    className="BusinessDashboard__form"
-                    data-active={createStreamForm}
-                >
-                    <div className="BusinessDashboard__formField">
-                        <label htmlFor="field">Field</label>
-                        <input 
-                            type="text"
-                            id="field"
-                            name="field"
-                            onChange={(e) => handle_set_field_name(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <button
-                        className="BusinessDashboard__formSubmit"
-                        onClick={handle_create_stream}
-                        data-active={!fieldName}
-                        disabled={!fieldName}
-                    >
-                        Submit
-                    </button>
-                </section>
-
-                {loaded ?
-                    <section className="BusinessDashboard__streamsList">
-                        <h2>Upcoming Streams</h2>
-                        <div className="BusinessDashboard__streams">
+                <article className="BusinessDashboard__contentSection">
+                    <h3>Upcoming Streams</h3>
+                    
+                    {loaded ?
+                        <article className="BusinessDashboard__contentBlock">
                             {upcomingStreams.map((stream) => (
-                                <StreamInfoCard 
-                                    type='business'
-                                    field={stream.field}
-                                    streamKey={stream.key}
-                                    status={stream.status}
-                                    key={stream.key}
-                                />
-                            ))}
-                        </div>
-                    </section>
-                    :
-                    <section className="BusinessDashboard__loading">
-                        <div className="BusinessDashboard__streams">
-                            <StreamInfoCard />
-                            <StreamInfoCard />
-                        </div>
-                    </section>
-                }
+                                <section className="BusinessDashboard__contentRow">
+                                    <div>
+                                        <h4>Field:</h4>
+                                        <p>{stream.field}</p>
+                                    </div>
 
-                {loaded ?
-                    <section className="BusinessDashboard__streamsList">
-                        <h2>Current Streams</h2>
-                        <div className="BusinessDashboard__streams">
+                                    <div>
+                                        <h4>Key:</h4>
+                                        <p>{stream.key}</p>
+                                    </div>
+                                </section>
+                            ))}
+                        </article>
+                        :
+                        <article className="BusinessDashboard__contentBlock">
+                            <StreamInfoCard />
+                        </article>
+                    }
+                </article>
+                
+                <article className="BusinessDashboard__contentSection">
+                    <h3>Current Streams</h3>
+
+                    {loaded ?
+                        <article className="BusinessDashboard__contentBlock">
                             {currentStreams.map((stream) => (
-                                <StreamInfoCard 
-                                    type="business"
-                                    field={stream.field}
-                                    streamKey={stream.key}
-                                    status={stream.status}
-                                    key={stream.key}
-                                />
-                            ))}
-                        </div>
-                    </section>
-                    :
-                    <section className="BusinessDashboard__loading">
-                        <div className="BusinessDashboard__streams">
-                            <StreamInfoCard />
-                            <StreamInfoCard />
-                        </div>
-                    </section>
-                }
+                                <section className="BusinessDashboard__contentRow">
+                                    <div>
+                                        <h4>Field:</h4>
+                                        <p>{stream.field}</p>
+                                    </div>
 
-                {loaded ?
-                    <section className="BusinessDashboard__streamsList">
-                        <h2>Previous Streams</h2>
-                        <div className="BusinessDashboard__streams">
-                            {previousStreams.map((stream) => (
-                                <StreamInfoCard 
-                                    type="business"
-                                    field={stream.field}
-                                    streamKey={stream.key}
-                                    status={stream.status}
-                                    key={stream.key}
-                                />
+                                    <div>
+                                        <h4>Key:</h4>
+                                        <p>{stream.key}</p>
+                                    </div>
+                                </section>
                             ))}
-                        </div>
-                    </section>
-                    :
-                    <section className="BusinessDashboard__loading">
-                        <div className="BusinessDashboard__streams">
+                        </article>
+                        :
+                        <article className="BusinessDashboard__contentBlock">
                             <StreamInfoCard />
+                        </article>
+                    }
+                </article>
+
+                <article className="BusinessDashboard__contentSection">
+                    <h3>Previous Streams</h3>
+                    
+                    {loaded ?
+                        <article className="BusinessDashboard__contentBlock">
+                            {previousStreams.map((stream) => (
+                                <section className="BusinessDashboard__contentRow">
+                                    <div>
+                                        <h4>Field:</h4>
+                                        <p>{stream.field}</p>
+                                    </div>
+
+                                    <div>
+                                        <h4>Key:</h4>
+                                        <p>{stream.key}</p>
+                                    </div>
+                                </section>
+                            ))}
+                        </article>
+                        :
+                        <article className="BusinessDashboard__contentBlock">
                             <StreamInfoCard />
-                        </div>
-                    </section>
-                }
-            </article>
+                        </article>
+                    }
+                </article>
+            </div>
+
+            <div className="BusinessDashboard__content">
+                <h2>My Members</h2>
+
+                <article
+                    className="BusinessDashboard__contentInteractive"
+                >
+                    <button
+                        onClick={handle_generate_connection_id}
+                    >
+
+                    </button>
+                </article>
+            </div>
 
             <article className="BusinessDashboard__connections">
                 <section className="BusinessDashboard__controls">
