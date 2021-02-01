@@ -58,16 +58,14 @@ export function UserDashboard(props) {
                 <article className="UserDashboard__contentSection">
                     <h3>Available Streams</h3>
                     <article className="UserDashboard__contentBlock small">
-                        {availableStreams.map((stream) => {
+                        {availableStreams.map((stream) => (
                             <a 
                                 href={get_stream_link(stream.key)}
                                 className="UserDashboard__contentRow"
                             >
                                 Stream!
                             </a>
-                        })
-
-                        }
+                        ))}
                     </article>
                 </article>
             </div>
