@@ -69,19 +69,26 @@ export function BusinessDashboard(props) {
 
     /** Handler for generate_connection_id */
     const handle_generate_connection_id = () => {
+        
+        // Server endpoint
         server_business_generate_connection_id()
         
+        // Add to state
         .then((connectionId) => {
             console.log('generate_connection_id cb dashboard', connectionId);
-            // Add to connection ids
-            const newIds = connectionIds;
+            let newIds;
+            connectionIds.forEach((id) => {
+                newIds.push(id);
+            });
             newIds.push(connectionId);
             console.log('here is newIds', newIds)
             set_connection_ids(newIds)
+            return true;
         })
 
         .catch((err) => {
             set_network_error(true);
+            return false;
         });
     }
 
@@ -103,7 +110,11 @@ export function BusinessDashboard(props) {
 
         // Add to state
         .then((stream) => {
-            const newStreams = upcomingStreams;
+            let newStreams;
+            upcomingStreams.forEach((oldStream) => {
+                newStreams.push(oldStream);
+            });
+
             newStreams.push(stream);
             console.log('newStreams', newStreams);
             set_upcoming_streams(newStreams)
@@ -276,20 +287,6 @@ export function BusinessDashboard(props) {
                     }
                 </article>
             </div>
-            {/*
-
-                Requirements:
-                    Stream logs
-                    Create new stream
-                    Delete stream
-                    View current stream
-
-                    View available connection IDs
-                    Create new connection ID
-                    Delete connection ID
-
-                    View connected users
-            */}
         </div>
     );
 }
