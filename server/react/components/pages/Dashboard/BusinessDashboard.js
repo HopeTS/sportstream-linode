@@ -29,6 +29,11 @@ export function BusinessDashboard(props) {
     // Create stream form data
     const [createStreamForm, set_create_stream_form] = useState(false);
     const [fieldName, set_field_name] = useState('');
+
+    useEffect(() => {
+        console.log('new connection ids', connectionIds);
+        console.log('new streams', upcomingStreams);
+    })
     
 
     useEffect(() => {
