@@ -76,7 +76,14 @@ export function BusinessDashboard(props) {
             // Add to connection ids
             const newIds = connectionIds;
             newIds.push(connectionId);
-            set_connection_ids(newIds);
+            console.log('here is newIds', newIds)
+            set_connection_ids(newIds)
+            .then(() => {
+                console.log(connectionIds);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
         })
 
         .catch((err) => {
@@ -104,7 +111,14 @@ export function BusinessDashboard(props) {
         .then((stream) => {
             const newStreams = upcomingStreams;
             newStreams.push(stream);
-            set_upcoming_streams(newStreams);
+            console.log('newStreams', newStreams);
+            set_upcoming_streams(newStreams)
+            .then(() => {
+                console.log('promise resolution', upcomingStreams);
+            })
+            .catch((err) => {
+                console.error(err);
+            })
             return true;
         })
 
@@ -130,6 +144,24 @@ export function BusinessDashboard(props) {
                         Add new stream
                     </button>
                 </article>
+
+                <div 
+                    className="BusinessDashboard__form"
+                    data-active={createStreamForm}
+                >
+                    <div>
+                        <label htmlFor="field">Field:</label>
+                        <input 
+                            type="text" 
+                            id="field"
+                            onChange={(e) => {set_field_name(e.target.value)}}
+                        />
+                    </div>
+
+                    <button onClick={handle_create_stream}>
+                        Create
+                    </button>
+                </div>
 
                 <article className="BusinessDashboard__contentSection">
                     <h3>Upcoming Streams</h3>
