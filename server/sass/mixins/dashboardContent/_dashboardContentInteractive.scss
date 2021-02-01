@@ -1,0 +1,16 @@
+@mixin dashboardContentInteractive {
+    button {
+        border: 0;
+        background-color: var(--button-color);
+        color: var(--white);
+        font-weight: bold;
+        padding: 12px;
+        margin: 8px auto;
+        margin-top: 1em;
+        cursor: pointer;
+    }
+}
+
+.dashboardContentInteractive {
+    @include dashboardContentInteractive;
+}
