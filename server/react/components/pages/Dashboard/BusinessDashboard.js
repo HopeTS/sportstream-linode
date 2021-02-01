@@ -102,7 +102,7 @@ export function BusinessDashboard(props) {
                     </button>
                 </section>
 
-                <form
+                <section
                     className="BusinessDashboard__form"
                     data-active={createStreamForm}
                 >
@@ -125,7 +125,7 @@ export function BusinessDashboard(props) {
                     >
                         Submit
                     </button>
-                </form>
+                </section>
 
                 {loaded ?
                     <section className="BusinessDashboard__streamsList">

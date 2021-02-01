@@ -1,16 +1,13 @@
 @mixin dashboardContent {
+    display: block;
+    max-width: 800px;
+    background: var(--dark-gray);
+    padding: 0;
+    border-radius: 8px;
+    border: 1px solid var(--gray);
 
-    article {
-        display: block;
-        max-width: 800px;
-        background: var(--dark-gray);
-        padding: 0;
-        border-radius: 8px;
-        border: 1px solid var(--gray);
-
-        &:not(:last-child) {
-            margin-bottom: 32px;
-        }
+    &:not(:last-child) {
+        margin-bottom: 32px;
     }
 
     section {
