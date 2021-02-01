@@ -130,7 +130,10 @@ export function BusinessDashboard(props) {
                     {loaded ?
                         <article className="BusinessDashboard__contentBlock">
                             {upcomingStreams.map((stream) => (
-                                <section className="BusinessDashboard__contentRow">
+                                <section 
+                                    className="BusinessDashboard__contentRow"
+                                    key={stream.key}
+                                >
                                     <div>
                                         <h4>Field:</h4>
                                         <p>{stream.field}</p>
@@ -156,7 +159,10 @@ export function BusinessDashboard(props) {
                     {loaded ?
                         <article className="BusinessDashboard__contentBlock">
                             {currentStreams.map((stream) => (
-                                <section className="BusinessDashboard__contentRow">
+                                <section 
+                                    className="BusinessDashboard__contentRow"
+                                    key={stream.key}
+                                >
                                     <div>
                                         <h4>Field:</h4>
                                         <p>{stream.field}</p>
@@ -182,7 +188,10 @@ export function BusinessDashboard(props) {
                     {loaded ?
                         <article className="BusinessDashboard__contentBlock">
                             {previousStreams.map((stream) => (
-                                <section className="BusinessDashboard__contentRow">
+                                <section 
+                                    className="BusinessDashboard__contentRow"
+                                    key={stream.key}
+                                >
                                     <div>
                                         <h4>Field:</h4>
                                         <p>{stream.field}</p>
@@ -222,7 +231,10 @@ export function BusinessDashboard(props) {
                     {loaded ?
                         <article className="BusinessDashboard__contentBlock">
                             {connectionIds.map((connectionId) => (
-                                <section className="BusinessDashboard__contentRow">
+                                <section 
+                                    className="BusinessDashboard__contentRow"
+                                    key={connectionId}
+                                >
                                     <div>
                                         <h4>ID:</h4>
                                         <p>{connectionId}</p>
