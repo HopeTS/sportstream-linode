@@ -4,6 +4,23 @@
     display: flex;
     flex-direction: column;
 
+    div {
+        display: flex;
+        flex-direction: row;
+    }
+
+    h4 {
+        width: 150px;
+        text-align: left;
+        display: inline-block;
+    }
+
+    p {
+        text-align: center;
+        display: inline-block;
+        width: calc(100% - 150px);
+    }
+
     &:not(:last-child) {
         border-bottom: 1px solid var(--gray);
     }
