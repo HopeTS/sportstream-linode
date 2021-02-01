@@ -78,12 +78,6 @@ export function BusinessDashboard(props) {
             newIds.push(connectionId);
             console.log('here is newIds', newIds)
             set_connection_ids(newIds)
-            .then(() => {
-                console.log(connectionIds);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
         })
 
         .catch((err) => {
@@ -113,12 +107,6 @@ export function BusinessDashboard(props) {
             newStreams.push(stream);
             console.log('newStreams', newStreams);
             set_upcoming_streams(newStreams)
-            .then(() => {
-                console.log('promise resolution', upcomingStreams);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
             return true;
         })
 
