@@ -102,7 +102,9 @@ export function BusinessDashboard(props) {
 
         // Add to state
         .then((stream) => {
-            console.log('Stream in BusinessDashboard cb', stream);
+            const newStreams = upcomingStreams;
+            newStreams.push(stream);
+            set_upcoming_streams(newStreams);
             return true;
         })
 
