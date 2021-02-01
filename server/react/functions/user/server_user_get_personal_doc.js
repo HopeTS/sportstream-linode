@@ -5,7 +5,7 @@ import axios from 'axios';
  * 
  * @returns {{
  *  
- * }}
+ * } | false} Personal doc if successful, else false
  */
 export default () => {
     
@@ -16,7 +16,7 @@ export default () => {
 
     // Clean data
     .then((res) => {
-        return res;
+        return res.data;
     })
 
     .catch((err) => {

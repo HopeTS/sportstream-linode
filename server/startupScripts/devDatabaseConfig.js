@@ -120,7 +120,6 @@ async function devDatabaseConfig() {
     try {
         connectionKey1 = await business_ids[0].generate_connection_id();
         connectionKey2 = await business_ids[1].generate_connection_id();
-
     }
 
     catch(e) {
