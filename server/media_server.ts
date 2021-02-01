@@ -50,7 +50,6 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
                 nms.getSession(id).reject();
                 return false;
             }
-            await doc.start_stream(streamKey);
             console.log(chalk.green(
                 `[nms] ${streamKey} is connected to business ${doc.email}`
             ));
@@ -81,14 +80,44 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     }); */
 });
 
-nms.on('postPublish', async (id: any, StreamPath: any, args: any) => {
-    console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
-    console.log('[nms] postPublish')
-})
-
 nms.on('donePublish', async (id: any, StreamPath: any, args: any) => {
     console.log('[nms]', `id=${id} StreamPath=${StreamPath} args=${JSON.stringify(args)}`);
-    console.log('[nms] donePublish')
+
+    // Get stream key
+    let streamKey = get_stream_key_from_stream_path(StreamPath);
+
+    // Find stream with matching key
+    const streamObject = await Stream.findOne({key: streamKey},
+        async function (err: any, doc: any) {
+            if (err) throw err;
+            if (!doc) {
+                console.log(
+                    chalk.yellow('[nms] No stream with matching key', streamKey)
+                );
+                return nms.getSession(id).reject();
+            }
+            console.log(chalk.blue('[nms] Stream with matching id found:'), doc._id)
+            return doc;
+        }
+    );
+
+    // Match streamObject id with current stream 
+    const connectedBusiness = await Business.findOne(
+        {'streams.current': {"$in": [streamObject._id]}},
+        async function(err: any, doc: any) {
+            if (err) throw err;
+            if (!doc) {
+                return false;
+            }
+            console.log(chalk.green(
+                `[nms] ${streamKey} is connected to business ${doc.email}`
+            ));
+            return doc;
+        }
+    );
+
+    // Set stream from current to previous
+    connectedBusiness.end_stream(streamObject._id);
 })
 
 const get_stream_key_from_stream_path = (path: string) => {
