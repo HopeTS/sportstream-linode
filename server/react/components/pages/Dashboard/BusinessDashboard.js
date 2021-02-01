@@ -230,6 +230,10 @@ export function BusinessDashboard(props) {
                                 </section>
                             ))}
                         </article>
+                        :
+                        <article className="BusinessDashboard__contentBlock">
+                            <StreamInfoCard />
+                        </article>
                     }
                 </article>
             </div>
