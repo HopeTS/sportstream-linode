@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 /**
- * Makes GET /business/get-personal-doc for business information of logged
+ * Makes GET /business/get-personal-doc for Business information of logged
  * in Business
  * 
  * @returns {{

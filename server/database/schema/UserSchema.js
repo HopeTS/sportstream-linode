@@ -80,6 +80,13 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
  * Get account information only available to the User
  * 
  * @param {*} cb callback function
+ * 
+ * @returns {{
+ *      name: String,
+ *      email: String,
+ *      type: String,
+ *      connected_businesses: Object
+ * }}
  */
 UserSchema.methods.get_personal_doc = async function(cb) {
     const name = this.name;
