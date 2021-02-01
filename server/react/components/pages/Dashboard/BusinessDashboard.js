@@ -71,7 +71,7 @@ export function BusinessDashboard(props) {
     const handle_generate_connection_id = () => {
         
         // Server endpoint
-        const theseIds = server_business_generate_connection_id()
+        server_business_generate_connection_id()
         
         // Add to state
         .then((connectionId) => {
@@ -87,8 +87,6 @@ export function BusinessDashboard(props) {
             set_network_error(true);
             return false;
         });
-
-        console.log('theseIds', theseIds)
     }
 
     /** Handler for set_create_stream_form */
@@ -109,11 +107,7 @@ export function BusinessDashboard(props) {
 
         // Add to state
         .then((stream) => {
-            let newStreams;
-            upcomingStreams.forEach((oldStream) => {
-                newStreams.push(oldStream);
-            });
-
+            const newStreams = [...upcomingStreams];
             newStreams.push(stream);
             console.log('newStreams', newStreams);
             set_upcoming_streams(newStreams)
