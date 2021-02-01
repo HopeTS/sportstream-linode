@@ -24,6 +24,11 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
     // Get stream key
     let streamKey = get_stream_key_from_stream_path(StreamPath);
 
+    await Business.find({}, async function(err: any, docs: any) {
+        if (err) throw err;
+        console.log(docs);
+    })
+
     // Check for upcoming streams
     await Business.findOne(
         {streams: {upcoming: {"$in": [streamKey]}}},
