@@ -2,12 +2,19 @@
 
 }
 
-.BusinessDashboard__controls {
-
-}
-
-.BusinessDashboard__control {
-
+.BusinessDashboard__contentInteractive {
+    button {
+        border: 0;
+        background-color: var(--button-color);
+        color: var(--white);
+        font-size: 1.5em;
+        font-weight: bold;
+        padding: 8px;
+        width: calc(280px - 2em);
+        margin: 8px auto;
+        margin-top: 1em;
+        cursor: pointer;
+    }
 }
 
 .BusinessDashboard__form {
@@ -24,36 +31,14 @@
     }
 }
 
-.BusinessDashboard__formField {
-
-}
-
-.BusinessDashboard__formSubmit {
-    
-    &[data-active=false] {
-        background-color: var(--dark-gray);
-        transition: 200ms;
-    }
-
-    &[data-active=true] {
-        background-color: var(--button-color);
-        transition: 200ms;
-    }
-}
-
-.BusinessDashboard__streamsSection {
+.BusinessDashboard__contentSection {
     @include dashboardContent;
 }
 
-.BusinessDashboard__streamsList {
-    
+.BusinessDashboard__contentBlock {
+    @include dashboardContentBlock;
 }
 
-.BusinessDashboard__streams {
-    @media #{$tablet_breakpoint} {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-evenly;
-    }
+.BusinessDashboard__contentRow {
+    @include dashboardContentRow;
 }

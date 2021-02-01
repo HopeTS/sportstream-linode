@@ -256,7 +256,7 @@ export function BusinessDashboard(props) {
                     </button>
                 </article>
 
-                <article className="BusinessDashboard__contentSec">
+                <article className="BusinessDashboard__contentSection">
                     <h3>Available Connection IDs</h3>
 
                     {loaded ?
