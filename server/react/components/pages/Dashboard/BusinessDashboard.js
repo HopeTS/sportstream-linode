@@ -76,10 +76,7 @@ export function BusinessDashboard(props) {
         // Add to state
         .then((connectionId) => {
             console.log('generate_connection_id cb dashboard', connectionId);
-            let newIds;
-            connectionIds.forEach((id) => {
-                newIds.push(id);
-            });
+            const newIds = [...connectionIds];
             newIds.push(connectionId);
             console.log('here is newIds', newIds)
             set_connection_ids(newIds);
