@@ -71,7 +71,7 @@ export function BusinessDashboard(props) {
     const handle_generate_connection_id = () => {
         
         // Server endpoint
-        server_business_generate_connection_id()
+        const theseIds = server_business_generate_connection_id()
         
         // Add to state
         .then((connectionId) => {
@@ -82,14 +82,16 @@ export function BusinessDashboard(props) {
             });
             newIds.push(connectionId);
             console.log('here is newIds', newIds)
-            set_connection_ids(newIds)
-            return true;
+            set_connection_ids(newIds);
+            return newIds;
         })
 
         .catch((err) => {
             set_network_error(true);
             return false;
         });
+
+        console.log('theseIds', theseIds)
     }
 
     /** Handler for set_create_stream_form */
