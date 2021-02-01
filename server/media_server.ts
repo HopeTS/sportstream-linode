@@ -33,6 +33,7 @@ nms.on('prePublish', async (id: any, StreamPath: any, args: any) => {
                 console.log(
                     chalk.yellow('[nms] No stream with matching key', streamKey)
                 );
+                console.log(chalk.blue('[nms] Stream with matching id found:'), streamObject._id)
                 return nms.getSession(id).reject();
             }
             return doc;
