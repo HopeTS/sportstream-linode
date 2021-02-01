@@ -71,6 +71,7 @@ export class Login extends React.Component {
         })
         .then((user) => {
             console.log('user after login', user);
+            if (!user) throw new Error('User not logged in');
             return user;
         })
         .then((user) => {
@@ -82,8 +83,6 @@ export class Login extends React.Component {
             console.log(err);
             return false;
         });
-
-        console.log('Here is account', account);
     }
 
     /** Handles login for Business account */

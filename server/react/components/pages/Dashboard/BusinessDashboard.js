@@ -37,6 +37,7 @@ export function BusinessDashboard(props) {
 
     /** Fetches Account data from server to populate state */
     const get_data = () => {
+        
         // Get data
         server_business_get_personal_doc()
 
