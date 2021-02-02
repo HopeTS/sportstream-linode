@@ -155,6 +155,8 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
         }
     ));
 
+    console.log('user getconnectedbusinesses userdocs', userDocs)
+
     return userDocs;
 }
 

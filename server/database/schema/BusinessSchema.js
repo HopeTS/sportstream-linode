@@ -342,12 +342,22 @@ BusinessSchema.methods.get_personal_doc = async function(cb) {
  * }} user doc
  */
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
-    const doc = {
+    
+    // Static fields
+    let doc = {};
+    doc.name = this.name;
+    doc.type = this.type;
+
+    // Get raw streams
+    const rawStreams = await this.get_current_streams();
+    console.log('businessuserdoc raw streams', rawStreams);
+
+    const oldDoc = {
         name: this.name,
         type: this.type,
         streams: this.streams.current
     }
-    return doc;
+    return oldDoc;
 }
 
 /**
