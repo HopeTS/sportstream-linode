@@ -26,7 +26,6 @@ export function Watch(props) {
         // Get stream link
         const streamKey = window.location.pathname.split('/')[1];
         set_stream_link(get_stream_link(streamKey));
-        console.log(pathname);
         return;
     }
 
