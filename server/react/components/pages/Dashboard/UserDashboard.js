@@ -40,7 +40,6 @@ export function UserDashboard(props) {
         .then((personalData) => {
             if (!personalData) throw new Error("Couldn't retrieve User data");
             set_connected_businesses(personalData.connected_businesses);
-            console.log('Here is sggdskjbng', personalData.connected_businesses.streams);
             return 'hi'
         })
         .then((res) => {
@@ -59,8 +58,26 @@ export function UserDashboard(props) {
             <div className="UserDashboard__content">
                 <h2>My Sports Centers</h2>
 
+                {connectedBusinesses.map((business) => (
+                    <article className="UserDashboard__contentSection">
+                        <h3>{business.name}</h3>
+
+                        {business.streams.map((stream) => (
+                            <a 
+                                href={get_stream_link(stream.key)} 
+                                className="UserDashboard__contentRow"
+                            >
+                                Stream!
+                            </a>
+                        ))
+
+                        }
+                    </article>
+                ))}
+
                 <article className="UserDashboard__contentSection">
                     <h3>Available Streams</h3>
+
                     <article className="UserDashboard__contentBlock small">
                         {console.log('availableStreams', availableStreams)}
                         {availableStreams.map((stream) => (
