@@ -3,6 +3,7 @@
  */
 
 const bcrypt = require('bcryptjs');
+const chalk = require('chalk');
 
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
