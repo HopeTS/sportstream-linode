@@ -268,7 +268,6 @@ BusinessSchema.methods.get_current_streams = async function(cb) {
     return currentStreams;
 }
 
-
 /**
  * Get all previous streams from the business. Returns stream objects.
  * 
@@ -327,6 +326,38 @@ BusinessSchema.methods.get_personal_doc = async function(cb) {
     return personalDoc;
 }
 
+/**
+ * Get all Stream data available to connected Users
+ * 
+ * @param {*} cb 
+ * 
+ * @returns {[{
+ *       key: String,
+ *       field: String
+ * } | false]} Available data if successful else false
+ */
+BusinessSchema.methods.get_user_streams = async function(cb) {
+
+    // Get raw data
+    const rawStreams = await this.get_current_streams();
+    
+    // Clean data
+    const userStreams = rawStreams.map((stream) => {
+
+        // Validate
+        if (!stream.status) return false;
+        if (stream.status !== 'current') return false;
+        
+        return {
+            key: stream.key,
+            field: stream.field
+        }
+    });
+
+    if (!userStreams) return false;
+    console.log('business getuserstreams result', userStreams);
+    return userStreams;
+}
 
 /**
  * Get business doc information only available to users connected to the
@@ -349,15 +380,11 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
     doc.type = this.type;
 
     // Get raw streams
-    const rawStreams = await this.get_current_streams();
+    const rawStreams = await this.get_user_streams();
     console.log('businessuserdoc raw streams', rawStreams);
+    doc.streams = rawStreams;
 
-    const oldDoc = {
-        name: this.name,
-        type: this.type,
-        streams: this.streams.current
-    }
-    return oldDoc;
+    return doc;
 }
 
 /**
