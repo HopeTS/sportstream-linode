@@ -11,44 +11,17 @@ export class Watch extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            live_streams: []
+            streamActive: false;
         };
     };
 
     componentWillMount() {
         this.props.page_ID__Set('Watch');
-
-        this.getLiveStreams();
+        get_stream();
     };
 
-    /**
-     * Gets all available RTMP streams
-     */
-    getLiveStreams() {
-        if (this.props.account.type !== 'user') return;
-
-        let encrypted_keys;
-        axios.get('/streams/user/connect-to-business', {withCredentials: true})
-
-        .then((res) => {
-            encrypted_keys = res.data.encrypted_keys;
-            console.log(encrypted_keys);
-
-            axios.post('/streams/user/get-current-streams', {
-                    encrypted_keys: encrypted_keys
-            })
-
-            .then((res) => {
-                console.log('inner response', res);
-            })
-
-            .catch((err) => {
-                console.log(err);
-            });
-        })
-        .catch((err) => {
-            console.log(err)
-        });
+    get_stream() {
+        console.log(window.location.pathname);
     }
 
     render() {

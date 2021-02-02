@@ -86,10 +86,10 @@ export function UserDashboard(props) {
                         {console.log('availableStreams', availableStreams)}
                         {availableStreams.map((stream) => (
                             <a 
-                                href={get_stream_link(stream.key)}
+                                href={`/watch/${get_stream_link(stream.key)}`}
                                 className="UserDashboard__contentRow"
                             >
-                                Stream!
+                                {stream.field}
                             </a>
                         ))}
                     </article>
