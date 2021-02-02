@@ -359,6 +359,8 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
         );
     }));
 
+    doc.streams = streams;
+
     return doc;
 }
 
