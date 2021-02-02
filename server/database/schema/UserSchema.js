@@ -154,7 +154,7 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
             return await business.get_user_doc();
         }
     ));
-
+    console.log('userschema userdocs', userDocs)
     return userDocs;
 }
 

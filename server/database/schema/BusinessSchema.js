@@ -358,8 +358,8 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
             }
         );
     }));
-
     doc.streams = streams;
+    console.log('businessschema return doc', doc)
 
     return doc;
 }
