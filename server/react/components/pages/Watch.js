@@ -1,63 +1,49 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 import axios from 'axios';
 import {NavLink} from 'react-router-dom';
 
 import {page_ID__Set} from '../../redux/actions/page';
+import LoadingSpinner from '../LoadingSpinner';
 
 
 /** Watch page (/watch) */
-export class Watch extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            streamActive: false
-        };
-    };
+export function Watch(props) {
 
-    componentWillMount() {
-        this.props.page_ID__Set('Watch');
-        this.render_stream();
-    };
+    const [streamActive, set_stream_active] = useState(false);
+    const [streamLink, set_stream_link] = useState(null);
 
-    /** 
-     * Get link to stream download
-     * 
-     * @returns {String | false} Link to stream if exists, else false
-     */
-    get_stream() {
-        console.log(window.location.pathname);
-        return window.location.pathname;
-    }
+    // Initial setup
+    useEffect(() => {
+        props.page_ID__Set('watch');
+        get_stream_link();
+    }, []);
 
-    render_stream() {
-        if (!flvjs.isSupported()) return console.error('flvjs is not supported');
+    /** Get stream link */
+    const get_stream_link = () => {
         
-        // Get link to stream
-        const streamLink = this.get_stream();
-        if (!streamLink) return console.error('');
-
-        // Create flvPlayer
-        const videoTag = document.getElementById('videoTag');
-        const flvPlayer = flvjs.createPlayer({
-            type: 'flv',
-            url: streamLink
-        });
-        flvPlayer.attachMediaElement(videoTag);
-
-        // Start stream
-        flvPlayer.load();
-        flvPlayer.play();
+        // Get stream link
+        const pathname = window.location.pathname;
+        console.log(pathname);
+        return;
     }
 
-    render() {
-        return (
-            <div id="Watch">
-                <video className="Watch__video" id="videoTag"></video>
-            </div>
-        );
-    };
-};
+    return (
+        <div id="Watch">
+            {streamLink ?
+            <video 
+                className="Watch__video" id="videoTag"
+                typ="rtmp/mp4"
+            >
+                <source src={streamLink}/>
+                Your browser does not support this video format.
+            </video>
+            :
+            <LoadingSpinner />
+            }
+        </div>
+    )
+}
 
 
 /* Connect to store */
