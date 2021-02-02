@@ -342,28 +342,11 @@ BusinessSchema.methods.get_personal_doc = async function(cb) {
  * }} user doc
  */
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
-
-    // Business info
-    let doc = {};
-    doc.name = this.name;
-    doc.type = this.type;
-    console.log('businessschema doc before', doc)
-    console.log('businessschema ids to map', this.streams.current)
-
-    // Get stream objects
-    const streams = await Promise.all(this.streams.current.map((stream) => {
-        mongoose.models['Stream'].findOne(
-            {_id: stream},
-            async function(err, doc) {
-                if (err) throw err;
-                if (!doc) return false;
-                if (doc) return await doc.get_user_doc();
-            }
-        );
-    }));
-    doc.streams = streams;
-    console.log('businessschema return doc', doc)
-
+    const doc = {
+        name: this.name,
+        type: this.type,
+        streams: this.streams.current
+    }
     return doc;
 }
 
