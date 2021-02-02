@@ -12,6 +12,7 @@ import Reflv from '../Reflv';
 /** Watch page (/watch) */
 export class Watch extends React.Component {
     constructor(props) {
+        super(props);
         this.state = {
             streamLink: null
         }    
