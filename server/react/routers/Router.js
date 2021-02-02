@@ -9,12 +9,13 @@ import Footer from '../components/common/Footer';
 import Home from '../components/pages/Home';
 import Login from '../components/pages/Login';
 import Register from '../components/pages/Register';
+import Dashboard from '../components/pages/Dashboard/Dashboard';
 import Wildcard from '../components/pages/Wildcard';
 import Watch from '../components/pages/Watch';
 import AccountPage from '../components/pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
-import {loadState} from '../functions/auth/localStorage';
+import load_localStorage from '../functions/localStorage/load_localStorage';
 import {accountMenu__Off} from '../redux/actions/ui';
 
 
@@ -30,7 +31,7 @@ export class Router extends React.Component {
 
     componentWillMount() {
         this.fadein_animation();
-        this.load_localStorage();
+        this.load_local_storage();
     };
 
     /**
@@ -59,13 +60,13 @@ export class Router extends React.Component {
     }
 
     /**
-     * Loads data from localStorage to log user in, if user is stored in
-     * localStorage
+     * Loads data from local_storage to log user in, if user is stored in
+     * local_storage
      */
-    load_localStorage = () => {
+    load_local_storage = () => {
         
         // Check if user is authenticated
-        const userData = loadState();
+        const userData = load_localStorage();
         if (userData) {
             if (userData.auth.isAuthenticated) {
             
@@ -124,9 +125,14 @@ export class Router extends React.Component {
                         />
 
                         <Route 
+                            path="/dashboard"
+                            component={Dashboard}
+                            exact
+                        />
+
+                        <Route 
                             path="/watch"
                             component={Watch}
-                            exact
                         />
 
                         <Route 

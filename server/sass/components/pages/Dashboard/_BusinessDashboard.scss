@@ -1,0 +1,33 @@
+.BusinessDashboard {
+
+}
+
+.BusinessDashboard__contentInteractive {
+    @include dashboardContentInteractive;
+}
+
+.BusinessDashboard__form {
+    @include form;
+
+    &[data-active=false] {
+        display: none;
+        height: 0;
+    }
+
+    &[data-active=true] {
+        display: block;
+        height: auto;
+    }
+}
+
+.BusinessDashboard__contentSection {
+    @include dashboardContent;
+}
+
+.BusinessDashboard__contentBlock {
+    @include dashboardContentBlock;
+}
+
+.BusinessDashboard__contentRow {
+    @include dashboardContentRow;
+}

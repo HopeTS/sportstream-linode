@@ -13,7 +13,7 @@ exports[`Render Home button component 1`] = `
   >
     <img
       alt="Home"
-      src="/dist/images/homeButton/HomeButtonMobileNav.png"
+      src="/dist/images/homeButton/HomeButton.png"
     />
   </NavLink>
 </section>

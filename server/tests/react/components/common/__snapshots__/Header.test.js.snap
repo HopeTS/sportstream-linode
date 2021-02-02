@@ -4,11 +4,8 @@ exports[`Render Header component 1`] = `
 <header
   id="Header"
 >
+  <Connect(HomeButton) />
   <Navigation />
-  <img
-    className="Header__forkMe"
-    data-visible={false}
-    src="/dist/images/forkmeongithub.png"
-  />
+  <Connect(AccountCard) />
 </header>
 `;

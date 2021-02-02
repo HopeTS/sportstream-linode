@@ -25,7 +25,8 @@ const UserSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -35,8 +36,10 @@ const UserSchema = new Schema({
         type: String,
         default: 'user'
     },
-    connected_businesses: [String],
-    default: []
+    connected_businesses: {
+        type: [String],
+        default: []
+    }
 });
 
 
@@ -73,6 +76,49 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
     return this;
 }
 
+/**
+ * Get account information only available to the User
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {{
+ *      name: String,
+ *      email: String,
+ *      type: String,
+ *      connected_businesses: Object
+ * }}
+ */
+UserSchema.methods.get_personal_doc = async function(cb) {
+    const name = this.name;
+    const email = this.email;
+    const type = this.type;
+    const connectedBusinesses = await this.get_connected_businesses();
+
+    const personalDoc = {
+        name: name,
+        email: email,
+        type: type,
+        connected_businesses: connectedBusinesses
+    };
+
+    return personalDoc;
+}
+
+/**
+ * Returns all data available to Businesses that this User is connected to
+ * 
+ * @param {*} cb callback function
+ */
+UserSchema.methods.get_business_doc = async function(cb) {
+    const businessDoc = {
+        name: this.name,
+        email: this.email,
+        type: this.type
+    }
+
+    return businessDoc;
+}
+
 
 /**
  *  Get Business documents of all businesses connected to User. (Only return
@@ -107,9 +153,15 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
         async function(business) {
             return await business.get_user_doc();
         }
-    )); 
+    ));
+
+    console.log('user getconnectedbusinesses userdocs', userDocs)
 
     return userDocs;
 }
+
+// TODO: GET STream object
+    /* TO FUTURE ROBBY: GET THE STREAM OBJECTS OF AVAILABLE STREAMS AND SEND
+    TO USER DASHBOARD THEN YOU WILL BE DONE*/
 
 module.exports = UserSchema;

@@ -31,7 +31,8 @@ const BusinessSchema = new Schema({
     },
     email: {
         type: String,
-        required: true
+        required: true,
+        unique: true
     },
     password: {
         type: String,
@@ -71,7 +72,7 @@ const BusinessSchema = new Schema({
  * 
  * @param {*} cb callback function
  * 
- * @returns {object} business
+ * @returns {String | false} Connection ID if successful, else false
  */
 BusinessSchema.methods.generate_connection_id = async function(cb) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -79,54 +80,70 @@ BusinessSchema.methods.generate_connection_id = async function(cb) {
     let connectionIdArray = [];
     let connectionId;
 
-    while (!unique) {
-        // Generate the key
-        for ( var i = 0; i < 12; i++ ) {
-            connectionIdArray.push(
-                characters.charAt(Math.floor(Math.random() * characters.length))
-            );
-        }
-        connectionId = connectionIdArray.join('');
-
-        // Ensure key is unique
-        await mongoose.models['Business'].findOne(
-            {connection_id: {"$in": [connectionId]}},
-            async function(err, user) {
-                if (err) throw err;
-                if (!user) unique = true;
+    try {
+        while (!unique) {
+            // Generate the key
+            for ( var i = 0; i < 12; i++ ) {
+                connectionIdArray.push(
+                    characters.charAt(Math.floor(Math.random() * characters.length))
+                );
             }
-        );    
+            connectionId = connectionIdArray.join('');
+    
+            // Ensure key is unique
+            await mongoose.models['Business'].findOne(
+                {connection_id: {"$in": [connectionId]}},
+                async function(err, user) {
+                    if (err) throw err;
+                    if (!user) unique = true;
+                }
+            );    
+        }
+    
+        await this.connection_ids.push(connectionId);
+        await this.save(cb);
+        return connectionId;
     }
 
-    await this.connection_ids.push(connectionId);
-    await this.save(cb);
-    return this;
+    catch(e) {
+        console.error(e);
+        return false;
+    }
 }
 
 
 /**
  * Adds a new upcoming stream to the business
  * 
- * @param {*} streamData stream data
+ * @param {{
+ *      field: String
+ * }} streamData stream data
  * @param {*} cb callback function
  * 
- * @returns {object} business
+ * @returns {{Stream} | false} stream object
  */
 BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
 
-    // Create the stream
-    let stream = new Stream;
-    let streamId = stream._id;
-    stream.field = streamData.field ? streamData.field : 'New Stream';
-    stream.business = this._id;
-    stream.key = await stream.generate_key();
-    await stream.save();
+    try {
+        // Create the stream
+        let stream = new Stream;
+        let streamId = stream._id;
+        stream.field = streamData.field ? streamData.field : 'New Stream';
+        stream.business = this._id;
+        stream.key = await stream.generate_key();
+        await stream.save();
 
-    // Add stream to upcoming streams
-    console.log('Here is the new stream id', streamId);
-    this.streams.upcoming.push(streamId);
-    await this.save(cb);
-    return this;
+        // Add stream to upcoming streams
+        console.log('Here is the new stream id', streamId);
+        this.streams.upcoming.push(streamId);
+        await this.save(cb);
+        return stream;
+    }
+
+    catch(e) {
+        console.error(e);
+        return res.status(500).send();
+    }
 }
 
 
@@ -251,7 +268,6 @@ BusinessSchema.methods.get_current_streams = async function(cb) {
     return currentStreams;
 }
 
-
 /**
  * Get all previous streams from the business. Returns stream objects.
  * 
@@ -276,6 +292,72 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
+/**
+ * Get Business information only available to the specific business
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {object} personal doc
+ */
+BusinessSchema.methods.get_personal_doc = async function(cb) {
+    let personalDoc= {};
+
+    // Static data
+    personalDoc.name = this.name;
+    personalDoc.email = this.email;
+    personalDoc.type = this.type;
+
+    // Stream data
+    const upcomingStreams = await this.get_upcoming_streams();
+    const currentStreams = await this.get_current_streams();
+    const previousStreams = await this.get_previous_streams();
+
+    personalDoc.streams = {
+        upcoming: upcomingStreams,
+        current: currentStreams,
+        previous: previousStreams
+    };
+
+    // Get User / connection data
+    personalDoc.connection_ids = this.connection_ids;
+    personalDoc.connected_users =  await this.get_connected_users();
+
+    console.log('Here is the business personal doc', personalDoc);
+    return personalDoc;
+}
+
+/**
+ * Get all Stream data available to connected Users
+ * 
+ * @param {*} cb 
+ * 
+ * @returns {[{
+ *       key: String,
+ *       field: String
+ * } | false]} Available data if successful else false
+ */
+BusinessSchema.methods.get_user_streams = async function(cb) {
+
+    // Get raw data
+    const rawStreams = await this.get_current_streams();
+    
+    // Clean data
+    const userStreams = rawStreams.map((stream) => {
+
+        // Validate
+        if (!stream.status) return false;
+        if (stream.status !== 'current') return false;
+        
+        return {
+            key: stream.key,
+            field: stream.field
+        }
+    });
+
+    if (!userStreams) return false;
+    console.log('business getuserstreams result', userStreams);
+    return userStreams;
+}
 
 /**
  * Get business doc information only available to users connected to the
@@ -284,17 +366,48 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
  * @param {*} id user id
  * @param {*} cb callback function
  * 
- * @returns {object} user doc
+ * @returns {{
+ *      name: String,
+ *      type: String,
+ *      streams: [String]
+ * }} user doc
  */
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
-    const doc = {
-        name: this.name,
-        type: this.type,
-        streams: this.streams.current
-    }
+    
+    // Static fields
+    let doc = {};
+    doc.name = this.name;
+    doc.type = this.type;
+
+    // Get raw streams
+    const rawStreams = await this.get_user_streams();
+    console.log('businessuserdoc raw streams', rawStreams);
+    doc.streams = rawStreams;
+
     return doc;
 }
 
+/**
+ * Get docs of all connected users
+ */
+BusinessSchema.methods.get_connected_users = async function(cb) {
+    console.log('get_connected_users called');    
+    const users = await Promise.all(
+        this.connected_users.map(async (user) => {
+            console.log('Here is the user in get_connected_users', user);
+            return await mongoose.models['User'].findOne(
+                {_id: user}, async (err, doc) => {
+                    if (err) throw err;
+                    if (!doc) return false;
+                    return await doc.get_business_doc();
+                }
+            )
+        })
+    );
+
+    console.log('Here are the results of get_users', users);
+    return users;
+}
 
 /**
  * Connect business to a user with given id

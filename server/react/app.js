@@ -14,14 +14,13 @@ import 'normalize.css/normalize.css';
 import '../sass/main.scss';
 import storeConfig from './redux/store/storeConfig';
 import Router from './routers/Router';
-import { saveState } from './functions/auth/localStorage';
-
+import save_localStorage from './functions/localStorage/save_localStorage';
 
 /* Configure store */
 const store = storeConfig();
 store.subscribe(() => {
     // Anything put here happens on every state change
-    saveState(store.getState());
+    save_localStorage(store.getState());
 });
 
 

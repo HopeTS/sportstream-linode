@@ -5,11 +5,12 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login, logout} from '../../redux/actions/auth';
-import {clearState} from '../../functions/auth/localStorage';
-import {clearCookies} from '../../functions/auth/cookies';
+import clear_localStorage from '../../functions/localStorage/clear_localStorage';
+import cookie_logout from '../../functions/logout/cookie_logout';
+import server_login_user from '../../functions/login/server_login_user';
+import server_login_business from '../../functions/login/server_login_business';
 
 
-/* Component */
 export class Login extends React.Component {
     constructor(props) {
         super(props);
@@ -17,147 +18,125 @@ export class Login extends React.Component {
             email: '',
             password: '',
             type: 'business',
-            form_error: ''
+            formError: ''
         };
 
-        this.handleLogout();
+        this.handle_logout();
     };
 
     componentWillMount() {
         this.props.page_ID__Set('Login');
-
+        clear_localStorage();
+        cookie_logout();
     };
 
     /** Handler for account type input field */
-    setAccountType = (type) => {
+    set_account_type = (type) => {
         this.setState({
             ...this.state,
             type: type,
-            form_error: ''
+            formError: ''
         });
     }
 
     /** Handler for email input field */
-    setEmail = (email) => {
+    set_email = (email) => {
         this.setState({
             ...this.state,
-            form_error: '',
+            formError: '',
             email: email
         });
     }
 
     /** Handler for password input field */
-    setPassword = (password) => {
+    set_password = (password) => {
         this.setState({
             ...this.state,
-            form_error: '',
+            formError: '',
             password: password
         });
     }
 
     /** Handle login form submission */
-    login = () => {
-        if (this.state.type === 'user') this.loginUser();
-        else if (this.state.type === 'business') this.loginBusiness();
-        else this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-    }
-
-    /** Handles login for Business account */
-    loginBusiness = () => {
-        axios.post('/login-business', { 
-            email: this.state.email,
-            password: this.state.password
-        })
-        
-        .then((res) => {
-            if (res.status === 202) {
-                const stream_key = res.data.stream_key || [];
-                const connection_id = res.data.connection_id || [];
-                this.props.login({
-                    name: res.data.name,
-                    email: res.data.email,
-                    stream_key: stream_key,
-                    connection_id: connection_id,
-                    type: 'business'
-                });
-                this.props.history.push('/');
-            }
-
-            else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-            }
-        })
-
-        .catch((err) => {
-            if (err.response.status === 404) {
-                return this.handleFormError("Invalid email/password");
-            }
-            return this.handleFormError(error.response.status);
-        });
+    handle_login = () => {
+        if (this.state.type === 'user') this.handle_login_user();
+        else if (this.state.type === 'business') this.handle_login_business();
+        else this.handle_form_error('Something went wrong on our end. Try again in a few minutes.');
     }
 
     /** Handles login for User account */
-    loginUser = () => {
-        axios.post('/login-user', { 
-            email: this.state.email,
-            password: this.state.password
+    handle_login_user = () => {
+        server_login_user({
+            email: this.state.email, password: this.state.password
         })
-        
-        .then((res) => {
-            if (res.status === 202) {
-                this.props.login({
-                    name: res.data.name,
-                    email: res.data.email,
-                    type: 'user'
-                });
-                this.props.history.push('/');
-            }
-
-            else {
-                this.handleFormError('Something went wrong on our end. Try again in a few minutes.');
-            }
+        .then((user) => {
+            console.log('user after login', user);
+            if (!user) throw new Error('User not logged in');
+            return user;
         })
+        .then((user) => {
+            console.log('user after login', user)
+            this.props.login(user);
+            this.props.history.push('/dashboard');
+        })
+        .catch((err) => {
+            console.log(err);
+            return false;
+        });
+    }
 
-        .catch((error) => {
-            console.log(error);
-            let errorMessage = error.response ? 
-                error.response.data : 'Something went wrong';
-            this.handleFormError(errorMessage);
+    /** Handles login for Business account */
+    handle_login_business = () => {
+        server_login_business({
+            email: this.state.email, password: this.state.password
+        })
+        .then((business) => {
+            console.log('business after login', business);
+            if (!business) throw new Error('Business not logged in');
+            return business;
+        })
+        .then((business) => {
+            this.props.login(business);
+            this.props.history.push('/dashboard');
+        })
+        .catch((err) => {
+            console.log(err);
+            return false;
         });
     }
 
     /** Handles form error */
-    handleFormError = (errorMessage) => {
+    handle_form_error = (errorMessage) => {
         console.log('Handle form error called')
         this.setState({
             ...this.state,
-            form_error: errorMessage
+            formError: errorMessage
         });
 
         setTimeout(() => {
-            this.clearFormError();
+            this.clear_formError();
         }, 2000)
     }
 
     /** Clears form error */
-    clearFormError = () => {
+    clear_form_error = () => {
         console.log('Clear form error called')
-        if (this.state.form_error) {
+        if (this.state.formError) {
             this.setState({
                 ...this.state,
-                form_error: ''
+                formError: ''
             });    
         }
     }
 
     /**
      *  A User cannot access the login route unless they are not logged into
-     *  the server, so the cookies and localStorage must be cleared.
+     *  the server, so the cookies and local_storage must be cleared.
      */
-    handleLogout = () => {
+    handle_logout = () => {
         this.props.logout();
-        clearCookies();
-        clearState();
+        cookie_logout();
+        clear_localStorage();
     }
 
     render() {
@@ -165,7 +144,6 @@ export class Login extends React.Component {
             <div id="Login">
                 <div 
                     className="Login__form"
-                    data-active={!this.state.login_}
                 >
                     <div className="Login__account-type">
                         <label htmlFor="account_type">I am a...</label>
@@ -173,7 +151,7 @@ export class Login extends React.Component {
                         <select 
                             name="account_type" 
                             id="account_type"
-                            onChange={(e) => this.setAccountType(e.target.value)}
+                            onChange={(e) => this.set_account_type(e.target.value)}
                         >
                             <option value="business">Business</option>
                             <option value="user">Athlete/Parent</option>
@@ -186,7 +164,7 @@ export class Login extends React.Component {
                             type="email" 
                             id="email" 
                             name="email" 
-                            onChange={(e) => this.setEmail(e.target.value)}
+                            onChange={(e) => this.set_email(e.target.value)}
                             required
                         />
                     </div>
@@ -197,22 +175,22 @@ export class Login extends React.Component {
                             type="password" 
                             id="password" 
                             name="password" 
-                            onChange={(e) => this.setPassword(e.target.value)}
+                            onChange={(e) => this.set_password(e.target.value)}
                             required
                         />
                     </div>
                     
                     <div 
                         className="Login__error" 
-                        data-active={!!this.state.form_error}
+                        data-active={!!this.state.formError}
                     >
-                        {this.state.form_error}
+                        {this.state.formError}
                     </div>
 
 
                     <button 
                         className="Login__button"
-                        onClick={this.login}
+                        onClick={this.handle_login}
                     >
                         submit
                     </button>

@@ -1,0 +1,12 @@
+@mixin dashboardContent {
+    width: calc(100% - 32px);
+    margin: 0 16px;
+    
+    h2 {
+
+    }
+}
+
+.dashboardContent {
+    @include dashboardContent;
+}

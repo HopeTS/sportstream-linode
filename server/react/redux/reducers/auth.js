@@ -2,17 +2,12 @@
  *  Reducer for handling authentication in Redux
  */
 
-
-/* Reducer */
 const AuthDefaultState = {
     isAuthenticated: false,
     account: {
-        type: undefined,
+        type: '',
         name: '',
-        email: '',
-        connected_businesses: [],
-        connection_id: '',
-        stream_key: []
+        email: ''
     }
 };
 
@@ -20,12 +15,6 @@ export default (state = AuthDefaultState, action) => {
     switch(action.type) {
 
         case 'LOGIN':
-            const connected_businesses = action.account.connected_businesses ?
-                action.account.connected_businesses : [];
-            const connection_id = action.account.connection_id ?
-                action.account.connection_id : '';
-            const stream_key = action.account.stream_key ? 
-                action.account.stream_key : [];
 
             return {
                 ...state,
@@ -33,10 +22,7 @@ export default (state = AuthDefaultState, action) => {
                 account: {
                     type: action.account.type,
                     name: action.account.name,
-                    email: action.account.email,
-                    connected_businesses: connected_businesses,
-                    connection_id: connection_id,
-                    stream_key: stream_key
+                    email: action.account.email
                 }
             };
 
@@ -45,12 +31,9 @@ export default (state = AuthDefaultState, action) => {
                 ...state,
                 isAuthenticated: false,
                 account: {
-                    type: undefined,
+                    type: '',
                     name: '',
-                    email: '',
-                    connected_businesses: [],
-                    connection_id: '',
-                    stream_key: []
+                    email: ''
                 }
             };
 

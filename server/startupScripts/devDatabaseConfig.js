@@ -3,6 +3,7 @@
  */
 
 const bcrypt = require('bcryptjs');
+const chalk = require('chalk');
 
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
@@ -11,7 +12,7 @@ const Stream = require('../database/schema/Schema').Stream;
 /**
  * Configure database for development
  */
-const databaseConfig = async () => {
+async function devDatabaseConfig() {
     // Test users
     const users = [{
         name: 'Test1',
@@ -21,6 +22,11 @@ const databaseConfig = async () => {
     }, {
         name: 'Test2',
         email: 'user2@gmail.com',
+        password: await bcrypt.hash('1234', 10),
+        connected_businesses: []
+    }, {
+        name: 'Test3',
+        email: 'user3@gmail.com',
         password: await bcrypt.hash('1234', 10),
         connected_businesses: []
     }];
@@ -67,46 +73,70 @@ const databaseConfig = async () => {
     });
 
     // Add test businesses
-    await Promise.all(businesses.map(async (business) => {
-        let newBusiness = new Business;
-        newBusiness.name = business.name;
-        newBusiness.email = business.email;
-        newBusiness.password = business.password;
-        await newBusiness.save();
-        return newBusiness;
-    }));
-
-    let connectBusinessId;
-    // Get connection id for user to business connection
-    let connectBusiness = await Business.findOne({}, async (err, business) => {
-        if (err) throw err;
-        if (!business) return console.log('[config] business not found?!')
-        await business.generate_connection_id();
-        await business.save();
-        connectBusinessId = business.connection_ids[0]
-
-        console.log('[config] business after connection generated', business);
-        return business;
-    });
-
-    const user_ids = await User.find({}, async (err, docs) => {
-        let ids = await Promise.all(docs.map(async (doc) => {
-            return doc._id;
+    try {
+        await Promise.all(businesses.map(async (business) => {
+            let newBusiness = new Business;
+            newBusiness.name = business.name;
+            newBusiness.email = business.email;
+            newBusiness.password = business.password;
+            await newBusiness.save();
+            return newBusiness;
         }));
+    }
 
-        return ids;
-    });
+    catch(e) {
+        console.log('Error adding businesses');
+        return false;
+    }
 
-    const business_ids = await Business.find({}, async (err, docs) => {
-        let ids = await Promise.all(docs.map(async (doc) => {
-            return doc._id;
-        }));
-
-        return ids;
-    });
+    // Get User/Business IDs
+    let user_ids;
+    let business_ids;
+    try {
+        user_ids = await User.find({}, async (err, docs) => {
+            let ids = await Promise.all(docs.map(async (doc) => {
+                return doc;
+            }));
     
-    await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
-    await user_ids[1].connect_business(business_ids[1].connection_ids[0]);
+            return ids;
+        });
+    
+        business_ids = await Business.find({}, async (err, docs) => {
+            let ids = await Promise.all(docs.map(async (doc) => {
+                return doc;
+            }));
+    
+            return ids;
+        });
+    }
+
+    catch(e) {
+        console.log(chalk.red('Error finding accounts'));
+        return false;
+    }
+
+    // Generate business Connection IDs
+    let connectionKey1;
+    let connectionKey2;
+    try {
+        connectionKey1 = await business_ids[0].generate_connection_id();
+        connectionKey2 = await business_ids[1].generate_connection_id();
+    }
+
+    catch(e) {
+        console.error(e)
+    }
+    
+    // Connect businesses
+    try {
+        await user_ids[0].connect_business(business_ids[0].connection_ids[0]);
+        await user_ids[1].connect_business(business_ids[1].connection_ids[0]);    
+    }
+
+    catch(e) {
+        console.log(chalk.red('Error connecting businesses'));
+        return false;
+    }
 
     console.log('[config] users after connection:');
     await User.find({}, async (err, docs) => {
@@ -154,11 +184,6 @@ const databaseConfig = async () => {
         }
     );
 
-    console.log('user1', user1);
-    console.log('user2', user2);
-    console.log('business1', business1);
-    console.log('business2', business2);
-
     // Test business start stream and user get available streams
     await business1.create_stream({
         field: 'Test field 1'
@@ -186,6 +211,11 @@ const databaseConfig = async () => {
 
     userDocs = await user1.get_connected_businesses();
     console.log('userDocs after end stream', userDocs);
+
+    const busGetConnectedUsers = await business1.get_connected_users();
+    console.log('Business get_connected_users', busGetConnectedUsers);
+
+    return true;
 }
 
-module.exports = databaseConfig;
+module.exports = devDatabaseConfig;

@@ -7,8 +7,8 @@ import {
     navMenu_Mobile__Off, accountMenu__Off
 } from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
-import { clearState } from '../../../functions/auth/localStorage';
-import { clearCookies } from '../../../functions/auth/cookies';
+import clear_localStorage from '../../../functions/localStorage/clear_localStorage';
+import cookie_logout from '../../../functions/logout/cookie_logout';
 
 /**
  * The account options dropdown list for User accounts. 
@@ -20,7 +20,7 @@ export class AccountCardAuthMenuUser extends React.Component {
     }
 
     /**
-     * Logs user out from server and clears localStorage and cookie 
+     * Logs user out from server and clears local_storage and cookie 
      * authentication data
      */
     logout = () => {
@@ -33,8 +33,8 @@ export class AccountCardAuthMenuUser extends React.Component {
         });
 
         // client logout
-        clearState();
-        clearCookies();
+        clear_localStorage();
+        cookie_logout();
         this.props.logout();
     }
 
