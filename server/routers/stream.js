@@ -36,3 +36,5 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
         return res.status(500).send();
     }
 });
+
+module.exports = router;

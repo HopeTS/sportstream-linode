@@ -35,3 +35,5 @@ router.get('/watch/*', ensureLoggedIn(), async (req, res) => {
         return res.status(500).send();
     }
 });
+
+module.exports = router;
