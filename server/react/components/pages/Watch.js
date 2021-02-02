@@ -4,7 +4,7 @@ import axios from 'axios';
 import {NavLink} from 'react-router-dom';
 
 import {page_ID__Set} from '../../redux/actions/page';
-import get_stream_link from '../../functions/stream/get_stream_link';
+import get_stream_link from '../../functions/stream/get_stream_links';
 import LoadingSpinner from '../LoadingSpinner';
 
 
@@ -37,7 +37,9 @@ export function Watch(props) {
                 className="Watch__video" id="videoTag"
                 typ="rtmp/mp4"
             >
-                <source src={streamLink}/>
+                {streamLink.map((link) => (
+                    <source src={link} />
+                ))}
                 Your browser does not support this video format.
             </video>
             :
