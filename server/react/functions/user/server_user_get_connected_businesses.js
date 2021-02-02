@@ -3,7 +3,7 @@ import axios from 'axios';
 export default () => {
     
     // Get raw data
-    axios.get(
+    return axios.get(
         '/user/get-connected-businesses', {withCredentials: true}
     )
 

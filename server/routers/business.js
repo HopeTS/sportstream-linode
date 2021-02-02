@@ -26,16 +26,17 @@ router.use(bodyParser.urlencoded({extended: true}));
  * Get all information available to business account.
  * (endpoint for Business.get_personal_doc())
  * 
- * @returns {object} {
- *      name
- *      email
- *      streams
- *          upcoming
- *          current
- *          previous
- *      connected users (the business public docs)
- *      connection IDs
- * }
+ * @returns {{
+ *      name: String,
+ *      email: String,
+ *      streams: {
+ *          upcoming: [String],
+ *          current: [String],
+ *          previous: [String]
+ *      },
+ *      connected_users: [String],
+ *      connection_ids: [String]
+ * }} 
  */
 router.get('/business/get-personal-doc', ensureLoggedIn(), async (req, res) => {
     try {
@@ -57,6 +58,7 @@ router.get('/business/get-personal-doc', ensureLoggedIn(), async (req, res) => {
     } 
     
     catch (e) {
+        console.error(e);
         return res.status(500).send();
     }
 });
