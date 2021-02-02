@@ -357,7 +357,7 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
             async function(err, doc) {
                 if (err) throw err;
                 if (!doc) return false;
-                if (doc) return await doc;
+                if (doc) return await doc.get_user_doc();
             }
         );
     }));
