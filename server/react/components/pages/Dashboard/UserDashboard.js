@@ -59,12 +59,16 @@ export function UserDashboard(props) {
                 <h2>My Sports Centers</h2>
 
                 {connectedBusinesses.map((business) => (
-                    <article className="UserDashboard__contentSection">
+                    <article 
+                        className="UserDashboard__contentSection"
+                        key={business.name}
+                    >
                         <h3>{business.name}</h3>
 
                         {business.streams.map((stream) => (
                             <a 
-                                href={get_stream_link(stream.key)} 
+                                href={get_stream_link(stream.key)}
+                                key={stream.key}
                                 className="UserDashboard__contentRow"
                             >
                                 Stream!
