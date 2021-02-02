@@ -8,5 +8,5 @@
  */
 export default (link) => {
     //http://localhost:8000/live/STREAM_NAME.flv
-    return `http://${window.location.origin}:8000/live/${link}/index.mpd`;
+    return `http://${window.location.host}:8000/live/${link}/index.mpd`;
 }
