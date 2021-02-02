@@ -58,6 +58,7 @@ export function UserDashboard(props) {
                 <article className="UserDashboard__contentSection">
                     <h3>Available Streams</h3>
                     <article className="UserDashboard__contentBlock small">
+                        {console.log('availableStreams', availableStreams)}
                         {availableStreams.length > 0 &&
                         availableStreams.map((stream) => (
                             <a 
