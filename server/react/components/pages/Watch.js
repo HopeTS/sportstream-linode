@@ -4,12 +4,53 @@ import axios from 'axios';
 import {NavLink} from 'react-router-dom';
 
 import {page_ID__Set} from '../../redux/actions/page';
-import get_stream_link from '../../functions/stream/get_stream_links';
+import get_stream_link from '../../functions/stream/get_stream_link';
 import LoadingSpinner from '../LoadingSpinner';
+import Reflv from '../Reflv';
 
 
 /** Watch page (/watch) */
-export function Watch(props) {
+export class Watch extends React.Component {
+    constructor(props) {
+        this.state = {
+            streamLink: null
+        }    
+    }
+
+    componentWillMount() {
+
+    }
+
+    componentWillUnmount() {
+        if (this.flvPlayer) {
+
+        }
+    }
+
+    render() {
+        return (
+            <div id="Watch">
+                {streamLink ?
+                    <Reflv 
+                        url={streamLink}
+                        type="flv"
+                        isLive
+                        cors
+                        config={{
+                            enableWorker: true,
+                            enableStashBuffer: false,
+                            stashInitialSize: 128
+                        }}
+                    />
+                :
+                    <LoadingSpinner />
+                }
+            </div>
+        )
+    }
+}
+
+export function WatchOld(props) {
 
     const [streamActive, set_stream_active] = useState(false);
     const [streamLink, set_stream_link] = useState(null);
@@ -37,9 +78,7 @@ export function Watch(props) {
                 className="Watch__video" id="videoTag"
                 typ="rtmp/mp4"
             >
-                {streamLink.map((link) => (
-                    <source src={link} />
-                ))}
+                <source src={streamLink} />
                 Your browser does not support this video format.
             </video>
             :
