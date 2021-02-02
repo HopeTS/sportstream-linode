@@ -96,8 +96,9 @@ switch (process.env.NAME) {
             else console.log(chalk.red('Dev DB config unsuccessful'));
         })
         
-        .catch(() => {
+        .catch((error: any) => {
             console.log(chalk.red('Something went wrong with dev DB config'));
+            console.error(error);
         });
 
     default:
