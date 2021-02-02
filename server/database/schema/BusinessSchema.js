@@ -344,7 +344,7 @@ BusinessSchema.methods.get_personal_doc = async function(cb) {
 BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
 
     // Business info
-    let doc;
+    let doc = {};
     doc.name = this.name;
     doc.type = this.type;
     console.log('businessschema doc before', doc)
