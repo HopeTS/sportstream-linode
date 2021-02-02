@@ -40,7 +40,11 @@ export function UserDashboard(props) {
         .then((personalData) => {
             if (!personalData) throw new Error("Couldn't retrieve User data");
             set_connected_businesses(personalData.connected_businesses);
-            set_available_streams(personalData.connected_businesses.streams);
+            console.log('Here is sggdskjbng', personalData.connected_businesses.streams);
+            return 'hi'
+        })
+        .then((res) => {
+            console.log('second link in userDashboard promise chain', res)
         })
 
         .catch((err) => {
