@@ -4,6 +4,7 @@ import axios from 'axios';
 import {NavLink} from 'react-router-dom';
 
 import {page_ID__Set} from '../../redux/actions/page';
+import get_stream_link from '../../functions/stream/get_stream_link';
 import LoadingSpinner from '../LoadingSpinner';
 
 
@@ -16,14 +17,15 @@ export function Watch(props) {
     // Initial setup
     useEffect(() => {
         props.page_ID__Set('watch');
-        get_stream_link();
+        generate_stream_link();
     }, []);
 
-    /** Get stream link */
-    const get_stream_link = () => {
+    /** Get stream link handler */
+    const generate_stream_link = () => {
         
         // Get stream link
-        const pathname = window.location.pathname;
+        const streamKey = window.location.pathname.split('/')[1];
+        set_stream_link(get_stream_link(streamKey));
         console.log(pathname);
         return;
     }
