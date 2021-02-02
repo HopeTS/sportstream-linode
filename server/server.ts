@@ -31,6 +31,8 @@ const logoutRouter = require('./routers/logout');
 const registerRouter = require('./routers/register');
 const userRouter = require('./routers/user');
 const businessRouter = require('./routers/business');
+const streamRouter = require('./routers/stream');
+const watchRouter = require('./routers/watch');
 const wildcardRouter = require('./routers/wildcard');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
@@ -81,6 +83,8 @@ app.use(logoutRouter);
 app.use(registerRouter);
 app.use(userRouter);
 app.use(businessRouter);
+app.use(streamRouter);
+app.use(watchRouter);
 app.use(wildcardRouter);
 
 
