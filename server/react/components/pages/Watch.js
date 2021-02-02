@@ -17,25 +17,43 @@ export class Watch extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Watch');
-        get_stream();
+        this.render_stream();
     };
 
+    /** 
+     * Get link to stream download
+     * 
+     * @returns {String | false} Link to stream if exists, else false
+     */
     get_stream() {
         console.log(window.location.pathname);
+        return window.location.pathname;
+    }
+
+    render_stream() {
+        if (!flvjs.isSupported()) return console.error('flvjs is not supported');
+        
+        // Get link to stream
+        const streamLink = this.get_stream();
+        if (!streamLink) return console.error('');
+
+        // Create flvPlayer
+        const videoTag = document.getElementById('videoTag');
+        const flvPlayer = flvjs.createPlayer({
+            type: 'flv',
+            url: streamLink
+        });
+        flvPlayer.attachMediaElement(videoTag);
+
+        // Start stream
+        flvPlayer.load();
+        flvPlayer.play();
     }
 
     render() {
         return (
             <div id="Watch">
-                <section className="Watch__header">
-                    <div className="Watch__headerContent">
-                        Your available games
-                    </div>
-                </section>
-
-                <section className="Watch__content">
-                    Live Stream page
-                </section>
+                <video className="Watch__video" id="videoTag"></video>
             </div>
         );
     };
