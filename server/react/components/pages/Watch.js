@@ -10,48 +10,7 @@ import Reflv from '../Reflv';
 
 
 /** Watch page (/watch) */
-export class Watch extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            streamLink: null
-        }    
-    }
-
-    componentWillMount() {
-
-    }
-
-    componentWillUnmount() {
-        if (this.flvPlayer) {
-
-        }
-    }
-
-    render() {
-        return (
-            <div id="Watch">
-                {streamLink ?
-                    <Reflv 
-                        url={streamLink}
-                        type="flv"
-                        isLive
-                        cors
-                        config={{
-                            enableWorker: true,
-                            enableStashBuffer: false,
-                            stashInitialSize: 128
-                        }}
-                    />
-                :
-                    <LoadingSpinner />
-                }
-            </div>
-        )
-    }
-}
-
-export function WatchOld(props) {
+export function Watch(props) {
 
     const [streamActive, set_stream_active] = useState(false);
     const [streamLink, set_stream_link] = useState(null);
@@ -75,15 +34,19 @@ export function WatchOld(props) {
     return (
         <div id="Watch">
             {streamLink ?
-            <video 
-                className="Watch__video" id="videoTag"
-                typ="rtmp/mp4"
-            >
-                <source src={streamLink} />
-                Your browser does not support this video format.
-            </video>
+                <Reflv 
+                    url={streamLink}
+                    type="flv"
+                    isLive
+                    cors
+                    config={{
+                        enableWorker: true,
+                        enableStashBuffer: false,
+                        stashInitialSize: 128
+                    }}
+                />
             :
-            <LoadingSpinner />
+                <LoadingSpinner />
             }
         </div>
     )
