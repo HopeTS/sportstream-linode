@@ -347,6 +347,8 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
     let doc;
     doc.name = this.name;
     doc.type = this.type;
+    console.log('businessschema doc before', doc)
+    console.log('businessschema ids to map', this.strams.current)
 
     // Get stream objects
     const streams = await Promise.all(this.streams.current.map((stream) => {
@@ -354,7 +356,8 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
             {_id: stream},
             async function(err, doc) {
                 if (err) throw err;
-                if (doc) return await doc.get_user_doc();
+                if (!doc) return false;
+                if (doc) return await doc;
             }
         );
     }));
