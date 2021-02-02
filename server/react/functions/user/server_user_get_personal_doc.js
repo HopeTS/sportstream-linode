@@ -9,7 +9,7 @@ import axios from 'axios';
  *      type: String,
  *      connected_businesses: [{
  *          name: String,
- *          streams: [Stream],
+ *          streams: [String],
  *          type: String
  *      }]
  * } | false} Personal doc if successful, else false

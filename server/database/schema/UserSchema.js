@@ -158,8 +158,4 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
     return userDocs;
 }
 
-// TODO: GET STream object
-    /* TO FUTURE ROBBY: GET THE STREAM OBJECTS OF AVAILABLE STREAMS AND SEND
-    TO USER DASHBOARD THEN YOU WILL BE DONE*/
-
 module.exports = UserSchema;

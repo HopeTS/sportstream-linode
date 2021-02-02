@@ -67,6 +67,19 @@ StreamSchema.methods.generate_key = async function(cb) {
 }
 
 /**
+ * 
+ * @param {*} cb  callback function
+ */
+StreamSchema.methods.get_user_doc = async function(cb) {
+    const doc = {
+        field: this.field,
+        key: this.key
+    }
+
+    return doc;
+};
+
+/**
  * Sets stream status to current
  * 
  * @param {*} cb callback function
