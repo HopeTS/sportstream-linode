@@ -67,7 +67,7 @@ export function UserDashboard(props) {
 
                         {business.streams.map((stream) => (
                             <a 
-                                href={get_stream_link(stream.key)}
+                                href={`/watch/${stream.key}`}
                                 key={stream.key}
                                 className="UserDashboard__contentRow"
                             >
