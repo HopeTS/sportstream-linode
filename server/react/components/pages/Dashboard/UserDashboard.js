@@ -5,7 +5,6 @@ import axios from 'axios';
 
 import server_user_get_personal_doc from
     '../../../functions/user/server_user_get_personal_doc';
-import get_stream_link from '../../../functions/stream/get_stream_link';
 
 export function UserDashboard(props) {
 
