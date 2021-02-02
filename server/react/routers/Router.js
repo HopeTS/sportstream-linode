@@ -133,7 +133,6 @@ export class Router extends React.Component {
                         <Route 
                             path="/watch"
                             component={Watch}
-                            exact
                         />
 
                         <Route 
