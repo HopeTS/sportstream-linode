@@ -7,6 +7,7 @@ import {page_ID__Set} from '../../redux/actions/page';
 import get_stream_link from '../../functions/stream/get_stream_link';
 import LoadingSpinner from '../LoadingSpinner';
 import Reflv from '../Reflv';
+import VideoPlayer from '../VideoPlayer';
 
 
 /** Watch page (/watch) */
@@ -34,17 +35,7 @@ export function Watch(props) {
     return (
         <div id="Watch">
             {streamLink ?
-                <Reflv 
-                    url={streamLink}
-                    type="flv"
-                    isLive
-                    cors
-                    config={{
-                        enableWorker: true,
-                        enableStashBuffer: false,
-                        stashInitialSize: 128
-                    }}
-                />
+                <VideoPlayer link={streamLink} />
             :
                 <LoadingSpinner />
             }
