@@ -104,7 +104,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
 
 router.post('/register/business', ensureLoggedOut(), async (req, res) => {
     try {
-        console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
+        console.log(`Received a${req.secure ? " secure": "n insecure"} /register-business request`);
 
         // Look for already existing Business account
         const existingBusiness = await Business.findOne(
@@ -138,7 +138,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
         console.log('Creating business');
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        const newBusiness = new User({
+        const newBusiness = new Business({
             name: req.body.name,
             password: hashedPassword,
             email: req.body.email
