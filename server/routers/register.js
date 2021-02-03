@@ -62,7 +62,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
             }
         );
 
-        if (existingUser) return res.status(460).send(
+        if (existingUser) return res.status(461).send(
             'email address already registered as another User'
         );
 
@@ -130,7 +130,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
             }
         );
 
-        if (existingUser) return res.status(460).send(
+        if (existingUser) return res.status(461).send(
             'email address already registered as another User'
         );
 

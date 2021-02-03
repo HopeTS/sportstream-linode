@@ -45,6 +45,10 @@ export default (credentials) => {
             return newAccount;
         }
 
+        if (res.status === 460) {
+            console.log('460 caught in then')
+        }
+
         return false;
     })
 
