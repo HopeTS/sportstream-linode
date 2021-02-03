@@ -33,9 +33,6 @@ export default (credentials) => {
 
         // If successful
         if (res.status === 201) {
-            console.log('user registered in server, returning user');
-            console.log('user register res.data', res.data);
-
             const newAccount = {
                 name: credentials.name,
                 email: credentials.email,
@@ -43,11 +40,26 @@ export default (credentials) => {
             }
             return newAccount;
         }
+
+        // This should never happen
+        return 'Something went wrong on our end. Please try again';
     })
 
     .catch((error) => {
-        console.log('register user error', error);
-        return false;
+
+        // Business already exists
+        if (error.response.status === 460) {
+            return 'Email already registered as a Business!';
+        }
+
+        // User already exists
+        else if (error.response.status === 461) {
+            return 'Email already registered as a User!';
+        }
+
+        // Some other error
+        return 'Something has gone wrong on our end. Refresh and try again.';
     });
+
     return account;
 }

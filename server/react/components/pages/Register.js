@@ -116,6 +116,7 @@ export class Register extends React.Component {
 
     /** Handle registration for business account */
     handle_register_business = () => {
+
         const account = server_register_business({
             name: this.state.name,
             email: this.state.email,
@@ -123,14 +124,24 @@ export class Register extends React.Component {
             business_key: this.state.business_key
         })
 
-        .then((business) => {
-            console.log(business);
-            if (!business) throw new Error();
-            this.handle_login_business(business.email, business.password)
+        .then((res) => {
+            
+            // Error handling
+            if (typeof business == String) {
+                this.handle_form_error(res);
+                return;
+            }
+
+            if (!res) throw new Error();
+
+            this.handle_login_business(business.email, business.password);
         })
 
         .catch((error) => {
-            this.handle_form_error('Something went wrong on our end. Please try again in a few minutes.');
+            this.handle_form_error(
+                'Something went wrong on our end. Please try again \
+                in a few minutes.'
+            );
             return;
         })
     }
@@ -151,10 +162,12 @@ export class Register extends React.Component {
         .then((res) => {
             console.log('front end business login succccess', res);
             this.props.history.push('/dashboard');
+            return;
         })
 
         .catch((err) => {
-            console.log('something went wrong handle business login')
+            console.log('something went wrong handle business login');
+            return;
         })
     }
 
@@ -166,21 +179,23 @@ export class Register extends React.Component {
         })
         
         .then((res) => {
-            if (res.status === 201) {
-                this.handle_login_user(
-                    account.email,
-                    account.password
-                );
+
+            // Error handling
+            if (typeof business == String) {
+                this.handle_form_error(res);
+                return;
             }
 
-            // Other error
-            else {
-                this.handle_form_error('Something went wrong on our end. Try again in a few minutes.');
-            }
+            if (!res) throw new Error();
+
+            this.handle_login_user(account.email, account.password);
         })
 
         .catch((error) => {
-            this.handle_form_error(error.response.data);
+            this.handle_form_error(
+                'Something went wrong on our end. Try again \
+                in a few minutes.'
+            );
         });
     }
 
