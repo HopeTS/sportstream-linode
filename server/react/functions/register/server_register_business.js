@@ -53,7 +53,7 @@ export default (credentials) => {
     })
 
     .catch((error) => {
-        console.log('register business error', error);
+        console.log('register business error', error.status);
         return false;
     });
     return account;
