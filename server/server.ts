@@ -105,6 +105,20 @@ switch (process.env.NAME) {
             console.error(error);
         });
 
+    case 'start:https':
+        console.log(chalk.blue('Setting up development database'));
+        devDatabaseConfig()
+        
+        .then((res: boolean) => {
+            if (res) console.log(chalk.green('Dev DB config successful'));
+            else console.log(chalk.red('Dev DB config unsuccessful'));
+        })
+        
+        .catch((error: any) => {
+            console.log(chalk.red('Something went wrong with dev DB config'));
+            console.error(error);
+        });
+
     default:
         console.log(chalk.blue('Not running any startup scripts.'))
 }
