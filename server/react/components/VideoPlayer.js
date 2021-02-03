@@ -3,8 +3,8 @@ import {ReactFlvPlayer} from 'react-flv-player';
 
 export function VideoPlayer(props) {
 
-    const [videoHeight, set_video_height] = useState('800px');
-    const [videoWidth, set_video_width] = useState('800px');
+    const [videoHeight, set_video_height] = useState('100%');
+    const [videoWidth, set_video_width] = useState('100%');
 
     return (
         <div className="VideoPlayer">
