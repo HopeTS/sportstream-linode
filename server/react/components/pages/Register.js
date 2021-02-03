@@ -117,7 +117,7 @@ export class Register extends React.Component {
     /** Handle registration for business account */
     handle_register_business = () => {
 
-        const account = server_register_business({
+        server_register_business({
             name: this.state.name,
             email: this.state.email,
             password: this.state.password,
@@ -135,6 +135,7 @@ export class Register extends React.Component {
             if (!res) throw new Error();
 
             this.handle_login_business(business.email, business.password);
+            return;
         })
 
         .catch((error) => {
@@ -173,9 +174,11 @@ export class Register extends React.Component {
 
     /** Handle registration for user account */
     handle_register_user = () => {
-        server_login_user({
+        server_register_user({
             email: this.state.email,
-            password: this.state.password
+            password: this.state.password,
+            name: this.state.name,
+            business_password: this.state.business_password
         })
         
         .then((res) => {

@@ -17,17 +17,15 @@ import axios from 'axios';
  * } | false} account info if registration successful, else false
  */
 export default (credentials) => {
-    const account = axios({
-        method: "post",
-        data: {
+    return axios.post('/register/user', 
+        {
             name: credentials.name,
             email: credentials.email,
             password: credentials.password,
             business_password: credentials.business_password
         },
-        withCredentials: true,
-        url: `${window.location.origin}/register/user`
-    })
+        {withCredentials: true}
+    )
 
     .then((res) => {
 
@@ -60,6 +58,4 @@ export default (credentials) => {
         // Some other error
         return 'Something has gone wrong on our end. Refresh and try again.';
     });
-
-    return account;
 }
