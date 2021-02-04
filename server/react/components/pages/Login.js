@@ -17,7 +17,7 @@ export class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            type: 'business',
+            type: 'user',
             formError: ''
         };
 
@@ -90,12 +90,9 @@ export class Login extends React.Component {
         server_login_business({
             email: this.state.email, password: this.state.password
         })
+
         .then((business) => {
-            console.log('business after login', business);
             if (!business) throw new Error('Business not logged in');
-            return business;
-        })
-        .then((business) => {
             this.props.login(business);
             this.props.history.push('/dashboard');
         })

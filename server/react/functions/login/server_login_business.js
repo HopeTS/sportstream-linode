@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { convertToObject } from 'typescript';
 
 /**
  * Handles server login for Business accounts
@@ -8,14 +9,13 @@ import axios from 'axios';
  *      password: String
  * }} credentials account credentials
  * 
- * @returns {object | false} account information if successful, 
- *      else returns false
+ * @returns {object | string} account information if successful, 
+ *      else returns error message
  */
 export default (credentials)  => {
     // Required arguments
     if (!credentials.email || !credentials.password) {
-        console.log('Invalid credentials');
-        return false;
+        return 'Empty email or password';
     }
 
     // Validate email
@@ -23,8 +23,7 @@ export default (credentials)  => {
         !credentials.email.split('@').length === 2 ||
         !credentials.email.split('@')[1].split('.').length >= 2
     ) {
-        console.log('Invalid email');
-        return false;
+        return 'Invalid email';
     }
 
     // Send login post
@@ -34,13 +33,18 @@ export default (credentials)  => {
     })
 
     .then((res) => {
-        console.log('Got business account')
-        return res.data
+        if (res.status === 202) return res.data;
+        console.warning(
+            'The /login/business endpoint did not throw an error \
+            but did not return a proper status code...'
+        )
+        return 'Something went wrong on our end. Try again in a few minutes.';
     })
 
     .catch((error) => {
-        console.log('something went wrong on /login/business endpoint');
-        return false;
+        if (error.status === 404) console.log('Errors thrown as expected');
+        console.warning('/login/business endpoint has thrown an error...');
+        return 'Something went wrong on our end. try again in a few minutes.';
     });
 
     return business;
