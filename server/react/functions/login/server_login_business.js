@@ -34,7 +34,7 @@ export default (credentials)  => {
 
     .then((res) => {
         if (res.status === 202) return res.data;
-        console.log(
+        console.warn(
             'The /login/business endpoint did not throw an error \
             but did not return a proper status code...'
         )
@@ -43,7 +43,7 @@ export default (credentials)  => {
 
     .catch((error) => {
         if (error.status === 404) console.log('Errors thrown as expected');
-        console.log('/login/business endpoint has thrown an error...');
+        console.warn('/login/business endpoint has thrown an error...');
         return 'Something went wrong on our end. try again in a few minutes.';
     });
 
