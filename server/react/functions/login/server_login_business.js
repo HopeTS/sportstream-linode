@@ -42,7 +42,7 @@ export default (credentials)  => {
     })
 
     .catch((error) => {
-        if (error.status === 404) console.log('Errors thrown as expected');
+        if (error.response.status === 404) console.log('Errors thrown as expected');
         console.warn('/login/business endpoint has thrown an error...');
         return 'Something went wrong on our end. try again in a few minutes.';
     });
