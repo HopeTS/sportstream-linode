@@ -23,6 +23,7 @@ router.use(bodyParser.urlencoded({extended: true}));
 
 router.get('/logout', ensureLoggedIn(), (req, res) => {
     res.clearCookie('user');
+    res.clearCookie('connect.sid');
     res.send();
 });
 
