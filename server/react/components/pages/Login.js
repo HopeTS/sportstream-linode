@@ -83,7 +83,7 @@ export class Login extends React.Component {
         .then((user) => {
 
             // If login successful
-            if (typeof user !== String) {
+            if (typeof user !== 'string') {
                 console.log('Login successful');
                 this.props.login(user);
                 this.props.history.push('/dashboard');
@@ -91,7 +91,7 @@ export class Login extends React.Component {
             }
 
             // If predictable error
-            if (typeof user === String) {
+            if (typeof user === 'string') {
                 console.log('Login unsuccessful');
                 this.handle_form_error(user);
                 return;
@@ -126,7 +126,7 @@ export class Login extends React.Component {
         .then((business) => {
 
             // If login successul
-            if (typeof business !== String) {
+            if (typeof business !== 'string') {
                 console.log('Login successful');
                 this.props.login(business);
                 this.props.history.push('/dashboard');
@@ -134,7 +134,7 @@ export class Login extends React.Component {
             }
 
             // If predictable error
-            if (typeof business === String) {
+            if (typeof business === 'string') {
                 console.log('Login unsuccessful');
                 this.handle_form_error(business);
                 return;
@@ -149,7 +149,7 @@ export class Login extends React.Component {
             );
             return;
         })
-        
+
         // Thrown error handling
         .catch((err) => {
             console.warn(err);

@@ -35,34 +35,46 @@ router.get('/login', (req, res) => {
 
 
 router.post('/login/user', (req, res, next) => {
-    passport.authenticate('userLogin', (err, user, info) => {
-        if (err) throw err;
-        if (!user) res.status(404).send('No user exists');
+    try {
+        passport.authenticate('userLogin', (err, user, info) => {
+            if (err) throw err;
+            if (!user) res.status(404).send();
+    
+            else {
+                req.login(user, (err) => {
+                    if (err) throw err;
+                    res.cookie('user', user.id, {maxAge: 2592000000}); // 1 Month
+                    res.status(202).send(user);
+                });
+            }
+        })(req, res, next);
+    }
 
-        else {
-            req.login(user, (err) => {
-                if (err) throw err;
-                res.cookie('user', user.id, {maxAge: 2592000000}); // 1 Month
-                res.status(202).send(user);
-            });
-        }
-    })(req, res, next);
+    catch(error) {
+        return res.status(500).send();
+    }
 });
 
 
 router.post('/login/business', (req, res, next) => {
-    passport.authenticate('businessLogin', (err, user, info) => {
-        if (err) throw err;
-        if (!user) res.status(404).send("No Business exists");
+    try {
+        passport.authenticate('businessLogin', (err, user, info) => {
+            if (err) throw err;
+            if (!user) res.status(404).send();
+    
+            else {
+                req.logIn(user, (err) => {
+                    if (err) throw err;
+                    res.cookie('user', user.id, {maxAge: 2592000000}); // 1 Month
+                    res.status(202).send(user);
+                });
+            }
+        })(req, res, next);
+    }
 
-        else {
-            req.logIn(user, (err) => {
-                if (err) throw err;
-                res.cookie('user', user.id, {maxAge: 2592000000}); // 1 Month
-                res.status(202).send(user);
-            })
-        }
-    })(req, res, next);
+    catch(error) {
+        return res.status(500).send();
+    }
 });
 
 
