@@ -18,7 +18,7 @@ export class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            type: 'user',
+            type: 'starter',
             formError: ''
         };
 
@@ -214,12 +214,18 @@ export class Login extends React.Component {
                             id="account_type"
                             onChange={(e) => this.set_account_type(e.target.value)}
                         >
+                            <option value="starter" defaultValue>
+                                Select an account type...
+                            </option>
                             <option value="user">Athlete/Parent</option>
                             <option value="business">Business</option>
                         </select>
                     </div>
 
-                    <div className="Login__field">
+                    <div 
+                        className="Login__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
                         <label htmlFor="email">Email</label>
                         <input 
                             type="email" 
@@ -230,7 +236,10 @@ export class Login extends React.Component {
                         />
                     </div>
 
-                    <div className="Login__field">
+                    <div 
+                        className="Login__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
                         <label htmlFor="password">Password</label>
                         <input 
                             type="password" 
@@ -252,6 +261,7 @@ export class Login extends React.Component {
                     <button 
                         className="Login__button"
                         onClick={this.handle_login}
+                        data-active={this.state.type !== 'starter'}
                     >
                         submit
                     </button>

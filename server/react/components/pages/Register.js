@@ -314,7 +314,7 @@ export class Register extends React.Component {
                             id="account_type"
                             onChange={(e) => this.set_account_type(e.target.value)}
                         >
-                            <option value="starter" selected>
+                            <option value="starter" defaultValue>
                                 Select an account type...
                             </option>
                             <option value="business">Business</option>
