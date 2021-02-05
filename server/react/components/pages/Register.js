@@ -21,8 +21,7 @@ export class Register extends React.Component {
             email: '',
             password: '',
             business_key: '',
-            business_password: '',
-            type: 'business',
+            type: 'starter',
             form_error: ''
         };
     };
@@ -49,24 +48,8 @@ export class Register extends React.Component {
         this.clear_form_error();
     }
 
-    /**
-     *  Handler for business password input field
-     * 
-     *  The user account sets this field, it's entered by the users then matched
-     *  with the corresponding business' connection_id to give the user access
-     *  to the business streams
-     */
-    set_business_password = (business_password) => {
-        this.setState({
-            ...this.state,
-            business_password: business_password
-        });
-
-        this.clear_form_error();
-    }
-
     /** Handler for name input field */
-    setName = (name) => {
+    set_name = (name) => {
         this.setState({
             ...this.state,
             name: name
@@ -76,7 +59,7 @@ export class Register extends React.Component {
     }
 
     /** Handler for email input field */
-    setEmail = (email) => {
+    set_email = (email) => {
         this.setState({
             ...this.state,
             email: email
@@ -86,7 +69,7 @@ export class Register extends React.Component {
     }
 
     /** Handler for password input field */
-    setPassword = (password) => {
+    set_password = (password) => {
         this.setState({
             ...this.state,
             password: password
@@ -96,7 +79,7 @@ export class Register extends React.Component {
     }
 
     /** Handler for account type input field */
-    setAccountType = (type) => {
+    set_account_type = (type) => {
         this.setState({
             ...this.state,
             type: type
@@ -256,59 +239,55 @@ export class Register extends React.Component {
                         <select 
                             name="account_type" 
                             id="account_type"
-                            onChange={(e) => this.setAccountType(e.target.value)}
+                            onChange={(e) => this.set_account_type(e.target.value)}
                         >
+                            <option value="starter" selected>
+                                Select an account type...
+                            </option>
                             <option value="business">Business</option>
                             <option value="user">Athlete/Parent</option>
                         </select>
                     </div>
 
-                    <div className="Register__field">
+                    <div 
+                        className="Register__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
                         <label htmlFor="name">Name</label>
                         <input 
                             type="text" 
                             id="name" 
                             name="name"
-                            onChange={(e) => this.setName(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="Register__field">
-                        <label htmlFor="email">Email</label>
-                        <input 
-                            type="email" 
-                            id="email" 
-                            name="email" 
-                            onChange={(e) => this.setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-
-                    <div className="Register__field">
-                        <label>Password</label>
-                        <input 
-                            type="password" 
-                            id="password" 
-                            name="password"
-                            onChange={(e) => this.setPassword(e.target.value)}
+                            onChange={(e) => this.set_name(e.target.value)}
                             required
                         />
                     </div>
 
                     <div 
                         className="Register__field"
-                        data-type="user"
-                        data-active={this.state.type === 'user'}
+                        data-active={this.state.type !== 'starter'}
                     >
-                        <label htmlFor="businessPassword">
-                            Business password
-                        </label>
+                        <label htmlFor="email">Email</label>
                         <input 
-                            type="text"
-                            name="business_password"
-                            id="business_password"
-                            onChange={(e) => this.set_business_password(e.target.value)}
+                            type="email" 
+                            id="email" 
+                            name="email" 
+                            onChange={(e) => this.set_email(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div 
+                        className="Register__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
+                        <label>Password</label>
+                        <input 
+                            type="password" 
+                            id="password" 
+                            name="password"
+                            onChange={(e) => this.set_password(e.target.value)}
+                            required
                         />
                     </div>
 
@@ -329,6 +308,7 @@ export class Register extends React.Component {
                     <button 
                         className="Register__button"
                         onClick={this.register}
+                        data-active={this.state.type !== 'starter'}
                     >
                         submit
                     </button>
