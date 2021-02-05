@@ -3,14 +3,11 @@
  * 
  * @param {String} password password
  * 
- * @returns {true | string} true if valid else error message
+ * @returns {boolean} true if valid else false
  */
 export default (password) => {
-    if (!password || password.length === 0) return 'Empty password.';
+    if (!password || password.length === 0) return false;
+    else if (password.length <= 9) return false;
 
-    if (password.length <= 9) {
-        return 'Your password must be at least 10 characters long.';
-    }
-
-    return true;
+    else return true;
 }

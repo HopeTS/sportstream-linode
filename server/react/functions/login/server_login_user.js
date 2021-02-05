@@ -1,8 +1,5 @@
 import axios from 'axios';
 
-import validate_email from '../validation/validate_email';
-import validate_password from '../validation/validate_password';
-
 /**
  * Handles server login for User accounts
  * 
@@ -15,18 +12,7 @@ import validate_password from '../validation/validate_password';
  *      else returns error message
  */
 export default (credentials) => {
-
-    // Validate email
-    const validEmail = validate_email(credentials.email);
-    if (typeof validEmail === 'string') {
-        return validEmail;
-    }
-
-    // Validate password
-    const validPassword = validate_password(credentials.password);
-    if (typeof validPassword === 'string') {
-        return validPassword;
-    }
+    
     // Send login post
     const user = axios.post('/login/user', {
         email: credentials.email,

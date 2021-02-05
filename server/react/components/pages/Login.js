@@ -9,8 +9,8 @@ import clear_localStorage from '../../functions/localStorage/clear_localStorage'
 import cookie_logout from '../../functions/logout/cookie_logout';
 import server_login_user from '../../functions/login/server_login_user';
 import server_login_business from '../../functions/login/server_login_business';
-import { string } from 'prop-types';
-
+import validate_email from '../../functions/validation/validate_email';
+import validate_password from '../../functions/validation/validate_password';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -76,88 +76,112 @@ export class Login extends React.Component {
 
     /** Handles login for User account */
     handle_login_user = () => {
-        server_login_user({
-            email: this.state.email, password: this.state.password
-        })
 
-        .then((user) => {
+        // Validation
+        const validEmail = validate_email(this.state.email);
+        const validPassword = validate_password(this.state.password);
 
-            // If login successful
-            if (typeof user !== 'string') {
-                console.log('Login successful');
-                this.props.login(user);
-                this.props.history.push('/dashboard');
-                return;
-            }
-
-            // If predictable error
-            if (typeof user === 'string') {
-                console.log('Login unsuccessful');
-                this.handle_form_error(user);
-                return;
-            }
-
-            // If unpredictable error
-            console.warn(
-                'No login error was thrown, but something has gone wrong.'
-            );
-            this.handle_form_error(
-                'Something went wrong on our end. Try again in a few minutes.'
-            );
+        if (!validEmail || !validPassword) {
+            this.handle_form_error('Invalid email or password.');
             return;
-        })
+        }
 
-        // Thrown error handling
-        .catch((err) => {
-            console.warn(err);
-            this.handle_form_error(
-                'Something went wrong on our end. Try again in a few minutes.'
-            );
-            return false;
-        });
+        else {
+            server_login_user({
+                email: this.state.email, password: this.state.password
+            })
+    
+            .then((user) => {
+    
+                // If login successful
+                if (typeof user !== 'string') {
+                    console.log('Login successful');
+                    this.props.login(user);
+                    this.props.history.push('/dashboard');
+                    return;
+                }
+    
+                // If predictable error
+                if (typeof user === 'string') {
+                    console.log('Login unsuccessful');
+                    this.handle_form_error(user);
+                    return;
+                }
+    
+                // If unpredictable error
+                console.warn(
+                    'No login error was thrown, but something has gone wrong.'
+                );
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+                return;
+            })
+    
+            // Thrown error handling
+            .catch((err) => {
+                console.warn(err);
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+                return false;
+            });
+        }
     }
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        server_login_business({
-            email: this.state.email, password: this.state.password
-        })
 
-        .then((business) => {
+        const validEmail = validate_email(this.state.email);
+        const validPassword = validate_password(this.state.password);
 
-            // If login successul
-            if (typeof business !== 'string') {
-                console.log('Login successful');
-                this.props.login(business);
-                this.props.history.push('/dashboard');
-                return;
-            }
-
-            // If predictable error
-            if (typeof business === 'string') {
-                console.log('Login unsuccessful');
-                this.handle_form_error(business);
-                return;
-            }
-
-            // If unpredictable error
-            console.warn(
-                'No login error was thrown, but something has gone wrong.'
-            );
-            this.handle_form_error(
-                'Something went wrong on our end. Try again in a few minutes.'
-            );
+        if (!validEmail || !validPassword) {
+            this.handle_form_error('Invalid email or password');
             return;
-        })
+        }
 
-        // Thrown error handling
-        .catch((err) => {
-            console.warn(err);
-            this.handle_form_error(
-                'Something went wrong on our end. Try again in a few minutes.'
-            );
-            return false;
-        });
+        // Validation
+        else {
+            server_login_business({
+                email: this.state.email, password: this.state.password
+            })
+    
+            .then((business) => {
+    
+                // If login successul
+                if (typeof business !== 'string') {
+                    console.log('Login successful');
+                    this.props.login(business);
+                    this.props.history.push('/dashboard');
+                    return;
+                }
+    
+                // If predictable error
+                if (typeof business === 'string') {
+                    console.log('Login unsuccessful');
+                    this.handle_form_error(business);
+                    return;
+                }
+    
+                // If unpredictable error
+                console.warn(
+                    'No login error was thrown, but something has gone wrong.'
+                );
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+                return;
+            })
+    
+            // Thrown error handling
+            .catch((err) => {
+                console.warn(err);
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+                return false;
+            });
+        }
     }
 
     /** Handles form error */

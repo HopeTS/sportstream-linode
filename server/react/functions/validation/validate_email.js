@@ -3,12 +3,12 @@
  * 
  * @param {String} email email
  * 
- * @returns {true | string} true if valid else error message
+ * @returns {boolean} true if valid false
  */
 export default (email) => {
-    if (!email || email.length === 0) return 'Empty email.';
-    if (!email.split('@').length === 2) return 'Invalid email.';
-    if (!email.split('@')[1].split('.').length >= 2) return 'Invalid email';
+    if (!email || email.length === 0) return false;
+    else if (!email.split('@').length === 2) return false;
+    else if (!email.split('@')[1].split('.').length >= 2) return false;
 
-    return true;
+    else return true;
 }
