@@ -9,7 +9,8 @@ import clear_localStorage from '../../functions/localStorage/clear_localStorage'
 import cookie_logout from '../../functions/logout/cookie_logout';
 import server_login_user from '../../functions/login/server_login_user';
 import server_login_business from '../../functions/login/server_login_business';
-
+import validate_email from '../../functions/validation/validate_email';
+import validate_password from '../../functions/validation/validate_password';
 
 export class Login extends React.Component {
     constructor(props) {
@@ -17,7 +18,7 @@ export class Login extends React.Component {
         this.state = {
             email: '',
             password: '',
-            type: 'business',
+            type: 'starter',
             formError: ''
         };
 
@@ -59,50 +60,110 @@ export class Login extends React.Component {
 
     /** Handle login form submission */
     handle_login = () => {
-        if (this.state.type === 'user') this.handle_login_user();
-        else if (this.state.type === 'business') this.handle_login_business();
-        else this.handle_form_error('Something went wrong on our end. Try again in a few minutes.');
+        switch (this.state.type) {
+            case 'user':
+                return this.handle_login_user();
+            
+            case 'business':
+                return this.handle_login_business();
+
+            default:
+                return this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+        }
     }
 
     /** Handles login for User account */
     handle_login_user = () => {
-        server_login_user({
-            email: this.state.email, password: this.state.password
-        })
-        .then((user) => {
-            console.log('user after login', user);
-            if (!user) throw new Error('User not logged in');
-            return user;
-        })
-        .then((user) => {
-            console.log('user after login', user)
-            this.props.login(user);
-            this.props.history.push('/dashboard');
-        })
-        .catch((err) => {
-            console.log(err);
-            return false;
-        });
+
+        // Validation
+        const validEmail = validate_email(this.state.email);
+        const validPassword = validate_password(this.state.password);
+
+        if (!validEmail || !validPassword) {
+            this.handle_form_error('Invalid email or password.');
+            return;
+        }
+
+        else {
+            server_login_user({
+                email: this.state.email, password: this.state.password
+            })
+    
+            .then((user) => {
+    
+                // If login successful
+                if (typeof user !== 'string') {
+                    console.log('Login successful');
+                    this.props.login(user);
+                    this.props.history.push('/dashboard');
+                    return;
+                }
+    
+                // If predictable error
+                else {
+                    console.log('Login unsuccessful');
+                    this.handle_form_error(user);
+                    return;
+                }
+            })
+    
+            // Thrown error handling
+            .catch((err) => {
+                console.warn(err);
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+                return false;
+            });
+        }
     }
 
     /** Handles login for Business account */
     handle_login_business = () => {
-        server_login_business({
-            email: this.state.email, password: this.state.password
-        })
-        .then((business) => {
-            console.log('business after login', business);
-            if (!business) throw new Error('Business not logged in');
-            return business;
-        })
-        .then((business) => {
-            this.props.login(business);
-            this.props.history.push('/dashboard');
-        })
-        .catch((err) => {
-            console.log(err);
-            return false;
-        });
+
+        const validEmail = validate_email(this.state.email);
+        const validPassword = validate_password(this.state.password);
+
+        if (!validEmail || !validPassword) {
+            this.handle_form_error('Invalid email or password');
+            return;
+        }
+
+        // Validation
+        else {
+            server_login_business({
+                email: this.state.email, password: this.state.password
+            })
+    
+            .then((business) => {
+    
+                // If login successul
+                if (typeof business !== 'string') {
+                    console.log('Login successful');
+                    this.props.login(business);
+                    this.props.history.push('/dashboard');
+                    return;
+                }
+    
+                // If predictable error
+                else {
+                    console.log('Login unsuccessful');
+                    this.handle_form_error(business);
+                    return;
+                }
+            })
+    
+            // Thrown error handling
+            .catch((err) => {
+                console.warn(err);
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+                return false;
+            });
+        }
     }
 
     /** Handles form error */
@@ -114,7 +175,7 @@ export class Login extends React.Component {
         });
 
         setTimeout(() => {
-            this.clear_formError();
+            this.clear_form_error();
         }, 2000)
     }
 
@@ -153,12 +214,18 @@ export class Login extends React.Component {
                             id="account_type"
                             onChange={(e) => this.set_account_type(e.target.value)}
                         >
-                            <option value="business">Business</option>
+                            <option value="starter" defaultValue>
+                                Select an account type...
+                            </option>
                             <option value="user">Athlete/Parent</option>
+                            <option value="business">Business</option>
                         </select>
                     </div>
 
-                    <div className="Login__field">
+                    <div 
+                        className="Login__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
                         <label htmlFor="email">Email</label>
                         <input 
                             type="email" 
@@ -169,7 +236,10 @@ export class Login extends React.Component {
                         />
                     </div>
 
-                    <div className="Login__field">
+                    <div 
+                        className="Login__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
                         <label htmlFor="password">Password</label>
                         <input 
                             type="password" 
@@ -191,6 +261,7 @@ export class Login extends React.Component {
                     <button 
                         className="Login__button"
                         onClick={this.handle_login}
+                        data-active={this.state.type !== 'starter'}
                     >
                         submit
                     </button>

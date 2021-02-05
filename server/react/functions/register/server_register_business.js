@@ -14,29 +14,23 @@ import axios from 'axios';
  *      name: String,
  *      email: String,
  *      password: String
- * } | false} account info if registration successful, else false
+ * } | string} account info if registration successful, else error message
  */
 export default (credentials) => {
-    const account = axios({
-        method: "post",
-        data: {
+    return axios.post('/register/business',
+        {
             name: credentials.name,
             email: credentials.email,
             password: credentials.password,
             business_key: credentials.business_key
         },
-        withCredentials: true,
-        url: `${window.location.origin}/register/business`
-    })
+        {withCredentials: true}
+    )
 
     .then((res) => {
 
         // If successful
         if (res.status === 201) {
-            console.log('business registered in server, returning business');
-            console.log('business register res.data', res.data);
-            
-            // Return credentials
             const newAccount = {
                 name: credentials.name,
                 email: credentials.email,
@@ -45,12 +39,26 @@ export default (credentials) => {
             return newAccount;
         }
 
-        return false;
+        // This should never happen
+        return 'Something went wrong on our end. Refresh and try again.';
     })
 
+    // Error handling
     .catch((error) => {
-        console.log('register business error', error);
-        return false;
+        console.log(error);
+        switch (error.response.status) {
+            case 460:
+                return 'Email already registered as a User';
+
+            case 461:
+                return 'Email already registered as a Business';
+
+            case 462:
+                return 'Incorrect Business Key';
+
+            default:
+                return 'Something went wrong on our end. Try again in a few \
+                minutes';
+        }
     });
-    return account;
 }

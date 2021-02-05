@@ -37,20 +37,6 @@ router.get('/register', ensureLoggedOut(), (req, res) => {
 router.post('/register/user', ensureLoggedOut(), async (req, res) => {
     try {
         console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
-        
-        // Look for already existing Business account
-        const existingBusiness = await Business.findOne(
-            {email: req.body.email}, 
-            async (err, doc) => {
-                if (err) throw err;
-                if (doc) return true;
-                return false;
-            }
-        );
-
-        if (existingBusiness) return res.status(460).send(
-            'email address already registered as a Business'
-        );
 
         // Look for already existing User account
         const existingUser = await User.findOne(
@@ -65,6 +51,20 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
         if (existingUser) return res.status(460).send(
             'email address already registered as another User'
         );
+        
+        // Look for already existing Business account
+        const existingBusiness = await Business.findOne(
+            {email: req.body.email}, 
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return true;
+                return false;
+            }
+        );
+
+        if (existingBusiness) return res.status(461).send(
+            'email address already registered as a Business'
+        );
 
         // Register new user
         console.log('Creating user');
@@ -76,14 +76,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newUser.save((err) => {
-            if (err) return false;
-            return true;
-        });
-
-        if (!saveStatus) return res.status(500).send(
-            'Something went wrong on our end.'
-        );
+        let saveStatus = await newUser.save();
 
         // Return new User details
         const resUser = {
@@ -104,21 +97,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
 
 router.post('/register/business', ensureLoggedOut(), async (req, res) => {
     try {
-        console.log(`Received a${req.secure ? " secure": "n insecure"} /register-user request`);
-
-        // Look for already existing Business account
-        const existingBusiness = await Business.findOne(
-            {email: req.body.email}, 
-            async (err, doc) => {
-                if (err) throw err;
-                if (doc) return true;
-                return false;
-            }
-        );
-
-        if (existingBusiness) return res.status(460).send(
-            'email address already registered as a Business'
-        );
+        console.log(`Received a${req.secure ? " secure": "n insecure"} /register-business request`);
 
         // Look for already existing User account
         const existingUser = await User.findOne(
@@ -134,24 +113,41 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
             'email address already registered as another User'
         );
 
+        // Look for already existing Business account
+        const existingBusiness = await Business.findOne(
+            {email: req.body.email}, 
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return true;
+                return false;
+            }
+        );
+
+        if (existingBusiness) return res.status(461).send(
+            'email address already registered as a Business'
+        );
+
+        console.log('Here is req business key', req.body.business_key);
+        console.log('config business key', config.business_key);
+
+        // Validate business key
+        if (req.body.business_key !== config.business_key) {
+            return res.status(462).send(
+                'Invalid Business key.'
+            );
+        }
+
         // Register new business
         console.log('Creating business');
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        const newBusiness = new User({
+        const newBusiness = new Business({
             name: req.body.name,
             password: hashedPassword,
             email: req.body.email
         });
 
-        const saveStatus = await newBusiness.save((err) => {
-            if (err) return false;
-            return true;
-        });
-
-        if (!saveStatus) return res.status(500).send(
-            'Something went wrong on our end.'
-        );
+        let saveStatus = await newBusiness.save();
 
         // Return new User details
         const resBusiness = {
@@ -164,7 +160,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
     }
 
     catch(e) {
-        res.status(500).send();
+        res.status(500).send(  );
         console.log(chalk.red('An error occured: '), '\n', `${e}`);
     }
 });

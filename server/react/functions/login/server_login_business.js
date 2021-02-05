@@ -8,40 +8,37 @@ import axios from 'axios';
  *      password: String
  * }} credentials account credentials
  * 
- * @returns {object | false} account information if successful, 
- *      else returns false
+ * @returns {object | string} account information if successful, 
+ *      else returns error message
  */
 export default (credentials)  => {
-    // Required arguments
-    if (!credentials.email || !credentials.password) {
-        console.log('Invalid credentials');
-        return false;
-    }
-
-    // Validate email
-    if (
-        !credentials.email.split('@').length === 2 ||
-        !credentials.email.split('@')[1].split('.').length >= 2
-    ) {
-        console.log('Invalid email');
-        return false;
-    }
 
     // Send login post
-    const business = axios.post('/login/business', {
+    return axios.post('/login/business', {
         email: credentials.email,
         password: credentials.password
     })
 
+    // Handle response
     .then((res) => {
-        console.log('Got business account')
-        return res.data
+        if (res.status === 202) return res.data;
+
+        // Unhandled/ unpredictable error
+        console.warn(
+            'The /login/business endpoint did not throw an error \
+            but did not return a proper status code...'
+        );
+        return 'Something went wrong on our end. Try again in a few minutes.';
     })
 
+    // Error handling
     .catch((error) => {
-        console.log('something went wrong on /login/business endpoint');
-        return false;
+        if (error.response.status === 404) return 'Invalid email or password';
+        if (error.response.status === 500) {
+            return 'Something went wrong on our end. try again in a few minutes.';
+        }
+        
+        // Unknown error
+        return 'Something went wrong on our end. try again in a few minutes.';
     });
-
-    return business;
 }

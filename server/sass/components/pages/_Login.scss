@@ -11,6 +11,26 @@
     text-align: center;
 }
 
+.Login__field {
+    &[data-active=false] {
+        display: none;
+    }
+
+    &[data-active=true] {
+        display: block;
+    }
+}
+
+.Login__button {
+    &[data-active=false] {
+        display: none;
+    }
+
+    &[data-active=true] {
+        display: block;
+    }
+}
+
 .Login__failure {
     opacity: 0;
     margin: 0 auto;
