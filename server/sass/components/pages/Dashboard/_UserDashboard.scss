@@ -1,3 +1,34 @@
 .UserDashboard {
     @include dashboardContent;
 }
+
+.UserDashboard__contentInteractive {
+    @include dashboardContentInteractive;
+}
+
+.UserDashboard__form {
+    @include form;
+
+    &[data-active=false] {
+        display: none;
+        height: 0;
+    }
+
+    &[data-active=true] {
+        display: block;
+        height: auto;
+    }
+}
+
+.UserDashboard__contentSection {
+    @include dashboardContent;
+}
+
+.UserDashboard__contentBlock {
+    @include dashboardContentBlock;
+}
+
+.UserDashboard__contentRow {
+    @include dashboardContentRow;
+    text-decoration: none;
+}
