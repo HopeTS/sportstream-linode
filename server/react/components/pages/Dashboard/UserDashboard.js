@@ -70,7 +70,7 @@ export function UserDashboard(props) {
                                 key={stream.key}
                                 className="UserDashboard__contentRow"
                             >
-                                Stream!
+                                {stream.field} 1
                             </a>
                         ))
 
