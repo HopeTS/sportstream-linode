@@ -134,6 +134,9 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
             'email address already registered as a Business'
         );
 
+        console.log('Here is req business key', req.body.business_key);
+        console.log('config business key', config.business_key);
+
         // Validate business key
         if (req.body.business_key !== config.business_key) {
             return res.status(462).send(
