@@ -76,7 +76,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newUser.save({}, (err, doc) => {
+        const saveStatus = await newUser.save({}, async (err, doc) => {
             if (err) return false;
             return true;
         });
@@ -154,7 +154,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newBusiness.save({}, (err, doc) => {
+        const saveStatus = await newBusiness.save({}, async (err, doc) => {
             if (err) return false;
             return true;
         });
@@ -174,7 +174,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
     }
 
     catch(e) {
-        res.status(500).send();
+        res.status(500).send(  );
         console.log(chalk.red('An error occured: '), '\n', `${e}`);
     }
 });
