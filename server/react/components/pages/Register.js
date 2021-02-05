@@ -127,7 +127,7 @@ export class Register extends React.Component {
         .then((res) => {
             
             // Error handling
-            if (typeof business == String) {
+            if (typeof business === 'string') {
                 this.handle_form_error(res);
                 return;
             }
@@ -184,7 +184,7 @@ export class Register extends React.Component {
         .then((res) => {
 
             // Error handling
-            if (typeof business == String) {
+            if (typeof business === 'string') {
                 this.handle_form_error(res);
                 return;
             }
