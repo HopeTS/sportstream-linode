@@ -102,20 +102,11 @@ export class Login extends React.Component {
                 }
     
                 // If predictable error
-                if (typeof user === 'string') {
+                else {
                     console.log('Login unsuccessful');
                     this.handle_form_error(user);
                     return;
                 }
-    
-                // If unpredictable error
-                console.warn(
-                    'No login error was thrown, but something has gone wrong.'
-                );
-                this.handle_form_error(
-                    'Something went wrong on our end. Try again in a few minutes.'
-                );
-                return;
             })
     
             // Thrown error handling
@@ -157,20 +148,11 @@ export class Login extends React.Component {
                 }
     
                 // If predictable error
-                if (typeof business === 'string') {
+                else {
                     console.log('Login unsuccessful');
                     this.handle_form_error(business);
                     return;
                 }
-    
-                // If unpredictable error
-                console.warn(
-                    'No login error was thrown, but something has gone wrong.'
-                );
-                this.handle_form_error(
-                    'Something went wrong on our end. Try again in a few minutes.'
-                );
-                return;
             })
     
             // Thrown error handling

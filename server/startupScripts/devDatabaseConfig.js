@@ -17,17 +17,17 @@ async function devDatabaseConfig() {
     const users = [{
         name: 'Test1',
         email: 'user@gmail.com',
-        password: await bcrypt.hash('1234', 10),
+        password: await bcrypt.hash('1234567890', 10),
         connected_businesses: []
     }, {
         name: 'Test2',
         email: 'user2@gmail.com',
-        password: await bcrypt.hash('1234', 10),
+        password: await bcrypt.hash('1234567890', 10),
         connected_businesses: []
     }, {
         name: 'Test3',
         email: 'user3@gmail.com',
-        password: await bcrypt.hash('1234', 10),
+        password: await bcrypt.hash('1234567890', 10),
         connected_businesses: []
     }];
 
@@ -55,11 +55,11 @@ async function devDatabaseConfig() {
     const businesses = [{
         name: 'Test business 1',
         email: 'business@gmail.com',
-        password: await bcrypt.hash('1234', 10),
+        password: await bcrypt.hash('1234567890', 10),
     }, {
         name: 'Test business 2',
         email: 'business2@gmail.com',
-        password: await bcrypt.hash('1234', 10),
+        password: await bcrypt.hash('1234567890', 10),
     }];
 
     // Clear Business collection
