@@ -76,14 +76,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newUser.save({}, async (err, doc) => {
-            if (err) return false;
-            return true;
-        });
-
-        if (!saveStatus) return res.status(500).send(
-            'Something went wrong on our end.'
-        );
+        let saveStatus = await newUser.save();
 
         // Return new User details
         const resUser = {
@@ -154,14 +147,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newBusiness.save({}, async (err, doc) => {
-            if (err) return false;
-            return true;
-        });
-
-        if (!saveStatus) return res.status(500).send(
-            'Something went wrong on our end.'
-        );
+        let saveStatus = await newBusiness.save();
 
         // Return new User details
         const resBusiness = {
