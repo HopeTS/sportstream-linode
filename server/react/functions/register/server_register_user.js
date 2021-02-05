@@ -26,7 +26,7 @@ export default (credentials) => {
     )
 
     .then((res) => {
-
+        console.log(res);
         // If successful
         if (res.status === 201) {
             const newAccount = {
