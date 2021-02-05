@@ -214,8 +214,8 @@ export class Login extends React.Component {
                             id="account_type"
                             onChange={(e) => this.set_account_type(e.target.value)}
                         >
-                            <option value="business">Business</option>
                             <option value="user">Athlete/Parent</option>
+                            <option value="business">Business</option>
                         </select>
                     </div>
 
