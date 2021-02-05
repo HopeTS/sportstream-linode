@@ -6,8 +6,7 @@ import axios from 'axios';
  * @param {{
  *      name: String,
  *      email: String,
- *      password: String,
- *      business_password: String
+ *      password: String
  * }} credentials accoount credentials
  * 
  * @returns {{
@@ -17,25 +16,19 @@ import axios from 'axios';
  * } | false} account info if registration successful, else false
  */
 export default (credentials) => {
-    const account = axios({
-        method: "post",
-        data: {
+    return axios.post('/register/user', 
+        {
             name: credentials.name,
             email: credentials.email,
-            password: credentials.password,
-            business_password: credentials.business_password
+            password: credentials.password
         },
-        withCredentials: true,
-        url: `${window.location.origin}/register/user`
-    })
+        {withCredentials: true}
+    )
 
     .then((res) => {
-
+        console.log(res);
         // If successful
         if (res.status === 201) {
-            console.log('user registered in server, returning user');
-            console.log('user register res.data', res.data);
-
             const newAccount = {
                 name: credentials.name,
                 email: credentials.email,
@@ -43,11 +36,23 @@ export default (credentials) => {
             }
             return newAccount;
         }
+
+        // This should never happen
+        return 'Something went wrong on our end. Please try again';
     })
 
+    // Error handling
     .catch((error) => {
-        console.log('register user error', error);
-        return false;
+        switch (error.response.status) {
+            case 460:
+                return 'Email already registered as a User';
+
+            case 461:
+                return 'Email already registered as a Business';
+
+            default:
+                return 'Something went wrong on our end. Try again in a few \
+                minutes';
+        }
     });
-    return account;
 }

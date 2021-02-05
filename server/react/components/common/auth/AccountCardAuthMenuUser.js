@@ -9,6 +9,7 @@ import {
 import { logout } from '../../../redux/actions/auth';
 import clear_localStorage from '../../../functions/localStorage/clear_localStorage';
 import cookie_logout from '../../../functions/logout/cookie_logout';
+import server_logout from '../../../functions/logout/server_logout';
 
 /**
  * The account options dropdown list for User accounts. 
@@ -35,6 +36,7 @@ export class AccountCardAuthMenuUser extends React.Component {
         // client logout
         clear_localStorage();
         cookie_logout();
+        server_logout();
         this.props.logout();
     }
 

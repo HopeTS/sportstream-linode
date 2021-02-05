@@ -13,12 +13,20 @@
 
 .Register__field {
     &[data-active=false] {
-        height: 0;
-        overflow: hidden;
-        margin: 0;
+        display: none;
     }
 
     &[data-active=true] {
-        height: auto;
+        display: block;
+    }
+}
+
+.Register__button {
+    &[data-active=false] {
+        display: none;
+    }
+
+    &[data-active=true] {
+        display: block;
     }
 }
