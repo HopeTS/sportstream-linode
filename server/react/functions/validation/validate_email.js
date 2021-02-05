@@ -7,8 +7,8 @@
  */
 export default (email) => {
     if (!email || email.length === 0) return false;
-    else if (!email.split('@').length === 2) return false;
-    else if (!email.split('@')[1].split('.').length >= 2) return false;
+    else if (!(email.split('@').length === 2)) return false;
+    else if (!(email.split('@')[1].split('.').length >= 2)) return false;
 
     else return true;
 }
