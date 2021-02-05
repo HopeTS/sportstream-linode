@@ -175,7 +175,7 @@ export class Login extends React.Component {
         });
 
         setTimeout(() => {
-            this.clear_formError();
+            this.clear_form_error();
         }, 2000)
     }
 
