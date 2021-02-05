@@ -9,6 +9,7 @@ import clear_localStorage from '../../functions/localStorage/clear_localStorage'
 import cookie_logout from '../../functions/logout/cookie_logout';
 import server_login_user from '../../functions/login/server_login_user';
 import server_login_business from '../../functions/login/server_login_business';
+import { string } from 'prop-types';
 
 
 export class Login extends React.Component {
@@ -59,9 +60,18 @@ export class Login extends React.Component {
 
     /** Handle login form submission */
     handle_login = () => {
-        if (this.state.type === 'user') this.handle_login_user();
-        else if (this.state.type === 'business') this.handle_login_business();
-        else this.handle_form_error('Something went wrong on our end. Try again in a few minutes.');
+        switch (this.state.type) {
+            case 'user':
+                return this.handle_login_user();
+            
+            case 'business':
+                return this.handle_login_business();
+
+            default:
+                return this.handle_form_error(
+                    'Something went wrong on our end. Try again in a few minutes.'
+                );
+        }
     }
 
     /** Handles login for User account */
@@ -69,18 +79,40 @@ export class Login extends React.Component {
         server_login_user({
             email: this.state.email, password: this.state.password
         })
+
         .then((user) => {
-            console.log('user after login', user);
-            if (!user) throw new Error('User not logged in');
-            return user;
+
+            // If login successful
+            if (typeof user !== String) {
+                console.log('Login successful');
+                this.props.login(user);
+                this.props.history.push('/dashboard');
+                return;
+            }
+
+            // If predictable error
+            if (typeof user === String) {
+                console.log('Login unsuccessful');
+                this.handle_form_error(user);
+                return;
+            }
+
+            // If unpredictable error
+            console.warn(
+                'No login error was thrown, but something has gone wrong.'
+            );
+            this.handle_form_error(
+                'Something went wrong on our end. Try again in a few minutes.'
+            );
+            return;
         })
-        .then((user) => {
-            console.log('user after login', user)
-            this.props.login(user);
-            this.props.history.push('/dashboard');
-        })
+
+        // Thrown error handling
         .catch((err) => {
-            console.log(err);
+            console.warn(err);
+            this.handle_form_error(
+                'Something went wrong on our end. Try again in a few minutes.'
+            );
             return false;
         });
     }
@@ -92,12 +124,38 @@ export class Login extends React.Component {
         })
 
         .then((business) => {
-            if (!business) throw new Error('Business not logged in');
-            this.props.login(business);
-            this.props.history.push('/dashboard');
+
+            // If login successul
+            if (typeof business !== String) {
+                console.log('Login successful');
+                this.props.login(business);
+                this.props.history.push('/dashboard');
+                return;
+            }
+
+            // If predictable error
+            if (typeof business === String) {
+                console.log('Login unsuccessful');
+                this.handle_form_error(business);
+                return;
+            }
+
+            // If unpredictable error
+            console.warn(
+                'No login error was thrown, but something has gone wrong.'
+            );
+            this.handle_form_error(
+                'Something went wrong on our end. Try again in a few minutes.'
+            );
+            return;
         })
+        
+        // Thrown error handling
         .catch((err) => {
-            console.log(err);
+            console.warn(err);
+            this.handle_form_error(
+                'Something went wrong on our end. Try again in a few minutes.'
+            );
             return false;
         });
     }
