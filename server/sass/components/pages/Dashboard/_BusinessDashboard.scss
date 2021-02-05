@@ -30,4 +30,5 @@
 
 .BusinessDashboard__contentRow {
     @include dashboardContentRow;
+    text-decoration: none;
 }
