@@ -40,22 +40,24 @@ export default (credentials) => {
         }
 
         // This should never happen
-        return 'Something has gone wrong on our end. Refresh and try again.';
+        return 'Something went wrong on our end. Refresh and try again.';
     })
 
+    // Error handling
     .catch((error) => {
-        
-        // Business already exists
-        if (error.response.status === 460) {
-            return 'Email already registered as a Business!';
-        }
+        switch (error.response.status) {
+            case 460:
+                return 'Email already registered as a User';
 
-        // User already exists
-        else if (error.response.status === 461) {
-            return 'Email already registered as a User!';
-        }
+            case 461:
+                return 'Email already registered as a Business';
 
-        // Some other error
-        return 'Something has gone wrong on our end. Refresh and try again.';
+            case 462:
+                return 'Incorrect Business Key';
+
+            default:
+                return 'Something went wrong on our end. Try again in a few \
+                minutes';
+        }
     });
 }

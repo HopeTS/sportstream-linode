@@ -3,7 +3,7 @@
  * 
  * @param {String} email email
  * 
- * @returns {boolean} true if valid false
+ * @returns {boolean} true if valid else false
  */
 export default (email) => {
     if (!email || email.length === 0) return false;

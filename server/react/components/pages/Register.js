@@ -5,12 +5,19 @@ import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login} from '../../redux/actions/auth';
+
 import clear_localStorage from '../../functions/localStorage/clear_localStorage';
 import cookie_logout from '../../functions/logout/cookie_logout';
+
 import server_login_user from '../../functions/login/server_login_user';
 import server_login_business from '../../functions/login/server_login_business';
 import server_register_user from '../../functions/register/server_register_user';
-import server_register_business from '../../functions/register/server_register_business'; 
+import server_register_business from 
+    '../../functions/register/server_register_business';
+
+import validate_email from '../../functions/validation/validate_email';
+import validate_password from '../../functions/validation/validate_password';
+import validate_name from '../../functions/validation/validate_name';
 
 /* Component */
 export class Register extends React.Component {
@@ -90,44 +97,65 @@ export class Register extends React.Component {
 
     /** Handle registration form submission */
     register = () => {
-        if (this.state.type === 'business') {
-            this.handle_register_business();
-        } else {
-            this.handle_register_user();
+        switch (this.state.type) {
+            case 'business':
+                this.handle_register_business();
+                return;
+
+            case 'user':
+                this.handle_register_user();
+                return;
+
+            default:
+                this.handle_form_error('Please select an account type.');
+                return;
         }
     }
 
     /** Handle registration for business account */
     handle_register_business = () => {
 
-        server_register_business({
-            name: this.state.name,
-            email: this.state.email,
-            password: this.state.password,
-            business_key: this.state.business_key
-        })
+        // Validate fields
+        const validName = validate_name(this.state.name);
+        const validEmail = validate_email(this.state.email);
+        const validPassword = validate_password(this.state.password);
+        if (!validName || !validEmail || !validPassword) { 
+            this.handle_form_error('Invalid name, email or password');
+            return;
+        }
 
-        .then((res) => {
-            
-            // Error handling
-            if (typeof business === 'string') {
-                this.handle_form_error(res);
+        else {
+            server_register_business({
+                name: this.state.name,
+                email: this.state.email,
+                password: this.state.password,
+                business_key: this.state.business_key
+            })
+    
+            .then((business) => {
+                
+                // If registration successful
+                if (typeof business !== 'string') {
+                    console.log('Registration successful');
+                    this.handle_login_business();
+                    return;
+                }
+
+                else {
+                    console.log('Registration unsuccessful');
+                    this.handle_form_error(business);
+                    return;
+                }
+            })
+    
+            .catch((error) => {
+                this.handle_form_error(
+                    'Something went wrong on our end. Please try again \
+                    in a few minutes.'
+                );
                 return;
-            }
-
-            if (!res) throw new Error();
-
-            this.handle_login_business(business.email, business.password);
-            return;
-        })
-
-        .catch((error) => {
-            this.handle_form_error(
-                'Something went wrong on our end. Please try again \
-                in a few minutes.'
-            );
-            return;
-        })
+            })
+        }
     }
 
     /** 
@@ -137,52 +165,81 @@ export class Register extends React.Component {
      * @param {string} password account password
      * 
      */
-    handle_login_business = (email, password) => {
+    handle_login_business = () => {
         server_login_business({
-            email: email,
-            password: password
+            email: this.state.email, password: this.state.password
         })
 
-        .then((res) => {
-            console.log('front end business login succccess', res);
-            this.props.history.push('/dashboard');
-            return;
+        .then((business) => {
+
+            // If login successful
+            if (typeof business !== 'string') {
+                console.log('Login successful');
+                this.props.login(business);
+                this.props.history.push('/dashboard');
+                return;
+            }
+
+            // If predictable error
+            else {
+                console.log('Login unsuccessful');
+                this.handle_form_error(business);
+                return;
+            }
         })
 
         .catch((err) => {
-            console.log('something went wrong handle business login');
-            return;
+            console.warn(err);
+            this.handle_form_error(
+                'Something went wrong on our end. Try again in a few minutes.'
+            );
+            return false;
         })
     }
 
     /** Handle registration for user account */
     handle_register_user = () => {
-        server_register_user({
-            email: this.state.email,
-            password: this.state.password,
-            name: this.state.name,
-            business_password: this.state.business_password
-        })
-        
-        .then((res) => {
 
-            // Error handling
-            if (typeof business === 'string') {
-                this.handle_form_error(res);
+        // Validate fields
+        const validName = validate_name(this.state.name);
+        const validEmail = validate_email(this.state.email);
+        const validPassword = validate_password(this.state.password);
+        if (!validName || !validEmail || !validPassword) {
+            this.handle_form_error('Invalid name, email or password');
+            return;
+        }
+
+        else {
+            server_register_user({
+                email: this.state.email,
+                password: this.state.password,
+                name: this.state.name
+            })
+            
+            .then((user) => {
+
+                // If registration successful
+                if (typeof user !== 'string') {
+                    console.log('Registration successful');
+                    this.handle_login_user();
+                    return;
+                }
+    
+                else {
+                    console.log('Registration unsuccessful');
+                    this.handle_form_error(user);
+                    return;
+                }
+            })
+    
+            .catch((error) => {
+                this.handle_form_error(
+                    'Something went wrong on our end. Try again \
+                    in a few minutes.'
+                );
                 return;
-            }
-
-            if (!res) throw new Error();
-
-            this.handle_login_user(account.email, account.password);
-        })
-
-        .catch((error) => {
-            this.handle_form_error(
-                'Something went wrong on our end. Try again \
-                in a few minutes.'
-            );
-        });
+            });
+        }
     }
 
     /** 
@@ -191,19 +248,35 @@ export class Register extends React.Component {
      * @param {string} email account email address
      * @param {string} password account password
      */
-    handle_login_user = (email, password) => {
+    handle_login_user = () => {
         server_login_user({
-            email: email,
-            password: password
+            email: this.state.email, password: this.state.password
         })
 
-        .then((res) => {
-            console.log('front end user login succccess', res);
-            this.props.history.push('/dashboard')
+        .then((user) => {
+
+            // If login successful
+            if (typeof user !== 'string') {
+                console.log('Login successful');
+                this.props.login(user);
+                this.props.history.push('/dashboard');
+            }
+
+            // If predictable error
+            else {
+                console.log('Login unsuccessful');
+                this.handle_form_error(user);
+                return;
+            }
         })
 
+        // Thrown error handling
         .catch((err) => {
-            console.log('something went wrong handle user login')
+            console.warn(err);
+            this.handle_form_error(
+                'Something went wrong on our end. Try again in a few minutes.'
+            );
+            return false;
         })
     }
 
