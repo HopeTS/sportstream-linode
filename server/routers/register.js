@@ -76,7 +76,7 @@ router.post('/register/user', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newUser.save((err) => {
+        const saveStatus = await newUser.save({}, (err, doc) => {
             if (err) return false;
             return true;
         });
@@ -154,7 +154,7 @@ router.post('/register/business', ensureLoggedOut(), async (req, res) => {
             email: req.body.email
         });
 
-        const saveStatus = await newBusiness.save((err) => {
+        const saveStatus = await newBusiness.save({}, (err, doc) => {
             if (err) return false;
             return true;
         });

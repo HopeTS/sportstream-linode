@@ -45,6 +45,7 @@ export default (credentials) => {
 
     // Error handling
     .catch((error) => {
+        console.log(error);
         switch (error.response.status) {
             case 460:
                 return 'Email already registered as a User';
