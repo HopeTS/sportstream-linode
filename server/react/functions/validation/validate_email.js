@@ -7,13 +7,8 @@
  */
 export default (email) => {
     if (!email || email.length === 0) return 'Empty email.';
-
-    if (
-        !email.split('@').length === 2 ||
-        !email.split('@')[1].split('.').length >= 2
-    ) {
-        return 'Invalid email.'
-    }
+    if (!email.split('@').length === 2) return 'Invalid email.';
+    if (!email.split('@')[1].split('.').length >= 2) return 'Invalid email';
 
     return true;
 }
