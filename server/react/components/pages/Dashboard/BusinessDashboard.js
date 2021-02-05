@@ -191,9 +191,10 @@ export function BusinessDashboard(props) {
                             className="BusinessDashboard__contentBlock small"
                         >
                             {currentStreams.map((stream) => (
-                                <section 
+                                <a
                                     className="BusinessDashboard__contentRow"
                                     key={stream.key}
+                                    href={`/watch/${stream.key}`}
                                 >
                                     <div>
                                         <h4>Field:</h4>
@@ -204,7 +205,7 @@ export function BusinessDashboard(props) {
                                         <h4>Key:</h4>
                                         <p>{stream.key}</p>
                                     </div>
-                                </section>
+                                </a>
                             ))}
                         </article>
                         :
