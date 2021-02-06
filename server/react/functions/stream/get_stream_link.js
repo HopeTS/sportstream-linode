@@ -8,5 +8,5 @@
  */
 export default (link) => {
     //http://localhost:8000/live/STREAM_NAME.flv
-    return `http://${window.location.hostname}:8000/live/${link}.flv`;
+    return `https://${window.location.hostname}:8000/live/${link}.flv`;
 }
