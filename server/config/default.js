@@ -19,8 +19,8 @@ const config = {
         },
         https: {
             port: 8443,
-            key:'./privatekey.pem',
-            cert:'./certificate.pem',
+            key: `${process.env.SSL_DIR}privkey.pem`,
+            cert: `${process.env.SSL_DIR}cert.pem`,
         },
         trans: {
             ffmpeg: process.env.FFMPEG_PATH,
