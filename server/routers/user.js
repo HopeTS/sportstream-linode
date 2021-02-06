@@ -115,6 +115,29 @@ router.get('/user/get-connected-businesses', ensureLoggedIn(), async (err, doc) 
     }
 });
 
+router.get('/user/connect-business', ensureLoggedIn(), async (err, doc) => {
+    try {
+        // Find User account
+        const user = await User.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!user) return res.status(404).send();
 
+        // Connect business
+        const businessConnect = await user.connect_business(req.body.key);
+
+        if (!businessConnect) return res.status(500).send();
+        else return res.status(201).send();
+    }
+
+    catch (e) {
+        return res.status(500).send();
+    }
+})
 
 module.exports = router;

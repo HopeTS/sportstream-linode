@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import server_user_get_personal_doc from
     '../../../functions/user/server_user_get_personal_doc';
+import server_user_connect_business from
+    '../../../functions/user/server_user_connect_business';
 
 export function UserDashboard(props) {
 
@@ -17,9 +19,9 @@ export function UserDashboard(props) {
     // Controls
     const [addingBusiness, set_adding_business] = useState(false);
 
-    // Connect to business form data
-    const [connectToBusinessForm, set_connect_to_business_form] = useState(false);
-    const [businessPassword, set_business_password] = useState('');
+    // Connect business form data
+    const [connectBusinessForm, set_connect_business_form] = useState(false);
+    const [businessKey, set_business_key] = useState('');
 
     useEffect(() => {
         console.log('here are user available streams', availableStreams);
@@ -43,6 +45,28 @@ export function UserDashboard(props) {
         })
         .then((res) => {
             console.log('second link in userDashboard promise chain', res)
+        })
+
+        .catch((err) => {
+            console.log(err);
+        })
+    }
+
+    const handle_connect_business_form = () => {
+        set_connect_business_form(!connectBusinessForm);
+    }
+
+    const handle_connect_business = () => {
+        server_user_connect_business(businessKey)
+
+        .then((res) => {
+            if (res) {
+                get_data();
+            }
+
+            else {
+                return false;
+            }
         })
 
         .catch((err) => {
@@ -78,21 +102,51 @@ export function UserDashboard(props) {
                     </article>
                 ))}
 
-                <article className="UserDashboard__contentSection">
-                    <h3>Available Streams</h3>
+                {connectedBusinesses.length > 0 ?
+                    <article className="UserDashboard__contentSection">
+                        <h3>Available Streams</h3>
 
-                    <article className="UserDashboard__contentBlock small">
-                        {console.log('availableStreams', availableStreams)}
-                        {availableStreams.map((stream) => (
-                            <a 
-                                href={`/watch/${stream.key}`}
-                                className="UserDashboard__contentRow"
-                            >
-                                {stream.field}
-                            </a>
-                        ))}
+                        <article className="UserDashboard__contentBlock small">
+                            {console.log('availableStreams', availableStreams)}
+                            {availableStreams.map((stream) => (
+                                <a 
+                                    href={`/watch/${stream.key}`}
+                                    className="UserDashboard__contentRow"
+                                >
+                                    {stream.field}
+                                </a>
+                            ))}
+                        </article>
                     </article>
+                    :
+                    <article className="UserDashboard__contentSection">
+                        <h3>No connected businesses</h3>
+                    </article>
+                }
+
+                <article className="UserDashboard__contentInteractive">
+                    <button
+                        onClick={handle_connect_business_form}
+                        data-active={!connectBusinessForm}
+                    >
+                        Connect to Business
+                    </button>
                 </article>
+
+                <div className="UserDashboard__form">
+                    <label htmlFor="businessKey">Business Key:</label>
+                    <input
+                        type="text"
+                        id="businessKey"
+                        onChange={(e) => {set_business_key(e.target.value)}}
+                    />
+
+                    <button
+                        onClick={handle_connect_business}
+                    >
+                        Connect
+                    </button>
+                </div>
             </div>
         </div>
     );
