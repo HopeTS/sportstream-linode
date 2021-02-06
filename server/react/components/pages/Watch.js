@@ -13,7 +13,7 @@ import VideoPlayer from '../VideoPlayer';
 export function Watch(props) {
 
     const [streamActive, set_stream_active] = useState(false);
-    const [streamLink, set_stream_link] = useState(null);
+    const [streamLinks, set_stream_links] = useState(null);
 
     // Initial setup
     useEffect(() => {
@@ -33,8 +33,8 @@ export function Watch(props) {
 
     return (
         <div id="Watch">
-            {streamLink ?
-                <VideoPlayer link={streamLink} />
+            {streamLinks ?
+                <VideoPlayer links={streamLinks} />
             :
                 <LoadingSpinner />
             }

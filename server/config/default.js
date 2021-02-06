@@ -17,6 +17,11 @@ const config = {
             mediaroot: './server/media',
             allow_origin: '*'
         },
+        https: {
+            port: 8443,
+            key:'./privatekey.pem',
+            cert:'./certificate.pem',
+        },
         trans: {
             ffmpeg: process.env.FFMPEG_PATH,
             tasks: [
