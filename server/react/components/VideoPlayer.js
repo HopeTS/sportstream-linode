@@ -21,35 +21,19 @@ export function VideoPlayer(props) {
         set_https_video_error(true);
     }
 
+    useEffect(() => {
+        console.log('what does this say nick', props.links)
+    }, [])
+
     return (
         <div className="VideoPlayer">
 
-            {/* Default HTTP player */}
-            {!httpVideoError &&
-                <ReactFlvPlayer 
-                    url={props.links.http}
-                    height={httpVideoHeight}
-                    width={httpVideoWidth}
-                    isLive={true}
-                    handleError={(err) => handle_http_video_error()}
-                />
-            }
-
-            {/* Fallback HTTPS player */}
-            {(httpVideoError && !httpsVideoError) &&
-                <ReactFlvPlayer 
-                    url={props.links.https}
-                    height={httpsVideoHeight}
-                    width={httpsVideoWidth}
-                    isLive={true}
-                    handleError={(err) => handle_https_video_error()}
-                />
-            }
-
-            {/* If nothing works */}
-            {(httpVideoError && httpsVideoError) &&
-                <p>Something went wrong.</p>
-            }
+            <ReactFlvPlayer
+                url={props.links.https}
+                height={httpsVideoHeight}
+                width={httpsVideoWidth}
+                isLive={true}
+            />
         </div>
     );
 }
