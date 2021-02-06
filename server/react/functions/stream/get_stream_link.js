@@ -12,7 +12,7 @@
 export default (link) => {
     //http://localhost:8000/live/STREAM_NAME.flv
     const http = `http://${window.location.hostname}:8000/live/${link}.flv`;
-    const https = `https://${window.location.hostname}:8443/live/${link.flv}`;
+    const https = `https://${window.location.hostname}:8443/live/${link}.flv`;
     return {
         http: http,
         https: https
