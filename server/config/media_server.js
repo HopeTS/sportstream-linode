@@ -1,6 +1,6 @@
 /** Create config object for node-media-server */
 function construct_config() {
-    let config;
+    let config = {};
 
     config.rtmp = {
         logType: 4,
