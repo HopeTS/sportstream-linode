@@ -12,8 +12,6 @@ export function UserDashboard(props) {
 
     const [loaded, set_loaded] = useState(false);
 
-    // Account data
-    const [availableStreams, set_available_streams] = useState([]);
     const [connectedBusinesses, set_connected_businesses] = useState([]);
 
     // Controls
@@ -24,12 +22,12 @@ export function UserDashboard(props) {
     const [businessKey, set_business_key] = useState('');
 
     useEffect(() => {
-        console.log('here are user available streams', availableStreams);
-    })
-
-    useEffect(() => {
         get_data();
     }, []);
+
+    useEffect(() => {
+        console.log('Connected businesses length', connectedBusinesses);
+    })
 
     /** Fetches Account data from server to populate state */
     const get_data = () => {
