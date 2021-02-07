@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
+import LoadingSpinner from '../../LoadingSpinner';
 import server_user_get_personal_doc from
     '../../../functions/user/server_user_get_personal_doc';
 import server_user_connect_business from
