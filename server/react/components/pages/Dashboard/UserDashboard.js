@@ -39,10 +39,7 @@ export function UserDashboard(props) {
         .then((personalData) => {
             if (!personalData) throw new Error("Couldn't retrieve User data");
             set_connected_businesses(personalData.connected_businesses);
-            return 'hi'
-        })
-        .then((res) => {
-            console.log('second link in userDashboard promise chain', res)
+            set_loaded(true);
         })
 
         .catch((err) => {
@@ -75,77 +72,63 @@ export function UserDashboard(props) {
     return (
         <div className="UserDashboard">
             <h1>Welcome, {props.account.name}</h1>
+            {loaded ?
+                <div className="UserDashboard__content">
+                    <h2>My Sports Centers</h2>
 
-            <div className="UserDashboard__content">
-                <h2>My Sports Centers</h2>
-
-                {connectedBusinesses.map((business) => (
-                    <article 
-                        className="UserDashboard__contentSection"
-                        key={business.name}
-                    >
-                        <h3>{business.name}</h3>
-
-                        {business.streams.map((stream) => (
-                            <a 
-                                href={`/watch/${stream.key}`}
-                                key={stream.key}
-                                className="UserDashboard__contentRow"
-                            >
-                                {stream.field} 1
-                            </a>
-                        ))
-
-                        }
-                    </article>
-                ))}
-
-                {connectedBusinesses.length > 0 ?
-                    <article className="UserDashboard__contentSection">
+                    <div className="UserDashboard__contentSection">
                         <h3>Available Streams</h3>
 
-                        <article className="UserDashboard__contentBlock small">
-                            {console.log('availableStreams', availableStreams)}
-                            {availableStreams.map((stream) => (
-                                <a 
-                                    href={`/watch/${stream.key}`}
-                                    className="UserDashboard__contentRow"
-                                >
-                                    {stream.field}
-                                </a>
-                            ))}
-                        </article>
+                        {connectedBusinesses.map((business) => (
+                            <article 
+                                className="UserDashboard__contentBlock small"
+                                key={business.name}
+                            >
+                                {business.streams.map((stream) => (
+                                    <a 
+                                        className="UserDashboard__contentRow"
+                                        key={stream.key}
+                                    >
+                                        <div>
+                                            <h4>{stream.field}</h4>
+                                        </div>
+                                    </a>
+                                ))}
+                            </article>
+                        ))}
+                    </div>
+
+                    <article className="UserDashboard__contentInteractive">
+                        <button
+                            onClick={handle_connect_business_form}
+                            data-active={!connectBusinessForm}
+                        >
+                            Connect to Business
+                        </button>
                     </article>
-                    :
-                    <article className="UserDashboard__contentSection">
-                        <h3>No connected businesses</h3>
-                    </article>
-                }
 
-                <article className="UserDashboard__contentInteractive">
-                    <button
-                        onClick={handle_connect_business_form}
-                        data-active={!connectBusinessForm}
-                    >
-                        Connect to Business
-                    </button>
-                </article>
+                    <div className="UserDashboard__form">
+                        <label htmlFor="businessKey">Business Key:</label>
+                        <input
+                            type="text"
+                            id="businessKey"
+                            onChange={(e) => {set_business_key(e.target.value)}}
+                        />
 
-                <div className="UserDashboard__form">
-                    <label htmlFor="businessKey">Business Key:</label>
-                    <input
-                        type="text"
-                        id="businessKey"
-                        onChange={(e) => {set_business_key(e.target.value)}}
-                    />
-
-                    <button
-                        onClick={handle_connect_business}
-                    >
-                        Connect
-                    </button>
+                        <button
+                            onClick={handle_connect_business}
+                        >
+                            Connect
+                        </button>
+                    </div>
                 </div>
-            </div>
+                :
+                <div className="UserDashboard__content">
+                    <div className="UserDashboard__contentSection">
+                        <LoadingSpinner />
+                    </div>
+                </div>
+            }
         </div>
     );
 }
