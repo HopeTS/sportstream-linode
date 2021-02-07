@@ -21,10 +21,6 @@ export function VideoPlayer(props) {
         set_https_video_error(true);
     }
 
-    useEffect(() => {
-        console.log('what does this say nick', props.links)
-    }, [])
-
     return (
         <div className="VideoPlayer">
 

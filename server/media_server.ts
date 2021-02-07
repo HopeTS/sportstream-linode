@@ -6,7 +6,7 @@ export {};
 const NodeMediaServer = require('node-media-server');
 const chalk = require('chalk');
 
-const config = require('./config/default').nms;
+const config = require('./config/media_server');
 const Business = require('./database/schema/Schema').Business;
 const Stream = require('./database/schema/Schema').Stream;
 //const helpers = require('./helpers/helpers');
