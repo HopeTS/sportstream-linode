@@ -15,9 +15,6 @@ export function UserDashboard(props) {
 
     const [connectedBusinesses, set_connected_businesses] = useState([]);
 
-    // Controls
-    const [addingBusiness, set_adding_business] = useState(false);
-
     // Connect business form data
     const [connectBusinessForm, set_connect_business_form] = useState(false);
     const [businessKey, set_business_key] = useState('');
@@ -75,7 +72,7 @@ export function UserDashboard(props) {
             <h1>Welcome, {props.account.name}</h1>
             {loaded ?
                 <div className="UserDashboard__content">
-                    <h2>My Sports Centers</h2>
+                    {/* <h2>My Sports Centers</h2> */}
 
                     <div className="UserDashboard__contentSection">
                         <h3>Available Streams</h3>
@@ -85,6 +82,7 @@ export function UserDashboard(props) {
                                 className="UserDashboard__contentBlock small"
                                 key={business.name}
                             >
+                                <h4>{business.name}</h4>
                                 {business.streams.map((stream) => (
                                     <a 
                                         className="UserDashboard__contentRow"
@@ -100,28 +98,21 @@ export function UserDashboard(props) {
                         ))}
                     </div>
 
-                    <article className="UserDashboard__contentInteractive">
-                        <button
-                            onClick={handle_connect_business_form}
-                            data-active={!connectBusinessForm}
-                        >
-                            Connect to Business
-                        </button>
-                    </article>
+                    <div className="UserDashboard__contentSection">
+                        <div className="UserDashboard__form small">
+                            <label htmlFor="businessKey">Business Key:</label>
+                            <input
+                                type="text"
+                                id="businessKey"
+                                onChange={(e) => {set_business_key(e.target.value)}}
+                            />
 
-                    <div className="UserDashboard__form">
-                        <label htmlFor="businessKey">Business Key:</label>
-                        <input
-                            type="text"
-                            id="businessKey"
-                            onChange={(e) => {set_business_key(e.target.value)}}
-                        />
-
-                        <button
-                            onClick={handle_connect_business}
-                        >
-                            Connect
-                        </button>
+                            <button
+                                onClick={handle_connect_business}
+                            >
+                                Connect
+                            </button>
+                        </div>
                     </div>
                 </div>
                 :
