@@ -14,9 +14,13 @@ export default (link) => {
     const http = `http://${window.location.hostname}:8000/live/${link}.flv`;
     const https = `https://${window.location.hostname}:8443/live/${link}.flv`;
     const rtmp = `rtmp://${window.location.hostname}/live${link}`;
+    const hls = `https://localhost:8443/live/${link}/index.m3u8`;
+
+
     return {
         http: http,
         https: https,
-        rtmp: rtmp
+        rtmp: rtmp,
+        hls: hls
     };
 }

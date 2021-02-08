@@ -36,7 +36,16 @@ export function VideoPlayer(props) {
             />
 
             <ReactHlsPlayer 
+                controls={true}
                 url={props.links.rtmp} 
+                height="100%"
+                width="100%"
+                autoplay="true"
+            />
+
+            <ReactHlsPlayer 
+                controls={true}
+                url={props.links.hls} 
                 height="100%"
                 width="100%"
                 autoplay="true"
