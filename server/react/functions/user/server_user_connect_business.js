@@ -8,6 +8,7 @@ export default (key) => {
     )
 
     .then((res) => {
+        console.log('userconnectbusiness fef res', res)
         return true;
     })
 

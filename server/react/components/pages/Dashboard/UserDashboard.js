@@ -58,6 +58,7 @@ export function UserDashboard(props) {
             }
 
             else {
+                console.log('connect business component function res false')
                 return false;
             }
         })
