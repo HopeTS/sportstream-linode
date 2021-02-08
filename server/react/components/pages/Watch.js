@@ -37,7 +37,6 @@ export function Watch(props) {
 
     return (
         <div id="Watch">
-            <HLSStreamPlayer links={streamLinks} hls={hlsStream} />
 
             {streamLinks ?
                 <VideoPlayer links={streamLinks} hls={hlsStream} />
