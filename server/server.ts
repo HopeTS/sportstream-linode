@@ -12,7 +12,7 @@ const chalk = require('chalk');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const cors = require('cors');
+//const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
