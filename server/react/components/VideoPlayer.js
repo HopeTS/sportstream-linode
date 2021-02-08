@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import ReactHlsPlayer from 'react-hls-player';
 import HLSPlayer from 'react-hls';
+import RTMPStreamPlayer from './RTMPStreamPlayer';
+import HLSStreamPlayer from './HLSStreamPlayer';
 
 export function VideoPlayer(props) {
 
@@ -40,6 +42,12 @@ export function VideoPlayer(props) {
             />
 
             sep
+
+            <RTMPStreamPlayer rtmp={props.hls} />
+
+            sep
+
+            <HLSStreamPlayer hls={props.hls} />
 
 
 

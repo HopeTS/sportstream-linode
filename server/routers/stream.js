@@ -41,6 +41,42 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
 });
 
 /**
+ * Endpoint for RTMP stream
+ */
+router.get('/stream/rtmp:key', ensureLoggedIn(), async (req, res) => {
+    try {
+        console.log('Stream key listed', req.params.key);
+
+        // Validate request
+        if (!req.params.key) {
+            return res.status(400).send();
+        }
+
+        const rtmpUrl = `rtmp://localhost/live/${req.params.key}`;
+        request(rtmpUrl).pipe(res);
+    }
+
+    catch(e) {
+        console.error(e);
+        return res.status(500).send();
+    }
+})
+
+/**
+ * Endpoint for DASH stream
+ */
+router.get('/stream/dash:key', ensureLoggedIn(), async (req, res) => {
+    try {
+        console.log('Stream key listed', req.params.key);
+    }
+
+    catch(e) {
+        console.error(e);
+        return res.status(500).send();
+    }
+})
+
+/**
  * Endpoint for HLS stream
  */
 router.get('/stream/hls/:key', ensureLoggedIn(), async (req, res) => {
