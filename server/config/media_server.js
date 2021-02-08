@@ -8,7 +8,8 @@ function construct_config() {
         chunk_size: 60000,
         gop_cache: true,
         ping: 60,
-        ping_timeout: 30
+        ping_timeout: 30,
+        allow_origin: "*"
     };
 
     config.trans = {
@@ -43,6 +44,7 @@ function construct_config() {
             port: 8443,
             key: `${process.env.SSL_DIR}privkey.pem`,
             cert: `${process.env.SSL_DIR}cert.pem`,
+            allow_origin: "*"
         };
     }
 
