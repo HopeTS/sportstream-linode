@@ -1,5 +1,5 @@
 .BusinessDashboard {
-
+    @include dashboardContent;
 }
 
 .BusinessDashboard__contentInteractive {
@@ -21,7 +21,7 @@
 }
 
 .BusinessDashboard__contentSection {
-    @include dashboardContent;
+
 }
 
 .BusinessDashboard__contentBlock {
