@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
+import ReactHlsPlayer from 'react-hls-player';
 
 export function VideoPlayer(props) {
 
@@ -11,48 +12,55 @@ export function VideoPlayer(props) {
     const [httpsVideoWidth, set_https_video_width] = useState('100%');
     const [httpsVideoError, set_https_video_error] = useState(false);
 
+    const [errorState, set_error_state] = useState(0);
 
     useEffect(() => {
         document.querySelector('video').playsInline = "true";
     })
 
-    /** Handle HTTP video error */
-    const handle_http_video_error = () => {
-        set_http_video_error(true);
-    }
-
-    /** Handle HTTPS video error */
-    const handle_https_video_error = () => {
-        set_https_video_error(true);
+    /** Handle video errors */
+    const handle_video_error = () => {
+        console.log('Video error');
+        set_error_state(errorState + 1);
     }
 
     return (
         <div className="VideoPlayer">
 
-            {/* Default HTTP player */}
-            {!httpVideoError &&
+            {/* HTTP .flv player */}
+            {(errorState === 0) &&
                 <ReactFlvPlayer 
                     url={props.links.http}
                     height={httpVideoHeight}
                     width={httpVideoWidth}
                     isLive={true}
-                    handleError={(err) => handle_http_video_error()}
+                    handleError={(err) => handle_video_error()}
                 />
             }
 
-            {/* Fallback HTTPS player */}
-            {(httpVideoError && !httpsVideoError) &&
+            {/* HTTPS .flv player */}
+            {(errorState === 1) &&
                 <ReactFlvPlayer 
                     url={props.links.https}
                     height={httpsVideoHeight}
                     width={httpsVideoWidth}
                     isLive={true}
-                    handleError={(err) => handle_https_video_error()}
+                    handleError={(err) => handle_video_error()}
+                />
+            }
+
+            {/* RTMP player */}
+            {(errorState === 2) &&
+                <ReactHlsPlayer 
+                    url={props.links.rtmp} 
+                    height="100%"
+                    width="100%"
+                    autoplay="true"
                 />
             }
 
             {/* If nothing works */}
-            {(httpVideoError && httpsVideoError) &&
+            {(errorState > 2 || errorState < 0) &&
                 <p>Something went wrong.</p>
             }
         </div>
