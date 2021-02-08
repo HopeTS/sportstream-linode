@@ -5,9 +5,12 @@ const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
+const http = require('http');
+const request = require('request');
 
 const http2https = require('../middleware/http2https');
 const config = require('../config/default');
+const nmsConfig = require('../config/media_server');
 const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 const Stream = require('../database/schema/Schema').Stream;
@@ -43,7 +46,21 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
 router.get('/stream/hls/:key', ensureLoggedIn(), async (req, res) => {
     try {
         console.log('Stream key listed:', req.params.key);
-        return res.status(206).send(
+
+        // Set headers
+        res.header("Access-Control-Allow-Origin", nmsConfig.http.allow_origin);
+        res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
+        res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+        res.header("Access-Control-Allow-Credentials", true);
+
+        // Get HLS stream
+        const hlsRequest = http.request({
+
+        });
+        /* return res.status(206).send(
+            `http://localhost:8000/live/${req.params.key}/index.m3u8`
+        ); */
+        return res.status(206).redirect(
             `http://localhost:8000/live/${req.params.key}/index.m3u8`
         );
     }
