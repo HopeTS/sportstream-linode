@@ -42,7 +42,7 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
  */
 router.get('/stream/hls/:key', ensureLoggedIn(), async (req, res) => {
     try {
-        console.log('Stream key listed:', req.query.key);
+        console.log('Stream key listed:', req.params.key);
     }
 
     catch(e) {
