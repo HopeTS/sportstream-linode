@@ -69,7 +69,7 @@ app.use(session({
     saveUnititialized: true
 }));
 app.use(cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: '*',
     //credentials: true
 }))
 app.use(passport.initialize());
