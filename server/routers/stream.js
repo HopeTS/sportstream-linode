@@ -43,7 +43,7 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
 router.get('/stream/hls/:key', ensureLoggedIn(), async (req, res) => {
     try {
         console.log('Stream key listed:', req.params.key);
-        return res.status(206).sendFile(
+        return res.status(206).send(
             `http://localhost:8000/live/${req.params.key}/index.m3u8`
         );
     }
