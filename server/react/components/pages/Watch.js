@@ -8,6 +8,7 @@ import get_stream_link from '../../functions/stream/get_stream_link';
 import get_hls_stream from '../../functions/stream/get_hls_stream';
 import LoadingSpinner from '../LoadingSpinner';
 import VideoPlayer from '../VideoPlayer';
+import HLSStreamPlayer from '../HLSStreamPlayer';
 
 
 /** Watch page (/watch) */
@@ -36,6 +37,8 @@ export function Watch(props) {
 
     return (
         <div id="Watch">
+            <HLSStreamPlayer links={streamLinks} hls={hlsStream} />
+
             {streamLinks ?
                 <VideoPlayer links={streamLinks} hls={hlsStream} />
             :
