@@ -32,7 +32,7 @@ export function VideoPlayer(props) {
         <div className="VideoPlayer">
 
             <ReactHlsPlayer 
-                url={`http://${window.location.hostname}/stream/hls/${props.hls}`}
+                url={`http://${window.location.host}/stream/hls/${props.hls}`}
                 autoplay={true}
                 controls={true}
                 width="100%"
