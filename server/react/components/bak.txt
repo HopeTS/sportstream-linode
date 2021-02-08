@@ -1,0 +1,31 @@
+{/* HTTP .flv player */}
+            {(errorState === 0) &&
+                <ReactFlvPlayer 
+                    url={props.links.http}
+                    height={httpVideoHeight}
+                    width={httpVideoWidth}
+                    isLive={true}
+                    handleError={(err) => handle_video_error()}
+                />
+            }
+
+            {/* HTTPS .flv player */}
+            {(errorState === 1) &&
+                <ReactFlvPlayer 
+                    url={props.links.https}
+                    height={httpsVideoHeight}
+                    width={httpsVideoWidth}
+                    isLive={true}
+                    handleError={(err) => handle_video_error()}
+                />
+            }
+
+            {/* RTMP player */}
+            {(errorState === 2) &&
+                <ReactHlsPlayer 
+                    url={props.links.rtmp} 
+                    height="100%"
+                    width="100%"
+                    autoplay="true"
+                />
+            }

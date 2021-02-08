@@ -27,37 +27,20 @@ export function VideoPlayer(props) {
     return (
         <div className="VideoPlayer">
 
-            {/* HTTP .flv player */}
-            {(errorState === 0) &&
-                <ReactFlvPlayer 
-                    url={props.links.http}
-                    height={httpVideoHeight}
-                    width={httpVideoWidth}
-                    isLive={true}
-                    handleError={(err) => handle_video_error()}
-                />
-            }
+            <ReactFlvPlayer 
+                url={props.links.https}
+                height={httpsVideoHeight}
+                width={httpsVideoWidth}
+                isLive={true}
+                handleError={(err) => handle_video_error()}
+            />
 
-            {/* HTTPS .flv player */}
-            {(errorState === 1) &&
-                <ReactFlvPlayer 
-                    url={props.links.https}
-                    height={httpsVideoHeight}
-                    width={httpsVideoWidth}
-                    isLive={true}
-                    handleError={(err) => handle_video_error()}
-                />
-            }
-
-            {/* RTMP player */}
-            {(errorState === 2) &&
-                <ReactHlsPlayer 
-                    url={props.links.rtmp} 
-                    height="100%"
-                    width="100%"
-                    autoplay="true"
-                />
-            }
+            <ReactHlsPlayer 
+                url={props.links.rtmp} 
+                height="100%"
+                width="100%"
+                autoplay="true"
+            />
 
             {/* If nothing works */}
             {(errorState > 2 || errorState < 0) &&
@@ -68,3 +51,5 @@ export function VideoPlayer(props) {
 }
 
 export default VideoPlayer;
+
+
