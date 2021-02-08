@@ -68,10 +68,10 @@ app.use(session({
     resave: true,
     saveUnititialized: true
 }));
-app.use(cors({
+/* app.use(cors({
     origin: '*',
     //credentials: true
-}))
+})) */
 app.use(passport.initialize());
 app.use(passport.session());
 require('./auth/passport')(passport);
