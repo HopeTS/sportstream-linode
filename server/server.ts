@@ -20,7 +20,6 @@ const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
 const MongoD = require('./database/mongod');
-const node_media_server = require('./media_server');
 
 const devDatabaseConfig = require('./startupScripts/devDatabaseConfig');
 
@@ -87,6 +86,7 @@ app.use(streamRouter);
 app.use(watchRouter);
 app.use(wildcardRouter);
 
+const node_media_server = require('./media_server');
 
 // Run startup scripts
 switch (process.env.NAME) {
