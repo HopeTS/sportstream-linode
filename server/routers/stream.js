@@ -37,4 +37,18 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
     }
 });
 
+/**
+ * Endpoint for HLS stream
+ */
+router.get('/stream/hls/:key', ensureLoggedIn(), async (req, res) => {
+    try {
+        console.log('Stream key listed:', req.query.key);
+    }
+
+    catch(e) {
+        console.error(e);
+        res.status(500).send();
+    }
+})
+
 module.exports = router;
