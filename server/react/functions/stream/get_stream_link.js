@@ -13,8 +13,8 @@ export default (link) => {
     //http://localhost:8000/live/STREAM_NAME.flv
     const http = `http://${window.location.hostname}:8000/live/${link}.flv`;
     const https = `https://${window.location.hostname}:8443/live/${link}.flv`;
-    const rtmp = `rtmp://${window.location.hostname}/live/${link}`;
-    const hls = `http://localhost:8000/live/${link}/index.m3u8`;
+    const rtmp = `https://cors-anywhere.herokuapp.com/rtmp://${window.location.hostname}/live/${link}`;
+    const hls = `https://cors-anywhere.herokuapp.com/http://localhost:8000/live/${link}/index.m3u8`;
 
 
     return {
