@@ -12,7 +12,7 @@ const chalk = require('chalk');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-const cors = require('cors');
+//const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
@@ -68,10 +68,10 @@ app.use(session({
     resave: true,
     saveUnititialized: true
 }));
-app.use(cors({
+/* app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true
-}))
+})) */
 app.use(passport.initialize());
 app.use(passport.session());
 require('./auth/passport')(passport);
