@@ -11,6 +11,11 @@ export function VideoPlayer(props) {
     const [httpsVideoWidth, set_https_video_width] = useState('100%');
     const [httpsVideoError, set_https_video_error] = useState(false);
 
+
+    useEffect(() => {
+        document.querySelector('video').playsInline = "true";
+    })
+
     /** Handle HTTP video error */
     const handle_http_video_error = () => {
         set_http_video_error(true);
