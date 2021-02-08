@@ -70,7 +70,7 @@ app.use(session({
 }));
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
-    credentials: true
+    //credentials: true
 }))
 app.use(passport.initialize());
 app.use(passport.session());
