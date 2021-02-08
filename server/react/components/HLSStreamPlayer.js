@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import {ReactHlsPlayer} from 'react-hls-player';
 
-export function VideoPlayer(props) {
+export function HLSStreamPlayer(props) {
 
 
     useEffect(() => {
@@ -23,4 +23,4 @@ export function VideoPlayer(props) {
     );
 }
 
-export default VideoPlayer;
+export default HLSStreamPlayer;
