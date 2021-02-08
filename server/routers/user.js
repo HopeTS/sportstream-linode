@@ -115,7 +115,7 @@ router.get('/user/get-connected-businesses', ensureLoggedIn(), async (req, res) 
     }
 });
 
-router.post('/user/connect-business', ensureLoggedIn(), async (err, doc) => {
+router.post('/user/connect-business', ensureLoggedIn(), async (req, res) => {
     try {
         // Find User account
         const user = await User.findOne(
