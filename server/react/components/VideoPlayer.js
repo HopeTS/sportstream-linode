@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
-import {ReactHlsPlayer} from 'react-hls-player';
+import ReactHlsPlayer from 'react-hls-player';
+import HLSPlayer from 'react-hls';
+import 'react-hls/src/style.css'; // need to import basic styles
+import 'react-hls/src/icons.css'; // need to import basic icons
+
 
 export function VideoPlayer(props) {
 
@@ -37,6 +41,10 @@ export function VideoPlayer(props) {
                 width="100%"
                 height="100%"
             />
+
+            sep
+
+
 
             {/* Default HTTP player */}
             {!httpVideoError &&
