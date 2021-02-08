@@ -72,46 +72,59 @@ export function UserDashboard(props) {
             <h1>Welcome, {props.account.name}</h1>
             {loaded ?
                 <div className="UserDashboard__content">
-                    {/* <h2>My Sports Centers</h2> */}
+                    {connectedBusinesses.length > 0 &&
+                        <h2>My Sports Centers</h2>
+                    }
+
+                    {connectedBusinesses.length > 0 &&
+                        <div className="UserDashboard__contentSection">
+                            <h3>Available Streams</h3>
+
+                            {connectedBusinesses.map((business) => (
+                                <article 
+                                    className="UserDashboard__contentBlock small"
+                                    key={business.name}
+                                >
+                                    <h4>{business.name}</h4>
+                                    {business.streams.map((stream) => (
+                                        <a 
+                                            className="UserDashboard__contentRow"
+                                            href={`/watch/${stream.key}`}
+                                            key={stream.key}
+                                        >
+                                            <div>
+                                                <h4>{stream.field}</h4>
+                                            </div>
+                                        </a>
+                                    ))}
+                                </article>
+                            ))}
+                        </div>
+                    }
 
                     <div className="UserDashboard__contentSection">
-                        <h3>Available Streams</h3>
+                        <div 
+                            className="UserDashboard__contentBlock small clear"
+                        >
+                            <div className="UserDashboard__form small">
+                                <label htmlFor="businessKey">
+                                    Business Key:
+                                </label>
 
-                        {connectedBusinesses.map((business) => (
-                            <article 
-                                className="UserDashboard__contentBlock small"
-                                key={business.name}
-                            >
-                                <h4>{business.name}</h4>
-                                {business.streams.map((stream) => (
-                                    <a 
-                                        className="UserDashboard__contentRow"
-                                        href={`/watch/${stream.key}`}
-                                        key={stream.key}
-                                    >
-                                        <div>
-                                            <h4>{stream.field}</h4>
-                                        </div>
-                                    </a>
-                                ))}
-                            </article>
-                        ))}
-                    </div>
+                                <input
+                                    type="text"
+                                    id="businessKey"
+                                    onChange={(e) => {
+                                        set_business_key(e.target.value)}
+                                    }
+                                />
 
-                    <div className="UserDashboard__contentSection">
-                        <div className="UserDashboard__form small">
-                            <label htmlFor="businessKey">Business Key:</label>
-                            <input
-                                type="text"
-                                id="businessKey"
-                                onChange={(e) => {set_business_key(e.target.value)}}
-                            />
-
-                            <button
-                                onClick={handle_connect_business}
-                            >
-                                Connect
-                            </button>
+                                <button
+                                    onClick={handle_connect_business}
+                                >
+                                    Connect
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
