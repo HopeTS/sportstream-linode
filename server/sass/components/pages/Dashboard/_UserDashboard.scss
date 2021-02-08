@@ -8,6 +8,7 @@
 
 .UserDashboard__form {
     @include form;
+    @include dashboardContentForm;
 
     &[data-active=false] {
         display: none;
