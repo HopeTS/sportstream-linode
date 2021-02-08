@@ -18,6 +18,10 @@ export function VideoPlayer(props) {
         document.querySelector('video').playsInline = "true";
     })
 
+    useEffect(() => {
+        console.log('Do these all look like links nick', props.links)
+    }, [])
+
     /** Handle video errors */
     const handle_video_error = () => {
         console.log('Video error');
