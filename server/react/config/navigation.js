@@ -38,10 +38,9 @@
  *  ]
  */
 export default [
-    
     {
-        href: "/",
-        text: "Home",
+        href: "/dashboard",
+        text: "Dashboard",
         internal: true
     }
 ]
