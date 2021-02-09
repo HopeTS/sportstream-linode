@@ -48,6 +48,7 @@ export function VideoPlayer(props) {
     return (
         <div className="VideoPlayer">
 
+            This is the player being used before
             {/* Default HTTP player */}
             <ReactFlvPlayer 
                 url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
@@ -58,6 +59,19 @@ export function VideoPlayer(props) {
                 hasAudio={false}
                 isMuted={true}
             />
+
+            This is a different player
+            <video 
+                src={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
+                playsInline muted autoPlay controls
+                
+            >
+                <source
+                    src={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
+                    type="video/mp4"
+                />
+                Your browser does not support this file type. 
+            </video>
 
             {/* If nothing works */}
             {(httpVideoError) &&
