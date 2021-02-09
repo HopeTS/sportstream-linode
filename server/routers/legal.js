@@ -3,7 +3,7 @@ const path = require('path');
 const chalk = require('chalk');
 
 const publicPath = path.join(__dirname, '../../public/');
-const legalPath = path.join(publicPath, 'dist', 'legal'),
+const legalPath = path.join(publicPath, 'dist', 'legal');
 
 
 /* Router */
