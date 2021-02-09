@@ -32,15 +32,13 @@ export function VideoPlayer(props) {
         <div className="VideoPlayer">
 
             {/* Default HTTP player */}
-            {!httpVideoError &&
-                <ReactFlvPlayer 
-                    url={`/stream/get-flv/${props.streamKey}`}
-                    height={httpVideoHeight}
-                    width={httpVideoWidth}
-                    isLive={true}
-                    handleError={(err) => handle_http_video_error(err)}
-                />
-            }
+            <ReactFlvPlayer 
+                url={`/stream/get-flv/${props.streamKey}`}
+                height={httpVideoHeight}
+                width={httpVideoWidth}
+                isLive={true}
+                handleError={(err) => handle_http_video_error(err)}
+            />
 
             {/* If nothing works */}
             {(httpVideoError) &&
