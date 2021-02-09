@@ -37,7 +37,7 @@ export class Home extends React.Component {
                     </div>
                     <div className="Home__contentText">
                         <p>
-                            Coming soon...
+                            Coming soon... {process.env.NAME}
                         </p>
                         <br/>
                         <small>
