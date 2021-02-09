@@ -394,7 +394,7 @@ export class Register extends React.Component {
                             id="passwordCheck"
                             name="passwordCheck"
                             onChange={
-                                () => this.set_password_check(e.target.value)
+                                (e) => this.set_password_check(e.target.value)
                             }
                             required
                         />
