@@ -7,8 +7,7 @@ function construct_config() {
         port: 1935,
         //chunk_size: 60000,
         //chunk_size: 2048,
-        //chunk_size: 30000,
-        chunk_size: 600,
+        chunk_size: 30000,
         gop_cache: true,
         ping: 60,
         ping_timeout: 30

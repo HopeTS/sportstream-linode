@@ -57,6 +57,7 @@ export function VideoPlayer(props) {
                 handleError={(err) => handle_http_video_error(err)}
                 enableStashBuffer={false}
                 hasAudio={false}
+                isMuted={true}
             />
 
             {/* If nothing works */}
