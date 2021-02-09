@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import axios from 'axios';
+import flvjs from 'flv.js';
+import Reflv from 'reflv';
 
 export function VideoPlayer(props) {
 
@@ -12,6 +14,7 @@ export function VideoPlayer(props) {
     const [httpsVideoWidth, set_https_video_width] = useState('100%');
     const [httpsVideoError, set_https_video_error] = useState(false);
 
+    // Log stream
     useEffect(() => {
         console.log('Component mounted')
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
@@ -24,6 +27,11 @@ export function VideoPlayer(props) {
             console.log(err);
         })
     }, [])
+
+    /** Generate custom video stream */
+    useEffect(() => {
+
+    })
 
 
     useEffect(() => {
@@ -60,19 +68,25 @@ export function VideoPlayer(props) {
                 isMuted={true}
             />
 
-            This is a different player
+            <br/>
+            ------------------
+            <br/>
+    
+            This is the custom player
             <video 
-                src={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
-                playsInline muted autoPlay controls
-                
-            >
-                <source
-                    src={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
-                    type="video/mp4"
-                />
-                Your browser does not support this file type. 
+                src="">
+
             </video>
 
+            <br/>
+            ------------------
+            <br/>
+    
+            This is ReFLV
+            <Reflv
+                type="flv"
+                url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
+            />
             {/* If nothing works */}
             {(httpVideoError) &&
                 <p>Something went wrong.</p>
