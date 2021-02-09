@@ -414,12 +414,37 @@ export class Register extends React.Component {
                         />
                     </div>
 
+                    <div 
+                        className="Register__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
+                        <p className="Register__disclaimer">
+                            By clicking Sign Up, you acknowledge that you have  
+                            read and agree to the 
+                            <a 
+                                target="_blank" 
+                                rel="noopener" 
+                                href="/legal/terms-of-use"
+                            >
+                                Terms of Use
+                            </a>
+                            and
+                            <a 
+                                target="_blank"
+                                rel="noopener"
+                                href="/legal/privacy-policy"
+                            >
+                                Privacy Policy
+                            </a>
+                        </p>
+                    </div>
+
                     <button 
                         className="Register__button"
                         onClick={this.register}
                         data-active={this.state.type !== 'starter'}
                     >
-                        submit
+                        Sign Up
                     </button>
 
                     <div 
