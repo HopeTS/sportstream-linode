@@ -1,9 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
-import ReactHlsPlayer from 'react-hls-player';
-import HLSPlayer from 'react-hls';
-import RTMPStreamPlayer from './RTMPStreamPlayer';
-import HLSStreamPlayer from './HLSStreamPlayer';
 
 export function VideoPlayer(props) {
 
@@ -33,28 +29,12 @@ export function VideoPlayer(props) {
     return (
         <div className="VideoPlayer">
 
-            <ReactHlsPlayer 
-                url={`http://${window.location.host}/stream/hls/${props.hls}`}
-                autoplay={true}
-                controls={true}
-                width="100%"
-                height="100%"
-            />
-
-            sep
-
-            <RTMPStreamPlayer rtmp={props.hls} />
-
-            sep
-
-            <HLSStreamPlayer hls={props.hls} />
-
-
+http://localhost:8000/live/STREAM_NAME.flv
 
             {/* Default HTTP player */}
             {!httpVideoError &&
                 <ReactFlvPlayer 
-                    url={props.links.http}
+                    url={`/live/${props.streamKey}.flv`}
                     height={httpVideoHeight}
                     width={httpVideoWidth}
                     isLive={true}
