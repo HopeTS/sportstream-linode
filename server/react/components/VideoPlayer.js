@@ -27,8 +27,8 @@ export function VideoPlayer(props) {
 
 
     useEffect(() => {
-        document.querySelector('video').playsInline = "true";
-        document.querySelector('video').autoplay = "true";
+        //document.querySelector('video').playsInline = "true";
+        //document.querySelector('video').autoplay = "true";
         console.log('Here is streamKey', props.streamKey);
     })
 
@@ -55,7 +55,6 @@ export function VideoPlayer(props) {
                 width={httpVideoWidth}
                 isLive={true}
                 handleError={(err) => handle_http_video_error(err)}
-                enableStashBuffer={false}
                 hasAudio={false}
                 isMuted={true}
             />
