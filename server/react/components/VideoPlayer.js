@@ -13,7 +13,7 @@ export function VideoPlayer(props) {
 
 
     useEffect(() => {
-        document.querySelector('video').playsInline = "true";
+        //document.querySelector('video').playsInline = "true";
     })
 
     /** Handle HTTP video error */
