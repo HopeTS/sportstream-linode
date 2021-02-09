@@ -29,8 +29,6 @@ export function VideoPlayer(props) {
     return (
         <div className="VideoPlayer">
 
-http://localhost:8000/live/STREAM_NAME.flv
-
             {/* Default HTTP player */}
             {!httpVideoError &&
                 <ReactFlvPlayer 
