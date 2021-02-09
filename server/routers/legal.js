@@ -11,7 +11,7 @@ const router = new express.Router();
 
 router.get('/legal/privacy-policy', (req, res) => {
     try {
-        return res.sendFile(path.join(publicPath, 'PrivacyPolicy.pdf'));
+        return res.sendFile(path.join(legalPath, 'PrivacyPolicy.pdf'));
 
     } catch(e) {
         res.send();
@@ -25,7 +25,7 @@ router.get('/legal/privacy-policy', (req, res) => {
 
 router.get('/legal/terms-of-use', (req, res) => {
     try {
-        return res.sendFile(path.join(publicPath, 'TermsOfUse.pdf'));
+        return res.sendFile(path.join(legalPath, 'TermsOfUse.pdf'));
 
     } catch(e) {
         res.send();
