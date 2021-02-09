@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import axios from 'axios';
-import flvjs from 'flv.js';
 import Reflv from 'reflv';
 
 export function VideoPlayer(props) {
