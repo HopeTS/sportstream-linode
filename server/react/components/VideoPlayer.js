@@ -16,9 +16,11 @@ export function VideoPlayer(props) {
         console.log('Component mounted')
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
-            console.log('res', res)
+            console.log('There was a valid response')
+            console.log(res)
         })
         .catch((err) => {
+            console.log('There was an error')
             console.log(err);
         })
     }, [])
