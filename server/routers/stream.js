@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 const http = require('http');
 const request = require('request');
+const stream = require('stream');
 
 const http2https = require('../middleware/http2https');
 const config = require('../config/default');
@@ -46,7 +47,8 @@ router.get('stream/get-flv/:key', ensureLoggedIn(), async (req, res) => {
 
         const internalStreamUrl = `http://localhost:8000/live/${req.params.key}.flv`;
         const httpsInternalStreamUrl = `https://localhost:8443/live/${req.params.key}.flv`;
-        request(httpsInternalStreamUrl).pipe(res);
+        //stream(httpsInternalStreamUrl).pipe(res);
+        res.send(stream.pipe(httpsInternalStreamUrl));
     }
 
     catch(e) {
