@@ -86,6 +86,13 @@ export function VideoPlayer(props) {
                 type="flv"
                 url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
             />
+
+            <br/>
+            ------------------
+            <br/>
+    
+            This is HLS     
+            <video src={`https://${window.location.hostname}:8443/live/${props.streamKey}/index.m3u8`}></video>
             {/* If nothing works */}
             {(httpVideoError) &&
                 <p>Something went wrong.</p>
