@@ -34,14 +34,6 @@ export function VideoPlayer(props) {
 
             {/* Default HTTP player */}
             <ReactFlvPlayer 
-                url={`/stream/get-flv/${props.streamKey}`}
-                height={httpVideoHeight}
-                width={httpVideoWidth}
-                isLive={true}
-                handleError={(err) => handle_http_video_error(err)}
-            />
-
-            <ReactFlvPlayer 
                 url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
                 height={httpVideoHeight}
                 width={httpVideoWidth}
