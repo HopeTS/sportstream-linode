@@ -14,11 +14,13 @@ export function Watch(props) {
 
     const [streamActive, set_stream_active] = useState(false);
     const [streamLinks, set_stream_links] = useState(null);
+    const [streamKey, set_stream_key] = useState('');
 
     // Initial setup
     useEffect(() => {
         props.page_ID__Set('watch');
         generate_stream_link();
+        set_stream_key(window.location.pathname.split('/')[2])
     }, []);
 
     /** Get stream link handler */
@@ -32,7 +34,7 @@ export function Watch(props) {
         <div id="Watch">
 
             {streamLinks ?
-                <VideoPlayer streamKey={streamKey} />
+                <VideoPlayer streamKey={props.streamKey} />
             :
                 <LoadingSpinner />
             }
