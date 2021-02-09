@@ -40,104 +40,17 @@ router.get('/stream/get-user-doc', ensureLoggedIn(), async (req, res) => {
     }
 });
 
-/**
- * Endpoint for RTMP stream
- */
-router.get('/stream/rtmp:key', ensureLoggedIn(), async (req, res) => {
+router.get('stream/get-flv/:key', ensureLoggedIn(), async (req, res) => {
     try {
-        console.log('Stream key listed', req.params.key);
+        if (!req.params.key) return res.status(400).send();
 
-        // Validate request
-        if (!req.params.key) {
-            return res.status(400).send();
-        }
-
-        const rtmpUrl = `rtmp://localhost/live/${req.params.key}`;
-        request(rtmpUrl).pipe(res);
+        const internalStreamUrl = `http://localhost:8000/live/${req.params.key}.flv`;
+        request(internalStreamUrl).pipe(res);
     }
 
     catch(e) {
         console.error(e);
         return res.status(500).send();
     }
-})
-
-/**
- * Endpoint for DASH stream
- */
-router.get('/stream/dash:key', ensureLoggedIn(), async (req, res) => {
-    try {
-        console.log('Stream key listed', req.params.key);
-    }
-
-    catch(e) {
-        console.error(e);
-        return res.status(500).send();
-    }
-})
-
-/**
- * Endpoint for HLS stream
- */
-router.get('/stream/hls/:key', ensureLoggedIn(), async (req, res) => {
-    try {
-        console.log('Stream key listed:', req.params.key);
-
-        const hlsUrl = `http://localhost:8000/live/${req.params.key}/index.m3u8`;
-        request(hlsUrl).pipe(res);
-
-        // Set headers
-        /* res.header("Access-Control-Allow-Origin", nmsConfig.http.allow_origin);
-        res.header("Access-Control-Allow-Headers", "Content-Type,Content-Length, Authorization, Accept,X-Requested-With");
-        res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-        res.header("Access-Control-Allow-Credentials", true); */
-
-        /* const options = {
-            port: '8000',
-            hostname: 'localhost',
-            path: `/${req.paramas.key}/index.m3u8`,
-            headers: req.headers
-        };
-
-        const callback = http.request(options, pres => {
-            res.writeHead(pres.statusCode);
-
-            pres.on('data', (chunk) => {
-                res.write(chunk);
-            })
-
-            pres.on('close', () => {
-                res.end();
-            })
-
-            pres.on('end', () => {
-                res.end();
-            })
-        })
-        .on('error', (e) => {
-            console.error(e.message);
-            try {
-                // attempt to set error message and http status
-                ores.writeHead(500);
-                ores.write(e.message);
-            } catch (e) {
-                // ignore
-            }
-            res.end();
-        }) */
-
-        /* return res.status(206).send(
-            `http://localhost:8000/live/${req.params.key}/index.m3u8`
-        ); */
-        /* return res.status(206).redirect(
-            `http://localhost:8000/live/${req.params.key}/index.m3u8`
-        ); */
-    }
-
-    catch(e) {
-        console.error(e);
-        res.status(500).send();
-    }
-})
-
+});
 module.exports = router;

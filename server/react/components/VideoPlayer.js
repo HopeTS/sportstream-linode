@@ -33,7 +33,7 @@ export function VideoPlayer(props) {
             {/* Default HTTP player */}
             {!httpVideoError &&
                 <ReactFlvPlayer 
-                    url={`http://${window.location.hostname}:8000/live/${props.streamKey}.flv`}
+                    url={`/stream/get-flv/${props.streamKey}`}
                     height={httpVideoHeight}
                     width={httpVideoWidth}
                     isLive={true}
