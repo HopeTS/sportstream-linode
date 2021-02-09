@@ -34,7 +34,7 @@ http://localhost:8000/live/STREAM_NAME.flv
             {/* Default HTTP player */}
             {!httpVideoError &&
                 <ReactFlvPlayer 
-                    url={`/live/${props.streamKey}.flv`}
+                    url={`http://${window.location.host}:8000/live/${props.streamKey}.flv`}
                     height={httpVideoHeight}
                     width={httpVideoWidth}
                     isLive={true}
