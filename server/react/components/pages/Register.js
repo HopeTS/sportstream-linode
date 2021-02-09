@@ -27,6 +27,7 @@ export class Register extends React.Component {
             name: '',
             email: '',
             password: '',
+            passwordCheck: '',
             business_key: '',
             type: 'starter',
             form_error: ''
@@ -85,6 +86,13 @@ export class Register extends React.Component {
         this.clear_form_error();
     }
 
+    set_password_check = (passwordCheck) => {
+        this.setState({
+            ...this.state,
+            passwordCheck: passwordCheck
+        });
+    }
+
     /** Handler for account type input field */
     set_account_type = (type) => {
         this.setState({
@@ -114,6 +122,12 @@ export class Register extends React.Component {
 
     /** Handle registration for business account */
     handle_register_business = () => {
+
+        // Ensure passwords match
+        if (this.state.password !== this.state.passwordCheck) {
+            this.handle_form_error("Passwords don't match");
+            return;
+        }
 
         // Validate fields
         const validName = validate_name(this.state.name);
@@ -199,6 +213,12 @@ export class Register extends React.Component {
 
     /** Handle registration for user account */
     handle_register_user = () => {
+
+        // Ensure passwords match
+        if (this.state.password !== this.state.passwordCheck) {
+            this.handle_form_error("Passwords don't match");
+            return;
+        }
 
         // Validate fields
         const validName = validate_name(this.state.name);
@@ -354,12 +374,28 @@ export class Register extends React.Component {
                         className="Register__field"
                         data-active={this.state.type !== 'starter'}
                     >
-                        <label>Password</label>
+                        <label htmlFor="password">Password</label>
                         <input 
                             type="password" 
                             id="password" 
                             name="password"
                             onChange={(e) => this.set_password(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div
+                        className="Register__field"
+                        data-active={this.state.type !== 'starter'}
+                    >
+                        <label htmlFor="passwordCheck">Re-enter Password</label>
+                        <input 
+                            type="password"
+                            id="passwordCheck"
+                            name="passwordCheck"
+                            onChange={
+                                () => this.set_password_check(e.target.value)
+                            }
                             required
                         />
                     </div>
