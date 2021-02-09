@@ -34,7 +34,7 @@ export function Watch(props) {
         <div id="Watch">
 
             {streamLinks ?
-                <VideoPlayer streamKey={props.streamKey} />
+                <VideoPlayer streamKey={streamKey} />
             :
                 <LoadingSpinner />
             }
