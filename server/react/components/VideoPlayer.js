@@ -43,7 +43,7 @@ export function VideoPlayer(props) {
             {/* Fallback HTTPS player */}
             {(httpVideoError && !httpsVideoError) &&
                 <ReactFlvPlayer 
-                    url={props.links.https}
+                    url={`http://${window.location.host}:8000/live/${props.streamKey}.flv`}
                     height={httpsVideoHeight}
                     width={httpsVideoWidth}
                     isLive={true}
