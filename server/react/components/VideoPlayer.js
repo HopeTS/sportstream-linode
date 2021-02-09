@@ -34,7 +34,9 @@ export function VideoPlayer(props) {
 
 
     useEffect(() => {
-        //document.querySelector('video').playsInline = "true";
+        let $video = document.querySelector('video');
+        $video.setAttribute('playsinline', 'playsinline');
+        $video.setAttribute('webkit-playsinline', 'webkit-playsinline');
         //document.querySelector('video').autoplay = "true";
         console.log('Here is streamKey', props.streamKey);
     })
