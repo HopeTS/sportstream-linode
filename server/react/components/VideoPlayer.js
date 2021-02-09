@@ -14,6 +14,7 @@ export function VideoPlayer(props) {
 
     useEffect(() => {
         //document.querySelector('video').playsInline = "true";
+        console.log('Here is streamKey', props.streamKey)
     })
 
     /** Handle HTTP video error */
