@@ -18,7 +18,8 @@ export function VideoPlayer(props) {
     })
 
     /** Handle HTTP video error */
-    const handle_http_video_error = () => {
+    const handle_http_video_error = (err) => {
+        console.log(err);
         set_http_video_error(true);
     }
 
@@ -37,7 +38,7 @@ export function VideoPlayer(props) {
                     height={httpVideoHeight}
                     width={httpVideoWidth}
                     isLive={true}
-                    handleError={(err) => handle_http_video_error()}
+                    handleError={(err) => handle_http_video_error(err)}
                 />
             }
 
