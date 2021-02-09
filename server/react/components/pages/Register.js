@@ -420,7 +420,7 @@ export class Register extends React.Component {
                     >
                         <p className="Register__disclaimer">
                             By clicking Sign Up, you acknowledge that you have  
-                            read and agree to the 
+                            read and agree to the&nbsp;
                             <a 
                                 target="_blank" 
                                 rel="noopener" 
@@ -428,7 +428,7 @@ export class Register extends React.Component {
                             >
                                 Terms of Use
                             </a>
-                            and
+                            &nbsp;and&nbsp;
                             <a 
                                 target="_blank"
                                 rel="noopener"
@@ -436,6 +436,7 @@ export class Register extends React.Component {
                             >
                                 Privacy Policy
                             </a>
+                            .
                         </p>
                     </div>
 
