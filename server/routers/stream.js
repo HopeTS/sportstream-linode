@@ -45,7 +45,8 @@ router.get('stream/get-flv/:key', ensureLoggedIn(), async (req, res) => {
         if (!req.params.key) return res.status(400).send();
 
         const internalStreamUrl = `http://localhost:8000/live/${req.params.key}.flv`;
-        request(internalStreamUrl).pipe(res);
+        const httpsInternalStreamUrl = `https://localhost:8443/live/${req.params.key}.flv`;
+        request(httpsInternalStreamUrl).pipe(res);
     }
 
     catch(e) {
