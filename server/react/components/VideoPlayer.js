@@ -13,7 +13,8 @@ export function VideoPlayer(props) {
 
 
     useEffect(() => {
-        //document.querySelector('video').playsInline = "true";
+        document.querySelector('video').playsInline = "true";
+        document.querySelector('video').autoplay = "true";
         console.log('Here is streamKey', props.streamKey)
     })
 
