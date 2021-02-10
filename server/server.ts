@@ -115,6 +115,15 @@ switch (process.env.NAME) {
 // Run server
 switch (process.env.NAME) {
 
+    case 'windows':
+        http.createServer(app).listen(process.env.HTTP_PORT, () => {        
+            console.log(chalk.underline.green('Development HTTP server has connected.'));
+            console.log(
+                chalk.bold('HTTP Port:'),
+                chalk.blue(process.env.HTTP_PORT)
+            );
+        });
+
     case 'development':
         http.createServer(app).listen(process.env.HTTP_PORT, () => {        
             console.log(chalk.underline.green('Development HTTP server has connected.'));
