@@ -11,14 +11,20 @@
 
     h4 {
         width: 150px;
-        text-align: left;
+        text-align: right;
         display: inline-block;
+        margin-left: 24px;
+        min-width: 70px;
+        font-weight: 500;
+        opacity: 0.6;
     }
 
     p {
         text-align: center;
         display: inline-block;
         width: calc(100% - 150px);
+        margin: 22px 0;
+        margin-left: 24px;
     }
 
     &:not(:last-child) {
