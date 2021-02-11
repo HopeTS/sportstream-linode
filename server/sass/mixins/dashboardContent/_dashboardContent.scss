@@ -15,7 +15,7 @@
         font-weight: 400;
     }
 
-    @media #{$1680_breakpoint} {
+    @media #{$desktop_1680_breakpoint} {
         width: 1200px;
     }
 }
@@ -23,3 +23,4 @@
 .dashboardContent {
     @include dashboardContent;
 }
+
