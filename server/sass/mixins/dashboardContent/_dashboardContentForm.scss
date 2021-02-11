@@ -1,0 +1,23 @@
+@mixin dashboardContentForm {
+    width: inherit;
+    border-radius:  8px;
+    padding: 8px;
+    background: var(--dark-gray);
+    border: 1px solid var(--gray);
+
+    label {
+        padding: 4px;
+    }
+
+    input {
+        margin: 4px;
+    }
+
+    button {
+        display: block;
+    }
+}
+
+.dashboardContentForm {
+    @include dashboardContentForm;
+}

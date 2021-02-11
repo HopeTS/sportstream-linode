@@ -1,20 +1,21 @@
+/**
+ * Get link to http stream endpoint
+ * 
+ * @param {*} streamKey stream key
+ * 
+ * @returns {String} link to http stream endpoint
+ */
+export const get_http_stream_link = (streamKey) => {
+    return ``;
+}
 
 /**
- * Generates link for flv Livestream with given id
+ * Get link to https stream endpoint
  * 
- * @param {String} streamKey 
+ * @param {*} streamKey stream key
  * 
- * @returns {{
- *      http: String,
- *      https: String
- * }} Stream link
+ * @returns {String} link to https stream endpoint
  */
-export default (link) => {
-    //http://localhost:8000/live/STREAM_NAME.flv
-    const http = `http://${window.location.hostname}:8000/live/${link}.flv`;
-    const https = `https://${window.location.hostname}:8443/live/${link}.flv`;
-    return {
-        http: http,
-        https: https
-    };
+export const get_https_stream_link = (streamKey) => {
+    return ``;
 }

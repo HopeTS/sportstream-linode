@@ -54,11 +54,11 @@ export class AccountCardAuthMenuBusiness extends React.Component {
             >
                 <ul>
                     <NavLink 
-                        to="/account"
+                        to="/dashboard"
                         onClick={this.accountMenu__Off}
                     >
                         <li>
-                            My account
+                            Dashboard
                         </li>
                     </NavLink>
 

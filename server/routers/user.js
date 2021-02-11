@@ -61,7 +61,7 @@ router.get('/user/get-personal-doc', ensureLoggedIn(), async (req, res) => {
  * Get all information available to the business connected to User
  * (Endpoint for User.get_business_doc instance method)
  */
-router.get('/user/get-business-doc', ensureLoggedIn(), async (err, doc) => {
+router.get('/user/get-business-doc', ensureLoggedIn(), async (req, res) => {
     try {
         // Find User account
         const user = await User.findOne(
@@ -90,7 +90,7 @@ router.get('/user/get-business-doc', ensureLoggedIn(), async (err, doc) => {
  * Get information about all Businesses connected to the User
  * (Endpoint for User.get_connected_businesses instance method)
  */
-router.get('/user/get-connected-businesses', ensureLoggedIn(), async (err, doc) => {
+router.get('/user/get-connected-businesses', ensureLoggedIn(), async (req, res) => {
     try {
         // Find User account
         const user = await User.findOne(
@@ -115,6 +115,29 @@ router.get('/user/get-connected-businesses', ensureLoggedIn(), async (err, doc) 
     }
 });
 
+router.post('/user/connect-business', ensureLoggedIn(), async (req, res) => {
+    try {
+        // Find User account
+        const user = await User.findOne(
+            {_id: req.user},
+            async (err, doc) => {
+                if (err) throw err;
+                if (doc) return doc;
+                return false;
+            }
+        );
+        if (!user) return res.status(404).send();
 
+        // Connect business
+        const businessConnect = await user.connect_business(req.body.key);
+
+        if (!businessConnect) return res.status(500).send();
+        else return res.status(201).send();
+    }
+
+    catch (e) {
+        return res.status(500).send();
+    }
+})
 
 module.exports = router;

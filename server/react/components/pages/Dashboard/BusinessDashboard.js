@@ -23,9 +23,6 @@ export function BusinessDashboard(props) {
     const [connectionIds, set_connection_ids] = useState([]);
     const [connectedUsers, set_connected_users] = useState([]);
 
-    // Controls
-    const [addingStream, set_adding_stream] = useState(false);
-
     // Create stream form data
     const [createStreamForm, set_create_stream_form] = useState(false);
     const [fieldName, set_field_name] = useState('');
@@ -126,30 +123,40 @@ export function BusinessDashboard(props) {
                 <article 
                     className="BusinessDashboard__contentInteractive"
                 >
-                    <button 
-                        onClick={handle_set_create_stream_form}
-                        data-active={!createStreamForm}
+                    <div 
+                        className="BusinessDashboard__contentBlock small clear"
                     >
-                        Add new stream
-                    </button>
+                        <button 
+                            onClick={handle_set_create_stream_form}
+                            data-active={!createStreamForm}
+                        >
+                            Add new stream
+                        </button>
+                    </div>
                 </article>
 
-                <div 
-                    className="BusinessDashboard__form"
-                    data-active={createStreamForm}
-                >
-                    <div>
-                        <label htmlFor="field">Field:</label>
-                        <input 
-                            type="text" 
-                            id="field"
-                            onChange={(e) => {set_field_name(e.target.value)}}
-                        />
-                    </div>
+                <div className="BusinessDashboard__contentSection">
+                    <article 
+                        className="BusinessDashboard__contentBlock small clear"
+                    >
+                        <div 
+                            className="BusinessDashboard__form small"
+                            data-active={createStreamForm}
+                        >
+                            <div>
+                                <label htmlFor="field">Field:</label>
+                                <input 
+                                    type="text" 
+                                    id="field"
+                                    onChange={(e) => {set_field_name(e.target.value)}}
+                                />
+                            </div>
 
-                    <button onClick={handle_create_stream}>
-                        Create
-                    </button>
+                            <button onClick={handle_create_stream}>
+                                Create
+                            </button>
+                        </div>
+                    </article>
                 </div>
 
                 <article className="BusinessDashboard__contentSection">

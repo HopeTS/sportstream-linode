@@ -8,6 +8,7 @@
 
 .UserDashboard__form {
     @include form;
+    @include dashboardContentForm;
 
     &[data-active=false] {
         display: none;
@@ -21,7 +22,6 @@
 }
 
 .UserDashboard__contentSection {
-    @include dashboardContent;
 }
 
 .UserDashboard__contentBlock {

@@ -8,6 +8,11 @@
     &.small {
         max-width: 400px;
     }
+
+    &.clear {
+        background: none;
+        border: 0px;
+    }
 }
 
 .dashboardContentBlock {

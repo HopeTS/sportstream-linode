@@ -1,12 +1,26 @@
 @mixin dashboardContent {
-    width: calc(100% - 32px);
-    margin: 0 16px;
+    /* width: calc(100% - 32px);
+    margin: 0 16px; */
+    margin: 0 auto;
     
-    h2 {
+    h1 {
+        font-weight: 500;
+    }
 
+    h2 {
+        font-weight: 500;
+    }
+
+    h3, h4, h5, h6 {
+        font-weight: 400;
+    }
+
+    @media #{$desktop_1680_breakpoint} {
+        width: 1200px;
     }
 }
 
 .dashboardContent {
     @include dashboardContent;
 }
+
