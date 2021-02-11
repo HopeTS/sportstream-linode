@@ -1,6 +1,7 @@
 @mixin dashboardContent {
-    width: calc(100% - 32px);
-    margin: 0 16px;
+    /* width: calc(100% - 32px);
+    margin: 0 16px; */
+    margin: 0 auto;
     
     h1 {
         font-weight: 500;
@@ -16,8 +17,6 @@
 
     @media #{$1680_breakpoint} {
         width: 1200px;
-        margin
-        0 auto
     }
 }
 
