@@ -13,7 +13,10 @@ export function VideoPlayer(props) {
     const [httpsVideoError, set_https_video_error] = useState(false);
 
     useEffect(() => {
-        console.log('Component mounted')
+        console.log('Component mounted');
+
+        const video = document.querySelector('video');
+        video.setAttribute('preload', 'metadata');
     
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
