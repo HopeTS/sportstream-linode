@@ -17,6 +17,7 @@ export function VideoPlayer(props) {
 
         const video = document.querySelector('video');
         video.setAttribute('preload', 'metadata');
+        video.setAttribute('playsinline', null);
     
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
