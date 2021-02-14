@@ -58,7 +58,7 @@ export function VideoPlayer(props) {
                 handleError={(err) => handle_http_video_error(err)}
                 hasAudio={false}
                 isMuted={true}
-                type="mp4"
+                type="flv"
             />
 
             {/* If nothing works */}
