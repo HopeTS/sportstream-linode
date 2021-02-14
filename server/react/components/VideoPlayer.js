@@ -53,9 +53,9 @@ export function VideoPlayer(props) {
                 url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
                 height={httpVideoHeight}
                 width={httpVideoWidth}
-                //isLive={true}
+                isLive={true}
                 handleError={(err) => handle_http_video_error(err)}
-                //hasAudio={false}
+                hasAudio={false}
                 isMuted={true}
             />
 
