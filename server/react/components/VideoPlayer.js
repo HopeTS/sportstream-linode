@@ -74,7 +74,7 @@ export function VideoPlayer(props) {
 
             <ReactPlayer 
                 url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
-                playing={true}
+                controls={true}
                 muted={true}
                 volume={0}
                 width="100%"
