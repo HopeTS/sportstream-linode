@@ -15,10 +15,6 @@ export function VideoPlayer(props) {
 
     useEffect(() => {
         console.log('Component mounted');
-
-        const video = document.querySelector('video');
-        video.setAttribute('preload', 'metadata');
-        video.setAttribute('playsinline', null);
     
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
@@ -73,18 +69,19 @@ export function VideoPlayer(props) {
             <p>New Player</p>
 
             <ReactPlayer 
-                url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
+                url={[
+                    `https://${window.location.hostname}:8443/live/${props.streamKey}.flv`,
+                    `wss://${window.location.hostname}:8443/live/${props.streamKey}.flv`,
+                    `https://${window.location.hostname}:8443/live/${props.streamKey}/index.m3u8`,
+                    `https://${window.location.hostname}:8443/live/${props.streamKey}/index.mpd`
+                ]}
                 controls={true}
                 muted={true}
                 volume={0}
                 width="100%"
                 height="100%"
                 playsinline={true}
-                config={{
-                    file: {
-                        forceFLV: true,
-                    }
-                }}
+                light={true}
             />
 
             {/* If nothing works */}
