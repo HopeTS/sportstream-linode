@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
+import ReactPlayer from 'react-player';
 import axios from 'axios';
 
 export function VideoPlayer(props) {
@@ -53,6 +54,8 @@ export function VideoPlayer(props) {
     return (
         <div className="VideoPlayer">
 
+            <p>Old Player</p>
+
             {/* Default HTTP player */}
             <ReactFlvPlayer 
                 url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
@@ -63,6 +66,25 @@ export function VideoPlayer(props) {
                 hasAudio={false}
                 isMuted={true}
                 type="flv"
+            />
+
+            ---
+
+            <p>New Player</p>
+
+            <ReactPlayer 
+                url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
+                playing={true}
+                muted={true}
+                volume={0}
+                width="100%"
+                height="100%"
+                playsinline={true}
+                config={{
+                    file: {
+                        forceFLV: true,
+                    }
+                }}
             />
 
             {/* If nothing works */}
