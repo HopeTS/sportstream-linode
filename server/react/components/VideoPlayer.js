@@ -69,12 +69,7 @@ export function VideoPlayer(props) {
             <p>New Player</p>
 
             <ReactPlayer 
-                url={[
-                    `https://${window.location.hostname}:8443/live/${props.streamKey}.flv`,
-                    `wss://${window.location.hostname}:8443/live/${props.streamKey}.flv`,
-                    `http://${window.location.hostname}:8000/live/${props.streamKey}/index.m3u8`,
-                    `http://${window.location.hostname}:8000/live/${props.streamKey}/index.mpd`
-                ]}
+                url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
                 controls={true}
                 muted={true}
                 volume={0}
