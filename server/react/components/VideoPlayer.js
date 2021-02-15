@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import ReactPlayer from 'react-player';
 import axios from 'axios';
+import FlvJs from 'flv.js';
 
 export function VideoPlayer(props) {
 
@@ -15,6 +16,10 @@ export function VideoPlayer(props) {
 
     useEffect(() => {
         console.log('Component mounted');
+
+        if (FlvJs.isSupported()) {
+            console.log('flv.js is supported')
+        }
     
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
@@ -32,6 +37,8 @@ export function VideoPlayer(props) {
         //document.querySelector('video').playsInline = "true";
         //document.querySelector('video').autoplay = "true";
         console.log('Here is streamKey', props.streamKey);
+
+
     })
 
     /** Handle HTTP video error */
