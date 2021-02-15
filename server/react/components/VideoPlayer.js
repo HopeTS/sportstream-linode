@@ -82,6 +82,11 @@ export function VideoPlayer(props) {
                 height="100%"
                 playsinline={true}
                 light={true}
+                config={{
+                    file: {
+                        forceFLV: true
+                    }
+                }}
             />
 
             {/* If nothing works */}
