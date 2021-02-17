@@ -12,7 +12,7 @@ const router = new express.Router();
 router.get('/legal/privacy-policy', (req, res) => {
     try {
         return res.sendFile(path.join(legalPath, 'PrivacyPolicy.pdf'));
-
+gredger
     } catch(e) {
         res.send();
         console.log(
