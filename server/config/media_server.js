@@ -19,7 +19,7 @@ function construct_config() {
             {
                 app: 'live',
                 ac: "acc",
-                vc: "libx264"
+                vc: "libx265"
             }
         ]
     };
