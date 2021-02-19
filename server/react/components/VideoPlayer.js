@@ -15,6 +15,9 @@ export function VideoPlayer(props) {
 
     useEffect(() => {
         console.log('Component mounted');
+        console.log('Can ReactPlayer play', ReactPlayer.canPlay(
+            `https://${window.location.hostname}:8443/live/${props.streamKey}.flv`
+        ));
     
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
