@@ -29,7 +29,7 @@ function construct_config() {
                     '-ar', 
                     '44100'
                 ],
-                vc: "copy",
+                vc: "libx264",
                 vcParams: [
                     '-vf',
                     "'scale=854:-1'",
