@@ -15,10 +15,6 @@ export function VideoPlayer(props) {
 
     useEffect(() => {
         console.log('Component mounted');
-
-        if (FlvJs.isSupported()) {
-            console.log('flv.js is supported')
-        }
     
         axios.get(`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`)
         .then((res) => {
