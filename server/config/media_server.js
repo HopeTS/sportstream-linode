@@ -3,7 +3,7 @@ function construct_config() {
     let config = {};
 
     config.rtmp = {
-        logType: 4,
+        logType: 3,
         port: 1935,
         //chunk_size: 60000,
         //chunk_size: 2048,
