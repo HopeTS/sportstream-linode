@@ -20,6 +20,30 @@ function construct_config() {
                 app: 'live',
                 hls: true,
                 hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
+                ac: "aac",
+                acParam: [
+                    '-ab', 
+                    '64k', 
+                    '-ac', 
+                    '1', 
+                    '-ar', 
+                    '44100'
+                ],
+                vc: "copy",
+                vcParams: [
+                    '-vf',
+                    "'scale=854:-1'",
+                    '-b:v',
+                    '1400k',
+                    '-preset',
+                    'fast',
+                    '-profile:v',
+                    'baseline',
+                    '-bufsize',
+                    '2100k',
+                    '-tune',
+                    'zerolatency',
+                  ],
                 dash: true,
                 dashFlags: '[f=dash:window_size=3:extra_window_size=5]'
             }
