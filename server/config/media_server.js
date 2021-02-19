@@ -22,20 +22,6 @@ function construct_config() {
                 hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
                 ac: "acc",
                 vc: "libx264",
-                vcParams: [
-                    '-vf',
-                    "'scale=854:-1'",
-                    '-b:v',
-                    '1400k',
-                    '-preset',
-                    'fast',
-                    '-profile:v',
-                    'baseline',
-                    '-bufsize',
-                    '2100k',
-                    '-tune',
-                    'zerolatency',
-                ],
                 mp4: true,
                 mp4Flags: '[movflags=frag_keyframe+empty_moov]'
             }
