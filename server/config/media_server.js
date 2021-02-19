@@ -20,15 +20,7 @@ function construct_config() {
                 app: 'live',
                 hls: true,
                 hlsFlags: '[hls_time=2:hls_list_size=3:hls_flags=delete_segments]',
-                ac: "aac",
-                acParam: [
-                    '-ab', 
-                    '64k', 
-                    '-ac', 
-                    '1', 
-                    '-ar', 
-                    '44100'
-                ],
+                ac: "acc",
                 vc: "libx264",
                 vcParams: [
                     '-vf',
