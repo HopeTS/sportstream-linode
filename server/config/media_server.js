@@ -43,9 +43,9 @@ function construct_config() {
                     '2100k',
                     '-tune',
                     'zerolatency',
-                  ],
-                dash: true,
-                dashFlags: '[f=dash:window_size=3:extra_window_size=5]'
+                ],
+                mp4: true,
+                mp4Flags: '[movflags=frag_keyframe+empty_moov]'
             }
         ]
     };
