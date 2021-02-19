@@ -55,20 +55,6 @@ export function VideoPlayer(props) {
     return (
         <div className="VideoPlayer">
 
-            <p>Old Player</p>
-
-            {/* Default HTTP player */}
-            <ReactFlvPlayer 
-                url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
-                height={httpVideoHeight}
-                width={httpVideoWidth}
-                isLive={true}
-                handleError={(err) => handle_http_video_error(err)}
-                hasAudio={false}
-                isMuted={true}
-                type="flv"
-            />
-
             ---
 
             <p>New Player</p>
@@ -98,3 +84,18 @@ export function VideoPlayer(props) {
 }
 
 export default VideoPlayer;
+
+/*
+<p>Old Player</p>
+
+            <ReactFlvPlayer 
+                url={`https://${window.location.hostname}:8443/live/${props.streamKey}.flv`}
+                height={httpVideoHeight}
+                width={httpVideoWidth}
+                isLive={true}
+                handleError={(err) => handle_http_video_error(err)}
+                hasAudio={false}
+                isMuted={true}
+                type="flv"
+            />
+*/
