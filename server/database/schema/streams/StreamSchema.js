@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const chalk = require('chalk');
 
+const generate_key = require('../../../utils/generate_key');
 const { Business } = require('./Schema');
 
 
@@ -35,36 +37,6 @@ const StreamSchema = new Schema({
     }
 });
 
-/**
- * Generate stream key
- * 
- * @param {*} cb callback function
- */
-StreamSchema.methods.generate_key = async function(cb) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let unique = false;   // Whether or not streamKey is shared by other businesses
-    let streamKeyArray = [];
-    let streamKey;
-
-    while (!unique) {
-        // Generate the key
-        for ( var i = 0; i < 12; i++ ) {
-            streamKeyArray.push(
-                characters.charAt(Math.floor(Math.random() * characters.length))
-            );
-        }
-        streamKey = streamKeyArray.join('');
-
-        // Ensure key is unique
-        await mongoose.models['Stream'].findOne({key: {"$in": [streamKey]}}, function(err, user) {
-            if (err) throw err;
-            if (!user) unique = true;
-        });    
-    }
-
-    console.log('[stream] created new stream key', streamKey);
-    return streamKey;
-}
 
 /**
  * 
@@ -99,5 +71,46 @@ StreamSchema.methods.end_stream = async function(cb) {
     this.status = 'previous';
     return await this.save(cb);
 }
+
+
+StreamSchema.pre('save', async function(next) {
+
+    // First time configuration
+    if (this.isNew) {
+
+        // Generate unique key
+        let unique = false;
+        const keyLength = Math.floor(Math.random() * 4) + 8;
+        let streamKey;
+
+        while (!unique) {
+            try {
+                streamKey = generatete_key(keyLength);
+
+                // Ensure key is unique
+                await mongoose.models['Stream'].findOne(
+                    {key: streamKey},
+                    async function(err, stream) {
+                        if (err) throw err;
+                        if  (!stream) unique = true;
+                    }
+                );
+            }
+
+            catch(e) {
+                console.error(e);
+            }
+        }
+
+        console.log(chalk.blue(
+            `[stream] key generated: ${streamKey}`
+        ));
+        
+        this.key = streamKey;
+    }
+
+    next();
+});
+
 
 module.exports = StreamSchema;

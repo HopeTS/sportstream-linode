@@ -1,5 +1,3 @@
-/* Master schema file */
-
 const mongoose = require('mongoose');
 
 
@@ -12,7 +10,10 @@ const mongoose = require('mongoose');
  * 
  * **status:** Upcoming stream, current stream or previous stream
  */
-exports.Stream = mongoose.model('Stream', require('./StreamSchema'));
+exports.Stream = mongoose.model(
+    'Stream', 
+    require('./streams/StreamSchema')
+);
 
 
 /**
@@ -26,9 +27,12 @@ exports.Stream = mongoose.model('Stream', require('./StreamSchema'));
  * 
  * **type:** Account type
  * 
- * **connected_businesses:** List of businesses that the user has access to
+ * **connectedBusinesses:** List of businesses that the user has access to
  */
-exports.User = mongoose.model('User', require('./UserSchema'));
+exports.User = mongoose.model(
+    'User', 
+    require('./authentication/UserSchema')
+);
 
 
 /**
@@ -47,8 +51,20 @@ exports.User = mongoose.model('User', require('./UserSchema'));
  *      **current:** Current streams
  *      **previous:** Previous streams
  * 
- * **connection_ids:** Unused connection ids
+ * **connectionPasswords:** Connection passwords
  * 
- * **connected_users:** List of connected User accounts
+ * **connectedUsers:** List of connected User accounts
  */
-exports.Business = mongoose.model('Business', require('./BusinessSchema'));
+exports.Business = mongoose.model(
+    'Business', 
+    require('./authentication/BusinessSchema')
+);
+
+
+/**
+ * 
+ */
+exports.ConnectionPassword = mongoose.model(
+    'ConnectionPassword',
+    require('./authorization/ConnectionPasswordSchema')
+);

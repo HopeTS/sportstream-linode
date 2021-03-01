@@ -1,7 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const { Stream, User } = require('./Schema');
+const generate_key = require('../../../utils/generate_key');
+const { Stream, User, Stream } = require('../Schema');
 
 
 /**
@@ -20,9 +21,9 @@ const { Stream, User } = require('./Schema');
  *      **current:** Current streams
  *      **previous:** Previous streams
  * 
- * **connection_ids:** Unused connection ids
+ * **connectionPasswords:** Unused connection ids
  * 
- * **connected_users:** List of connected User accounts
+ * **connectedUsers:** List of connected User accounts
  */
 const BusinessSchema = new Schema({
     name: {
@@ -56,11 +57,11 @@ const BusinessSchema = new Schema({
             default: []
         }
     },
-    connection_ids: {
+    connectionPasswords: {
         type: [String],
         default: []
     },
-    connected_users: {
+    connectedUsers: {
         type: [String],
         default: []
     }
@@ -68,41 +69,82 @@ const BusinessSchema = new Schema({
 
 
 /**
- * Adds a connection_id
+ * Adds a connection password
  * 
  * @param {*} cb callback function
  * 
- * @returns {String | false} Connection ID if successful, else false
+ * @returns {String | false} The password if successful, else false
  */
-BusinessSchema.methods.generate_connection_id = async function(cb) {
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let unique = false;   // Whether or not streamKey is shared by other businesses
-    let connectionIdArray = [];
-    let connectionId;
-
+BusinessSchema.methods.generate_connection_password = async function(cb) {
     try {
-        while (!unique) {
-            // Generate the key
-            for ( var i = 0; i < 12; i++ ) {
-                connectionIdArray.push(
-                    characters.charAt(Math.floor(Math.random() * characters.length))
+
+        // Generate connection password document
+        let newConnectionPassword = new ConnectionPassword;
+        newConnectionPassword.business = this._id;
+        await newConnectionPassword.save();
+        console.log('Here is the new connection password id', newConnectionPassword._id);
+        console.log('Here is the new connection password password', newConnectionPassword.password);
+        
+        // Add to connectionPasswords
+        this.connectionPasswords.push(newConnectionPassword._id);
+        await this.save(cb);
+
+        // Return password
+        return newConnectionPassword.password
+    }
+
+    catch(e) {
+        console.error(e);
+        return false;
+    }
+}
+
+
+/**
+ * Getter for all connection passwords yet to be given or used
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {[String] | false} Collection of passwords if successful, else false
+ */
+BusinessSchema.methods.get_available_connection_passwords = async function(cb) {
+    try {
+
+        // Get connection password docs
+        const allConnectionPasswords = await Promise.all(
+            this.connectionPasswords.map(
+                async function(connectionPasswordId) {
+                    return await mongoose.models['ConnectionPassword'].findOne(
+                        {_id: connectionPasswordId},
+                        async function(err, doc) {
+                            if (err) throw err;
+                            if (doc) return doc;
+                            return null;
+                        }
+                    )
+                }
+            )
+        )
+
+        console.log('Here are all the connection passwords', 
+            allConnectionPasswords
+        )
+
+        // Filter ungiven and unused connection passwords
+        const availableConnectionPasswords = allConnectionPasswords.filter(
+            (connectionPassword) => {
+                return (
+                    connectionPassword.given == false &&
+                    connectionPassword.used == false
                 );
             }
-            connectionId = connectionIdArray.join('');
-    
-            // Ensure key is unique
-            await mongoose.models['Business'].findOne(
-                {connection_id: {"$in": [connectionId]}},
-                async function(err, user) {
-                    if (err) throw err;
-                    if (!user) unique = true;
-                }
-            );    
-        }
-    
-        await this.connection_ids.push(connectionId);
-        await this.save(cb);
-        return connectionId;
+        )
+
+        console.log('Here are all the available connection passwords',
+            availableConnectionPasswords
+        );
+
+        return availableConnectionPasswords;
     }
 
     catch(e) {
@@ -150,13 +192,13 @@ BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
 /**
  * Starts a given stream
  * 
- * @param {*} stream stream key
+ * @param {String} stream stream key
  * @param {*} cb callback function
  * 
  * @returns {object | false} business if stream started, else false
  */
 BusinessSchema.methods.start_stream = async function(stream, cb) {
-    // Error handling
+    // Validation
     if (!stream) return false;
     if (!this.streams.upcoming.includes(stream)) return false;
     
@@ -191,7 +233,7 @@ BusinessSchema.methods.start_stream = async function(stream, cb) {
  * @returns {object | false} business if stream started, else false
  */
 BusinessSchema.methods.end_stream = async function(stream, cb) {
-    // Error handling
+    // Validation
     if (!stream) return false;
     if (!this.streams.current.includes(stream)) return false;
     
@@ -393,8 +435,8 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
 BusinessSchema.methods.get_connected_users = async function(cb) {
     console.log('get_connected_users called');    
     const users = await Promise.all(
-        this.connected_users.map(async (user) => {
-            console.log('Here is the user in get_connected_users', user);
+        this.connectedUsers.map(async (user) => {
+            console.log('Here is the user in get_connectedUsers', user);
             return await mongoose.models['User'].findOne(
                 {_id: user}, async (err, doc) => {
                     if (err) throw err;
@@ -410,30 +452,35 @@ BusinessSchema.methods.get_connected_users = async function(cb) {
 }
 
 /**
- * Connect business to a user with given id
+ * Connect Business to User
  * 
- * @param {string} id the user id
+ * @param {string} user User document ID
  * @param {*} cb callback function
  * 
- * @returns {object | false} business if connected to business, false if not
+ * @returns {Boolean} True if connection successful, else false
  */
-BusinessSchema.methods.connect_user = async function(id=null, cb) {
-    // Error handling
-    if (!id) return false;
-    if (this.connected_users.includes(id)) return false;
-    if (!mongoose.isValidObjectId(id)) {
-        return false;
+BusinessSchema.methods.connect_user = async function(user=null, cb) {
+    try {
+        
+        // Validation
+        if (!user) throw new Error('There is no User ID');
+        if (!mongoose.isValidObjectId(user)) throw new Error(
+            "Given user is not a valid ID"
+        );
+        if (this.connectedUsers.includes(user)) throw new Error(
+            "User is already connected to the Business"
+        );
+
+        // Create connection
+        this.connectedUsers.push(user);
+        await this.save(cb);
+        return true;    
     }
 
-    // Remove connection id
-    let index = this.connection_ids.indexOf(id);
-    if (index !== -1) this.connection_ids.splice(index, 1);
-
-    // Connect user
-    this.connected_users.push(id);
-
-    await this.save(cb);
-    return this;
+    catch(e) {
+        console.error(e);
+        return false;
+    }
 }
 
 
@@ -448,5 +495,14 @@ BusinessSchema.methods.connect_user = async function(id=null, cb) {
 BusinessSchema.methods.disconnect_user = async function(cb) {
     // TODO
 }
+
+
+/** Handle Business Account deletion */
+BusinessSchema.pre('remove', async function(cb) {
+    // TODO: Delete Connection Passwords
+    // TODO: Delete Business from ConnectedBusinesses in Users
+    // TODO: Delete Streams
+});
+
 
 module.exports = BusinessSchema;

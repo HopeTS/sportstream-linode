@@ -9,6 +9,7 @@ const User = require('../database/schema/Schema').User;
 const Business = require('../database/schema/Schema').Business;
 const Stream = require('../database/schema/Schema').Stream;
 
+
 /**
  * Configure database for development
  */
@@ -47,7 +48,6 @@ async function devDatabaseConfig() {
         newUser.name = user.name;
         newUser.email = user.email;
         newUser.password = user.password;
-        newUser.type = 'user';
         await newUser.save(); 
     });
 

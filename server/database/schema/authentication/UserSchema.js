@@ -16,7 +16,7 @@ const User = require('./Schema').User;
  * 
  * **type:** Account type
  * 
- * **connected_businesses:** List of businesses that the user has access to
+ * **connectedBusinesses:** List of businesses that the user has access to
  */
 const UserSchema = new Schema({
     name: {
@@ -36,7 +36,7 @@ const UserSchema = new Schema({
         type: String,
         default: 'user'
     },
-    connected_businesses: {
+    connectedBusinesses: {
         type: [String],
         default: []
     }
@@ -44,36 +44,35 @@ const UserSchema = new Schema({
 
 
 /**
- * Connect user to a business with a matching connection_id
+ * Connect User to Business
  * 
- * @param {string} business_password the password to connection to a business
- *      with a matching business' connection_id
+ * @param {string} business Business document ID
  * @param {*} cb callback function
  * 
- * @returns {object | false} user if connected to business, false if not
+ * @returns {Boolean} True if connection successful, else false
  */
-UserSchema.methods.connect_business = async function(password=null, cb) {
-    // Error handling
-    if (!password) return false;
+UserSchema.methods.connect_business = async function(business=null, cb) {
+    try {
+        
+        // Validation
+        if (!business) throw new Error("There is no Business ID");
+        if (!mongoose.isValidObjectId(user)) throw new Error(
+            "Given business is not a valid ID"
+        );
+        if (this.connectedBusinesses.includes(business)) throw new Error(
+            "Business is already connected to the User"
+        );
 
-    // Only connect if Business exists
-    const business = await mongoose.models['Business'].findOne(
-        {connection_ids: {"$in": [password]}},
-        async function(err, doc) {
-            if (err) throw err;
-            if (doc) return doc;
-            return false;
-        }
-    );
-    if (!business) return false;
+        // Create connection
+        this.connectedBusinesses.push(business);
+        await this.save(cb);
+        return true;
+    }
 
-
-    // Connect business to user
-    this.connected_businesses.push(business._id);
-    await this.save(cb);
-    await business.connect_user(this._id);
-    
-    return this;
+    catch(e) {
+        console.error(e);
+        return false;
+    }
 }
 
 /**
@@ -85,7 +84,7 @@ UserSchema.methods.connect_business = async function(password=null, cb) {
  *      name: String,
  *      email: String,
  *      type: String,
- *      connected_businesses: Object
+ *      connectedBusinesses: Object
  * }}
  */
 UserSchema.methods.get_personal_doc = async function(cb) {
@@ -98,7 +97,7 @@ UserSchema.methods.get_personal_doc = async function(cb) {
         name: name,
         email: email,
         type: type,
-        connected_businesses: connectedBusinesses
+        connectedBusinesses: connectedBusinesses
     };
 
     return personalDoc;
@@ -135,7 +134,7 @@ UserSchema.methods.get_business_doc = async function(cb) {
 UserSchema.methods.get_connected_businesses = async function(cb) {
     
     // For each business in connected businesses, get the raw business document
-    const businesses = await Promise.all(this.connected_businesses.map(
+    const businesses = await Promise.all(this.connectedBusinesses.map(
         async function(business) {
             return await mongoose.models['Business'].findOne(
                 {_id: business},
@@ -160,8 +159,13 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
     return userDocs;
 }
 
-// TODO: GET STream object
-    /* TO FUTURE ROBBY: GET THE STREAM OBJECTS OF AVAILABLE STREAMS AND SEND
-    TO USER DASHBOARD THEN YOU WILL BE DONE*/
+
+/** Handle User Account deletion */
+UserSchema.pre('remove', async function(cb) {
+    // TODO: Delete Connection Passwords
+    // TODO: Delete User from ConnectedUsers in Businesses
+    
+});
+
 
 module.exports = UserSchema;
