@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const chalk = require('chalk');
 
 const generate_key = require('../../../utils/generate_key');
-const { Business } = require('./Schema');
+const { Business } = require('../Schema');
 
 
 /**
