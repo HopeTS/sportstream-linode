@@ -37,6 +37,7 @@ const wildcardRouter = require('./routers/wildcard');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 
+
 // Configure database
 let db;
 switch (process.env.NAME) {

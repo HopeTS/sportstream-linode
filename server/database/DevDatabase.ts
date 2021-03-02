@@ -85,7 +85,7 @@ class DevDatabase {
     /** Establish database connection */
     private async start_database() {
         console.log(chalk.blue('Connecting to database'));
-        
+
         mongoose.connect(
             `mongodb://localhost:${this.dbport}/${this.dbname}`,
             {useNewUrlParser: true, useUnifiedTopology: true}
@@ -134,11 +134,8 @@ class DevDatabase {
                 if (err) throw err;
                 if (!docs) return;
 
-                console.log('Inside user find')
-
                 docs.forEach((doc: MongooseDocument) => {
                     const id = doc._id
-                    console.log('user id', id);
                     User.findByIdAndDelete(id, (err: Error) => {
                         if (err) throw err;
                     });
@@ -162,7 +159,6 @@ class DevDatabase {
         }
 
         catch(e) {
-            console.log('Error caught')
             console.error(e);
         }
     }
