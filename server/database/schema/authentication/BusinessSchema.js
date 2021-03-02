@@ -1,8 +1,9 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 
 const generate_key = require('../../../utils/generate_key');
-const { Stream, User, Stream } = require('../Schema');
+const { Stream, User } = require('../Schema');
 
 
 /**
@@ -495,6 +496,44 @@ BusinessSchema.methods.connect_user = async function(user=null, cb) {
 BusinessSchema.methods.disconnect_user = async function(cb) {
     // TODO
 }
+
+
+/**
+ * Handles password change
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {boolean} true if successful, else false
+ */
+BusinessSchema.methods.change_password = async function(password="", cb) {
+    try {
+        // Validation
+        if (!password) throw new Error('No password given');
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        this.password = hashedPassword;
+        await this.save(cb);
+        return true;
+    }
+
+    catch(e) {
+        console.error(e);
+        return false;
+    }
+}
+
+
+BusinessSchema.pre('save', async function(next) {
+    // First time setup
+    if (this.isNew) {
+
+        // Encrypt password
+        const hashedPassword = await bcrypt.hash(this.password, 10);
+        this.password = hashedPassword;
+    }
+
+    next();
+});
 
 
 /** Handle Business Account deletion */

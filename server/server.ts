@@ -42,16 +42,23 @@ let db;
 switch (process.env.NAME) {
     case 'https_production':
         //TODO
+        break;
 
     case 'http_production':
         //TODO
+        break;
 
     case 'development':
         db = new DevDatabase;
-        db.run();
+        db.run()
+        .then(() => {
+            console.log(chalk.green('Config done!'))
+        })
+        break;
     
     default:
         console.log(chalk.yellow('Skipping database initialization...'));
+        break;
 }
 
 
@@ -123,6 +130,7 @@ switch (process.env.NAME) {
                 chalk.blue(process.env.HTTP_PORT)
             );
         });
+        break;
 
     case 'development':
         http.createServer(app).listen(process.env.HTTP_PORT, () => {        
@@ -132,14 +140,15 @@ switch (process.env.NAME) {
                 chalk.blue(process.env.HTTP_PORT)
             );
         });
-        node_media_server.run();
+        //node_media_server.run();
+        break;
 
 
     case 'https_production':
         const httpsOptions = {
-            key: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8'),
-            cert: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8'),
-            ca: fs.readFileSync(`${process.env.SSL_DIR}chain.pem`, 'utf8')
+            key: fs.readFileSync(`${process.env.SSL_DIR}privkey.pem`, 'utf8') || '',
+            cert: fs.readFileSync(`${process.env.SSL_DIR}cert.pem`, 'utf8') || '',
+            ca: fs.readFileSync(`${process.env.SSL_DIR}chain.pem`, 'utf8') || ''
         };
     
         https.createServer(httpsOptions, app).listen(process.env.HTTPS_PORT, () => {
@@ -153,6 +162,7 @@ switch (process.env.NAME) {
         });
     
         node_media_server.run();
+        break;
 
 
     case 'http_production':
@@ -160,10 +170,12 @@ switch (process.env.NAME) {
             console.log(chalk.underline.green(`${process.env.NAME} HTTP server has connected.`));
             console.log(chalk.bold('HTTP Port:'), chalk.blue(process.env.HTTP_PORT));
         });
+        break;
     
     default:
         console.log(chalk.red(
             chalk.bold('Error: invalid environment'),
             'did you forget to add an environment name?'        
         ));
+        break;
 }

@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const bcrypt = require('bcryptjs');
 
 const Business = require('../Schema').Business;
 const User = require('../Schema').User;
@@ -158,6 +159,44 @@ UserSchema.methods.get_connected_businesses = async function(cb) {
 
     return userDocs;
 }
+
+
+/**
+ * Handles password change
+ * 
+ * @param {*} cb callback function
+ * 
+ * @returns {boolean} true if successful, else false
+ */
+UserSchema.methods.change_password = async function(password="", cb) {
+    try {
+        // Validation
+        if (!password) throw new Error('No password given');
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        this.password = hashedPassword;
+        await this.save(cb);
+        return true;
+    }
+
+    catch(e) {
+        console.error(e);
+        return false;
+    }
+}
+
+
+UserSchema.pre('save', async function(next) {
+    // First time setup
+    if (this.isNew) {
+        
+        // Encrypt password
+        const hashedPassword = await bcrypt.hash(this.password, 10);
+        this.password = hashedPassword;
+    }
+
+    next();
+});
 
 
 /** Handle User Account deletion */
