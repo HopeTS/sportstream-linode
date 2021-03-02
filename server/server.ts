@@ -9,7 +9,6 @@ const http = require('http');
 const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const cors = require('cors');
@@ -19,10 +18,10 @@ const cookieParser = require('cookie-parser');
 const publicPath = path.join(__dirname, '../public');
 const http2https = require('./middleware/http2https');
 const config = require('./config/default');
-const MongoD = require('./database/mongod');
 const node_media_server = require('./media_server');
+const DevDatabase = require('./database/DevDatabase');
 
-const devDatabaseConfig = require('./startupScripts/devDatabaseConfig');
+//const devDatabaseConfig = require('./startupScripts/devDatabaseConfig');
 
 const homeRouter = require('./routers/home');
 const dashboardRouter = require('./routers/dashboard');
@@ -38,21 +37,22 @@ const wildcardRouter = require('./routers/wildcard');
 
 console.log(chalk.bold('Environment:'), chalk.blue(process.env.NAME));
 
+// Configure database
+let db;
+switch (process.env.NAME) {
+    case 'https_production':
+        //TODO
 
-// Connect to MongoDB
-const mongod = new MongoD(config.mongodb);
-mongod.create_connection();
-mongoose.connect(
-    `mongodb://localhost:${config.mongodb.port}/${config.mongodb.dbname}`,
-    {useNewUrlParser: true, useUnifiedTopology: true}
-);
+    case 'http_production':
+        //TODO
 
-const db = mongoose.connection;
-db.once('open', () => {
-    console.log(chalk.green('Mongoose has connected to MongoDB'));
-    console.log(chalk.bold('MongoDB port: '), chalk.blue(config.mongodb.port));
-    console.log(chalk.bold('MongoDB name: '), chalk.blue(config.mongodb.dbname));
-});    
+    case 'development':
+        db = new DevDatabase;
+        db.run();
+    
+    default:
+        console.log(chalk.yellow('Skipping database initialization...'));
+}
 
 
 // Configure express
@@ -95,7 +95,7 @@ switch (process.env.NAME) {
 
     case 'development':
         console.log(chalk.blue('Setting up development database'));
-        devDatabaseConfig()
+        /* devDatabaseConfig()
         
         .then((res: boolean) => {
             if (res) console.log(chalk.green('Dev DB config successful'));
@@ -105,7 +105,7 @@ switch (process.env.NAME) {
         .catch((error: any) => {
             console.log(chalk.red('Something went wrong with dev DB config'));
             console.error(error);
-        });
+        }); */
 
     default:
         console.log(chalk.blue('Not running any startup scripts.'))

@@ -44,3 +44,6 @@ server/media/live/*
 # JS files built from TypeScript
 server/media_server.js
 server/server.js
+
+# database JS files built from TypeScript
+server/database/DevDatabase.js
