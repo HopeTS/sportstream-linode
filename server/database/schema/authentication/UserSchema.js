@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const Business = require('./Schema').Business;
-const User = require('./Schema').User;
+const Business = require('../Schema').Business;
+const User = require('../Schema').User;
 
 
 /**
