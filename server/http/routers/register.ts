@@ -6,9 +6,9 @@ const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
-const config = require('../config/default');
-const User = require('../database/schema/Schema').User;
-const Business = require('../database/schema/Schema').Business;
+const config = require('../../config/default');
+const User = require('../../database/schema/Schema').User;
+const Business = require('../../database/schema/Schema').Business;
 
 const publicPath = path.join(__dirname, '../../../public/');
 const appRoute = path.join(publicPath, 'index.html');

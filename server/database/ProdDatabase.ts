@@ -1,25 +1,25 @@
 export {}
-import { MongooseDocument } from "mongoose";
 const chalk = require('chalk');
 const path = require('path');
 const mongoose = require('mongoose');
 
 const MongoD = require('./mongod');
-const {
-    User, Business
-} = require('./schema/Schema');
 
 
 /**
  * MongoDB database interface (production environment)
  */
 class ProdDatabase {
-    constructor(
-        protected mongod: any,
-        protected dbname: string,
-        protected dbport: string,
-        protected dbpath: string,
-    ) {
+
+    // Database
+    mongod: any;
+    dbname: string;
+    dbport: string;
+    dbpath: string;
+    db: any;
+
+    constructor() {
+
         // Config
         this.dbname = 'castamatch';
         this.dbport = '27018';

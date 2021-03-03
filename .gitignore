@@ -39,7 +39,7 @@ server/database/db/diagnostic.data
 server/database/db/journal
 
 # Stream data
-server/media/live/*
+server/rtmp/media/live/*
 
 # JS files built from TypeScript
 server/media_server.js

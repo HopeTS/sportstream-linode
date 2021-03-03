@@ -1,14 +1,10 @@
 export {};
-/**
- *  Media server for RTMP livestreaming
- */
-
 const NodeMediaServer = require('node-media-server');
 const chalk = require('chalk');
 
-const config = require('./config/media_server');
-const Business = require('./database/schema/Schema').Business;
-const Stream = require('./database/schema/Schema').Stream;
+const config = require('../config/media_server');
+const Business = require('../database/schema/Schema').Business;
+const Stream = require('../database/schema/Schema').Stream;
 //const helpers = require('./helpers/helpers');
 
 
@@ -33,7 +29,7 @@ RTMPServer.on('prePublish', async (id: any, StreamPath: any, args: any) => {
                 console.log(
                     chalk.yellow('[nms] No stream with matching key', streamKey)
                 );
-                return nms.getSession(id).reject();
+                return RTMPServer.getSession(id).reject();
             }
             console.log(chalk.blue('[nms] Stream with matching id found:'), doc._id)
             return doc;
@@ -47,7 +43,7 @@ RTMPServer.on('prePublish', async (id: any, StreamPath: any, args: any) => {
             if (err) throw err;
             if (!doc) {
                 console.log(chalk.yellow('[nms] Invalid business key', streamKey));
-                nms.getSession(id).reject();
+                RTMPServer.getSession(id).reject();
                 return false;
             }
             console.log(chalk.green(
@@ -94,7 +90,7 @@ RTMPServer.on('donePublish', async (id: any, StreamPath: any, args: any) => {
                 console.log(
                     chalk.yellow('[nms] No stream with matching key', streamKey)
                 );
-                return nms.getSession(id).reject();
+                return RTMPServer.getSession(id).reject();
             }
             console.log(chalk.blue('[nms] Stream with matching id found:'), doc._id)
             return doc;

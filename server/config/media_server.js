@@ -36,7 +36,7 @@ function construct_config() {
 
     config.http = {
         port: 8000,
-        mediaroot: './server/media',
+        mediaroot: './server/rtmp/media',
         allow_origin: '*'
     }
 

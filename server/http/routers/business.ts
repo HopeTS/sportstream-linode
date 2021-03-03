@@ -1,12 +1,9 @@
 export{};
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const {Business} = require('../../database/schema/Schema');
-const publicPath = path.join(__dirname, '../../../public/');
-const appRoute = path.join(publicPath, 'index.html');
 
 
 // Router config

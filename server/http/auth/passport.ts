@@ -1,6 +1,3 @@
-import { MongooseDocument } from "mongoose";
-import passport from "passport";
-
 const bcrypt = require('bcryptjs');
 const localStrategy = require('passport-local').Strategy;
 

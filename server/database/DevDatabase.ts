@@ -14,29 +14,34 @@ const {
  * MongoDB database interface (development environment)
  */
 class DevDatabase {
-    constructor(
-        protected mongod: any,
-        protected dbname: string,
-        protected dbport: string,
-        protected dbpath: string,
-        
-        protected userData: {
-            name: string,
-            email: string,
-            password: string
-        }[],
-        protected businessData: {
-            name: string,
-            email: string,
-            password: string
-        }[],
 
-        protected users: MongooseDocument[],
-        protected businesses: MongooseDocument[],
-        protected streams: MongooseDocument[],
-        protected connectionPasswords: MongooseDocument[],
-        protected db: any
-    ) {
+    // Database
+    mongod: any;
+    dbname: string;
+    dbport: string;
+    dbpath: string;
+    db: any;
+
+    // Collections
+    users: any[];
+    businesses: any[];
+    streams: any[];
+    connectionPasswords: any[];
+
+    // Fixture data
+    userData: {
+        name: string,
+        email: string,
+        password: string
+    }[];
+    businessData: {
+        name: string,
+        email: string,
+        password: string
+    }[];
+
+    constructor() {
+
         // Config
         this.dbname = 'castamatchdev';
         this.dbport = '27018';
@@ -70,6 +75,11 @@ class DevDatabase {
 
         console.log('userData in constructor', this.userData);
         console.log('businessData in constructor', this.businessData);
+
+        this.users = [];
+        this.businesses = [];
+        this.streams = [];
+        this.connectionPasswords = [];
     }
 
     /** Initializes MongoD */

@@ -1,11 +1,8 @@
 export {};
 const express = require('express');
-const path = require('path');
 const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 const stream = require('stream');
-
-const publicPath = path.join(__dirname, '../../../public/');
 
 
 // Router config
