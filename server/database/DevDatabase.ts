@@ -9,12 +9,10 @@ const {
     User, Business
 } = require('./schema/Schema');
 
-/* const User = require('../schema/Schema.js').User;
-const Business = require('../schema/Schema.js').Business;
-const Stream = require('../schema/Schema.js').Stream;
-const ConnectionPassword = require('../schema/Schema.js').ConnectionPassword; */
 
-
+/**
+ * MongoDB database interface (development environment)
+ */
 class DevDatabase {
     constructor(
         protected mongod: any,
@@ -39,6 +37,7 @@ class DevDatabase {
         protected connectionPasswords: MongooseDocument[],
         protected db: any
     ) {
+        // Config
         this.dbname = 'castamatchdev';
         this.dbport = '27018';
         this.dbpath = path.join(__dirname, 'db');
@@ -73,7 +72,7 @@ class DevDatabase {
         console.log('businessData in constructor', this.businessData);
     }
 
-    /** Initializes mongoD */
+    /** Initializes MongoD */
     private start_mongod() {
         this.mongod = new MongoD({
             dbpath: this.dbpath,

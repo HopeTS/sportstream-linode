@@ -1,0 +1,154 @@
+export {};
+const express = require('express');
+const https = require('https');
+const http = require('http');
+const path = require('path');
+const fs = require('fs');
+const chalk = require('chalk');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const cors = require('cors');
+const passport = require('passport');
+const cookieParser = require('cookie-parser');
+
+const http2https = require('./middleware/http2https');
+
+const businessRouter = require('./routers/business');
+const dashboardRouter = require('./routers/dashboard');
+const homeRouter = require('./routers/home');
+const legalRouter = require('./routers/legal');
+const loginRouter = require('./routers/login');
+const logoutRouter = require('./routers/logout');
+const registerRouter = require('./routers/register');
+const streamRouter = require('./routers/stream');
+const userRouter = require('./routers/user');
+const watchRouter = require('./routers/watch');
+const wildcardRouter = require('./routers/wildcard');
+
+
+/** HTTP / HTTPS server */
+class HTTPServer {
+    constructor(
+        protected env: string | undefined,
+        protected secret: string,
+        protected express: any,
+
+        protected publicPath: string,
+        protected sslPath: string
+    ) {
+
+        // Environment variables
+        this.env = env;
+        this.publicPath = publicPath;
+        this.sslPath = sslPath;
+
+        // Handle express configuration
+        this.express = express();
+        switch (this.env) {
+            case 'development':
+                this.configure_express_dev();
+                break;
+
+            case 'https_production':
+                this.configure_express_https();
+                break;
+
+            default:
+                this.configure_express_dev();
+                break;
+        }
+
+        this.configure_routers();
+    }
+
+
+    /** Handles express server configuration for development environment */
+    private configure_express_dev() {
+
+    }
+
+
+    /** Handles express server configuration for http production environment */
+    private configure_express_http() {
+        console.log(chalk.yellow('Skipping express configuration'))
+    }
+
+
+    /** Handles express server configuration for https production environment */
+    private configure_express_https() {
+
+        // Express options
+        this.express.use(http2https);
+        this.express.use(express.static(this.publicPath));
+        this.express.use(express.json());
+        this.express.use(bodyParser.urlencoded({extended: true}));
+        this.express.use(express.urlencoded({extended: true}));
+        this.express.use(cookieParser(this.secret));
+        this.express.use(session({
+            secret: this.secret,
+            resave: true,
+            saveUnititialized: true
+        }));
+        this.express.use(cors({
+            origin: 'https://castamatch.com',
+            credentials: true
+        }))
+
+        // Passport
+        this.express.use(passport.initialize());
+        this.express.use(passport.session());
+        require('./auth/passport')(passport);        
+    }
+
+    /** Attach routes to server */
+    private configure_routers() {
+        try {
+            this.express.use(businessRouter);
+            this.express.use(dashboardRouter);
+            this.express.use(homeRouter);
+            this.express.use(legalRouter);
+            this.express.use(loginRouter);
+            this.express.use(logoutRouter);
+            this.express.use(registerRouter);
+            this.express.use(streamRouter);
+            this.express.use(userRouter);
+            this.express.use(watchRouter);
+            this.express.use(wildcardRouter);
+        }
+
+        catch(e) {
+            console.error(e);
+            return;
+        }
+    }
+
+    /** Run server in development environment */
+    private async run_development() {
+
+    }
+
+    /** Run server in HTTPS production environment */
+    private async run_https() {
+
+    }
+
+
+    /** Runs server */
+    public async run() {
+        switch (this.env) {
+            case 'https_production':
+                this.run_https();
+                break;
+
+            case 'development':
+                this.run_development();
+                break;
+
+            default:
+                this.run_development();
+                break;
+        }
+    }
+}
+
+module.exports = HTTPServer;

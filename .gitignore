@@ -47,3 +47,24 @@ server/server.js
 
 # database JS files built from TypeScript
 server/database/DevDatabase.js
+server/database/ProdDatabase.js
+
+# RTMP Server JS files built from TypeScript
+server/rtmp/RTMPServer.js
+
+# HTTP Server JS files built from TypeScript
+server/http/HTTPServer.js
+server/http/middleware/http2https.js
+server/http/auth/passport.js
+server/http/routers/Router.js
+server/http/routers/business.js
+server/http/routers/dashboard.js
+server/http/routers/home.js
+server/http/routers/legal.js
+server/http/routers/login.js
+server/http/routers/logout.js
+server/http/routers/register.js
+server/http/routers/stream.js
+server/http/routers/user.js
+server/http/routers/watch.js
+server/http/routers/wildcard.js
