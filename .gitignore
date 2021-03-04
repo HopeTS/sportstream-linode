@@ -51,6 +51,7 @@ server/database/ProdDatabase.js
 
 # RTMP Server JS files built from TypeScript
 server/rtmp/RTMPServer.js
+server/rtmp/nms/nms.js
 
 # HTTP Server JS files built from TypeScript
 server/http/HTTPServer.js

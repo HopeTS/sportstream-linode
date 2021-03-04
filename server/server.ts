@@ -10,18 +10,22 @@ const HTTPServer = require('./http/HTTPServer');
 
 /** Entry point object for Castamatch app */
 class Server {
-    env: string | undefined;
-    secret: string | undefined;
+
+    // Backend 
     database: any;
     http_server: any;
     rtmp_server: any;
 
+    // Environment variables
+    env: string | undefined;
+    secret: string | undefined;
     rootPath: string;
     publicPath: string;
     httpPath: string;
     rtmpPath: string;
     databasePath: string;
     sslPath: string;
+
 
     constructor() {
 
@@ -33,6 +37,7 @@ class Server {
         this.rtmpPath = path.join(__dirname, 'rtmp');
         this.databasePath = path.join(__dirname, 'database');
         this.sslPath = process.env.SSL_DIR || '';
+        this.secret = 'sdkngoih38yghgdsgh845ret34t';
 
         // Server configuration
         this.configure_database();
@@ -72,11 +77,11 @@ class Server {
 
         switch (this.env) {
             case 'development':
-                this.rtmp_server = RTMPServer;
+                this.rtmp_server = new RTMPServer;
                 break;
 
             default:
-                this.rtmp_server = RTMPServer;
+                this.rtmp_server = new RTMPServer;
                 break;
         }
 
@@ -87,19 +92,15 @@ class Server {
     /** Handles HTTP/HTTPS Server */
     private configure_http() {
         console.log(chalk.blue('Initializing HTTP server'));
-
-        const httpConfig = {
-            env: this.env,
-            publicPath: this.publicPath,
-            sslPath: this.sslPath,
-            secret: 'sdkngoih38yghgdsgh845ret34t'
-        }
+        
         this.http_server = new HTTPServer(
-            httpConfig.env, 
-            httpConfig.publicPath, 
-            httpConfig.sslPath, 
-            httpConfig.secret
+            this.env, 
+            this.publicPath, 
+            this.sslPath, 
+            this.secret
         );
+
+        return;
     }
 
 
