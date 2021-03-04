@@ -45,6 +45,9 @@ server/rtmp/media/live/*
 server/media_server.js
 server/server.js
 
+# utils JS files built from TypeScript
+server/utils/generate_key.js
+
 # database JS files built from TypeScript
 server/database/DevDatabase.js
 server/database/ProdDatabase.js
