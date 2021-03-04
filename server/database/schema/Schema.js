@@ -17,6 +17,15 @@ exports.Stream = mongoose.model(
 
 
 /**
+ * 
+ */
+exports.ConnectionPassword = mongoose.model(
+    'ConnectionPassword',
+    require('./authorization/ConnectionPasswordSchema')
+);
+
+
+/**
  *  Account schema for athlete accounts
  * 
  * **name:** Name of the user
@@ -58,13 +67,4 @@ exports.User = mongoose.model(
 exports.Business = mongoose.model(
     'Business', 
     require('./authentication/BusinessSchema')
-);
-
-
-/**
- * 
- */
-exports.ConnectionPassword = mongoose.model(
-    'ConnectionPassword',
-    require('./authorization/ConnectionPasswordSchema')
 );

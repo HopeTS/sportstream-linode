@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 const bcrypt = require('bcryptjs');
 
 const generate_key = require('../../../utils/generate_key');
-const { Stream, User } = require('../Schema');
+const { Stream, User, ConnectionPassword } = require('../Schema');
 
 
 /**
@@ -83,8 +83,6 @@ BusinessSchema.methods.generate_connection_password = async function(cb) {
         let newConnectionPassword = new ConnectionPassword;
         newConnectionPassword.business = this._id;
         await newConnectionPassword.save();
-        console.log('Here is the new connection password id', newConnectionPassword._id);
-        console.log('Here is the new connection password password', newConnectionPassword.password);
         
         // Add to connectionPasswords
         this.connectionPasswords.push(newConnectionPassword._id);

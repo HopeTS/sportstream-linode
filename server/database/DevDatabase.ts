@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 
 const MongoD = require('./mongod');
 const {
-    User, Business
+    User, Business, Stream, ConnectionPassword
 } = require('./schema/Schema');
 
 
@@ -39,6 +39,7 @@ class DevDatabase {
         email: string,
         password: string
     }[];
+
 
     constructor() {
 
@@ -82,6 +83,7 @@ class DevDatabase {
         this.connectionPasswords = [];
     }
 
+
     /** Initializes MongoD */
     private start_mongod() {
         this.mongod = new MongoD({
@@ -91,9 +93,10 @@ class DevDatabase {
         this.mongod.create_connection();
     }
 
+
     /** Establish database connection */
     private async start_database() {
-        console.log(chalk.blue('Connecting to database'));
+        console.debug(chalk.blue('Connecting to database'));
 
         mongoose.connect(
             `mongodb://localhost:${this.dbport}/${this.dbname}`,
@@ -108,36 +111,65 @@ class DevDatabase {
         })
     }
 
+
     /** Fetch collections from MongoDB */
     private async fetch_database() {
-        console.log(chalk.blue('Fetching database'));
+        console.debug(chalk.blue('Fetching database'));
 
-        // Fetch users
-        this.users = await User.find({}, 
-            async (err: Error, docs: MongooseDocument[]) => {
-                if (err) throw err;
-                return docs;
-            }
-        );
+        // Clear records
+        this.users = [];
+        this.businesses = [];
+        this.streams = [];
+        this.connectionPasswords = [];
 
-        // Fetch businesses
-        this.businesses = await Business.find({},
-            async (err: Error, docs: MongooseDocument[]) => {
-                if (err) throw err;
-                return docs;
-            }
-        );
+        try {
+            // Fetch users
+            this.users = await User.find({}, 
+                async (err: Error, docs: MongooseDocument[]) => {
+                    if (err) throw err;
+                    return docs;
+                }
+            );
 
-        console.log('Here are the current users', this.users);
-        console.log('Here are the current businesses', this.businesses);
-        return;
+            // Fetch businesses
+            this.businesses = await Business.find({},
+                async (err: Error, docs: MongooseDocument[]) => {
+                    if (err) throw err;
+                    return docs;
+                }
+            );
+
+            // Fetch streams
+            this.streams = await Stream.find({},
+                async (err: Error, docs: MongooseDocument[]) => {
+                    if (err) throw err;
+                    return docs;
+                }
+            );
+
+            // Fetch connectionPasswords
+            this.connectionPasswords = await ConnectionPassword.find({},
+                async (err: Error, docs: MongooseDocument[]) => {
+                    if (err) throw err;
+                    return docs;
+                }
+            );
+
+            return;
+        }
+
+        catch(e) {
+            console.error(e);
+            return;
+        }
     }
+
 
     /** Clear collections */
     private async clear_database() {
-        console.log(chalk.blue('Clearing database'));
-
+        console.debug(chalk.blue('Clearing database'));
         try {
+
             // Clear User collection
             await User.find({}, (err: any, docs: MongooseDocument[]) => {
                 if (err) throw err;
@@ -164,7 +196,35 @@ class DevDatabase {
                 });
             });
 
-            console.log(chalk.green('Database cleared'));
+            // Clear Stream collection
+            await Stream.find({}, (err: Error, docs: MongooseDocument[]) => {
+                if (err) throw err;
+                if (!docs) return;
+
+                docs.forEach((doc: MongooseDocument) => {
+                    const id = doc._id;
+                    Stream.findByIdAndDelete(id, (err: Error) => {
+                        if (err) throw err;
+                    });
+                });
+            });
+
+            // Clear ConnectionPassword collection
+            await ConnectionPassword.find({}, 
+                (err: Error, docs: MongooseDocument[]) => {
+                    if (err) throw err;
+                    if (!docs) return;
+
+                    docs.forEach((doc: MongooseDocument) => {
+                        const id = doc._id;
+                        ConnectionPassword.findByIdAndDelete(id, 
+                            (err: Error) => {
+                                if (err) throw err;
+                            }
+                        );
+                    });
+                }
+            );
         }
 
         catch(e) {
@@ -172,9 +232,10 @@ class DevDatabase {
         }
     }
 
+
     /** Fill in data for database */
     private async populate_database() {
-        console.log(chalk.blue('Populating database'));
+        console.debug(chalk.blue('Populating database'));
         try {
 
             // Add test users
@@ -198,22 +259,87 @@ class DevDatabase {
 
                 await newBusiness.save();
             }));
+            return;
         }
 
         catch(e) {
             console.error(e);
+            return;
         }
     }
 
+
+    /** Print database collections */
+    public print_collections() {
+        console.debug(chalk.blue('Printing database contents'));
+
+        // Log users
+        console.log('Here are all available users:');
+        console.log(this.users);
+        console.log(chalk.bold('-----------------------------------------'));
+
+        // Log businesses
+        console.log('Here are all available businesses:');
+        console.log(this.businesses);
+        console.log(chalk.bold('-----------------------------------------'));
+
+        // Log streams
+        console.log('Here are all available streams:');
+        console.log(this.streams);
+        console.log(chalk.bold('-----------------------------------------'));
+
+        // Log connectionPasswords
+        console.log('Here are all available connectionPasswords:');
+        console.log(this.connectionPasswords);
+    }
+
+
+    /** Creates connection passwords in available businesses */
+    public async create_connection_passwords() {
+        console.debug(chalk.blue('Creating connection passwords'));
+        try {
+
+            // 5 passwords per business document
+            await Promise.all(
+                this.businesses.map(async (business) => {
+                    for (var i = 0; i < 5; i++) {
+                        await business.generate_connection_password();
+                    }
+                })
+            );
+
+            return;
+        }
+
+        catch(e) {
+            console.error(e);
+            return;
+        }
+    }
+
+
     /** Initialize and run database */
     public async run() {
-        console.log(chalk.green('Running database'))
+        console.debug(chalk.green('Running database'))
+
+        // Startup
         this.start_mongod();
         this.start_database();
+
+        // Refresh database
         await this.clear_database();
         await this.populate_database();
         await this.fetch_database();
+        this.print_collections();
+
+        //  Test connection passwords
+        await this.create_connection_passwords();
+        await this.fetch_database();
+        this.print_collections();
+
+        return;
     }
 }
+
 
 module.exports = DevDatabase;

@@ -154,7 +154,7 @@ ConnectionPasswordSchema.pre('save', async function(next) {
                     {password: connectionPassword},
                     async function(err, doc) {
                         if (err) throw err;
-                        if (!user) unique = true;
+                        if (!doc) unique = true;
                     }
                 );
             }
@@ -164,10 +164,7 @@ ConnectionPasswordSchema.pre('save', async function(next) {
             }
         }
 
-        console.log(chalk.blue(
-            `[connectionPassword] password generated: ${connectionPassword}`
-        ));
-
+        // Update password
         this.password = connectionPassword;
     }
 
