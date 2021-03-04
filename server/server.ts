@@ -7,6 +7,7 @@ const ProdDatabase = require('./database/ProdDatabase');
 const RTMPServer = require('./rtmp/RTMPServer');
 const HTTPServer = require('./http/HTTPServer');
 
+
 /** Entry point object for Castamatch app */
 class Server {
     env: string | undefined;
@@ -93,7 +94,12 @@ class Server {
             sslPath: this.sslPath,
             secret: 'sdkngoih38yghgdsgh845ret34t'
         }
-        this.http_server = new HTTPServer(httpConfig);
+        this.http_server = new HTTPServer(
+            httpConfig.env, 
+            httpConfig.publicPath, 
+            httpConfig.sslPath, 
+            httpConfig.secret
+        );
     }
 
 
@@ -117,6 +123,7 @@ class Server {
         return;
     }
 
+
     /** Start server */
     public start() {
         this.run_database();
@@ -124,6 +131,7 @@ class Server {
         this.run_rtmp();
     }
 }
+
 
 const castamatch = new Server();
 castamatch.start();

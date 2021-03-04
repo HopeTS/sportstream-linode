@@ -9,7 +9,6 @@ const session = require('express-session');
 const cors = require('cors');
 const passport = require('passport');
 const cookieParser = require('cookie-parser');
-const path = require('path');
 
 const http2https = require('./middleware/http2https');
 
@@ -29,12 +28,16 @@ const wildcardRouter = require('./routers/wildcard');
 /** HTTP / HTTPS server */
 class HTTPServer {
     express: any;
-
+    env: string | undefined;
+    publicPath: string;
+    sslPath: string;
+    secret: string;
+    
     constructor(
-        protected env: string | undefined,
-        protected publicPath: string,
-        protected sslPath: string,
-        protected secret: string
+        env: string | undefined,
+        publicPath: string,
+        sslPath: string,
+        secret: string
     ) {
 
         console.log('http server constructor')
@@ -43,6 +46,7 @@ class HTTPServer {
         this.publicPath = publicPath;
         this.sslPath = sslPath;
         this.secret = secret;
+        console.log('secret in constructor', secret)
 
         // Handle express configuration
         this.express = express();
@@ -70,10 +74,11 @@ class HTTPServer {
 
     /** Handles express server configuration for development environment */
     private configure_express_dev() {
-        console.log('configure express dev')
+        console.log('configure express dev');
+        console.log('the secret is', this.secret)
 
         // Express options
-        this.express.use(express.static(path.join(__dirname, '..', '..', 'public')));
+        this.express.use(express.static(this.publicPath));
         this.express.use(express.json());
         this.express.use(bodyParser.urlencoded({extended: true}));
         this.express.use(express.urlencoded({extended: true}));
