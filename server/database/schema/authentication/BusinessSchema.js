@@ -171,7 +171,6 @@ BusinessSchema.methods.create_stream = async function(streamData = {}, cb) {
         let streamId = stream._id;
         stream.field = streamData.field ? streamData.field : 'New Stream';
         stream.business = this._id;
-        stream.key = await stream.generate_key();
         await stream.save();
 
         // Add stream to upcoming streams

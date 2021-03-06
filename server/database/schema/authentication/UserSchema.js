@@ -57,7 +57,7 @@ UserSchema.methods.connect_business = async function(business=null, cb) {
         
         // Validation
         if (!business) throw new Error("There is no Business ID");
-        if (!mongoose.isValidObjectId(user)) throw new Error(
+        if (!mongoose.isValidObjectId(business)) throw new Error(
             "Given business is not a valid ID"
         );
         if (this.connectedBusinesses.includes(business)) throw new Error(

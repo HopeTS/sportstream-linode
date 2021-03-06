@@ -85,7 +85,7 @@ StreamSchema.pre('save', async function(next) {
 
         while (!unique) {
             try {
-                streamKey = generatete_key(keyLength);
+                streamKey = generate_key(keyLength);
 
                 // Ensure key is unique
                 await mongoose.models['Stream'].findOne(
@@ -101,10 +101,6 @@ StreamSchema.pre('save', async function(next) {
                 console.error(e);
             }
         }
-
-        console.log(chalk.blue(
-            `[stream] key generated: ${streamKey}`
-        ));
         
         this.key = streamKey;
     }

@@ -40,7 +40,7 @@ class HTTPServer {
         secret: string
     ) {
 
-        console.log('http server constructor')
+        console.log('http server constructor');
         // Environment variables
         this.env = env;
         this.publicPath = publicPath;

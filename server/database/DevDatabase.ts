@@ -74,9 +74,7 @@ class DevDatabase {
             password: '1234test'
         }];
 
-        console.log('userData in constructor', this.userData);
-        console.log('businessData in constructor', this.businessData);
-
+        // Initialize collections
         this.users = [];
         this.businesses = [];
         this.streams = [];
@@ -269,28 +267,61 @@ class DevDatabase {
     }
 
 
-    /** Print database collections */
-    public print_collections() {
-        console.debug(chalk.blue('Printing database contents'));
+    /** Creates streams */
+    public async create_streams() {
+        console.debug(chalk.blue('Creating streams'));
+        try {
 
-        // Log users
-        console.log('Here are all available users:');
-        console.log(this.users);
-        console.log(chalk.bold('-----------------------------------------'));
+            // 2 streams per business document
+            await Promise.all(
+                this.businesses.map(async (business) => {
+                    for (var i = 0; i < 2; i++) {
+                        await business.create_stream();
+                    }
+                })
+            );
 
-        // Log businesses
-        console.log('Here are all available businesses:');
-        console.log(this.businesses);
-        console.log(chalk.bold('-----------------------------------------'));
+            return;
+        }
 
-        // Log streams
-        console.log('Here are all available streams:');
-        console.log(this.streams);
-        console.log(chalk.bold('-----------------------------------------'));
+        catch(e) {
+            console.error(e);
+            return;
+        }
+    }
 
-        // Log connectionPasswords
-        console.log('Here are all available connectionPasswords:');
-        console.log(this.connectionPasswords);
+
+    /** Starts streams */
+    public async start_streams() {
+        console.debug(chalk.blue('Starting streams'));
+        try {
+            await Promise.all(this.streams.map(async (stream) => {
+                await stream.start_stream();
+            }));
+            return;
+        }
+
+        catch(e) {
+            console.error(e);
+            return;
+        }
+    }
+
+
+    /** Ends streams */
+    public async end_streams() {
+        console.debug(chalk.blue('Ending streams'));
+        try {
+            await Promise.all(this.streams.map(async (stream) => {
+                await stream.end_stream();
+            }));
+            return;
+        }
+
+        catch(e) {
+            console.error(e);
+            return;
+        }
     }
 
 
@@ -299,10 +330,10 @@ class DevDatabase {
         console.debug(chalk.blue('Creating connection passwords'));
         try {
 
-            // 5 passwords per business document
+            // 2 passwords per business document
             await Promise.all(
                 this.businesses.map(async (business) => {
-                    for (var i = 0; i < 5; i++) {
+                    for (var i = 0; i < 2; i++) {
                         await business.generate_connection_password();
                     }
                 })
@@ -315,6 +346,68 @@ class DevDatabase {
             console.error(e);
             return;
         }
+    }
+
+
+    /** Connect a Business to a User */
+    public async connect_business() {
+        console.debug(chalk.blue('Connecting Business and User'));
+        try {
+            await this.fetch_database();
+            await this.connectionPasswords[0].use(this.users[0]._id);
+            return;
+        }
+
+        catch(e) {
+            console.error(e);
+            return;
+        }
+    }
+
+
+    /** Print database collections */
+    public print_collections() {
+        console.debug(chalk.blue('Printing database contents'));
+
+        this.print_users();
+        console.log(chalk.bold('-----------------------------------------'));
+        this.print_businesses();
+        console.log(chalk.bold('-----------------------------------------'));
+        this.print_streams();
+        console.log(chalk.bold('-----------------------------------------'));
+        this.print_connection_passwords();
+    }
+
+
+    /** Print User collection */
+    public print_users() {
+        console.log('Here are all available users:');
+        console.log(this.users);
+        return;
+    }
+
+
+    /** Print Business collection */
+    public print_businesses() {
+        console.log('Here are all available businesses:');
+        console.log(this.businesses);
+        return;
+    }
+
+
+    /** Print Stream collection */
+    public print_streams() {
+        console.log('Here are all available streams:');
+        console.log(this.streams);
+        return;
+    }
+
+
+    /** Print ConnectionPassword collection */
+    public print_connection_passwords() {
+        console.log('Here are all available connectionPasswords:');
+        console.log(this.connectionPasswords);
+        return;
     }
 
 
@@ -332,8 +425,22 @@ class DevDatabase {
         await this.fetch_database();
         this.print_collections();
 
-        //  Test connection passwords
+        // Test stream lifecycle
+        await this.create_streams();
+        await this.fetch_database();
+        this.print_streams();
+        await this.start_streams();
+        this.print_streams();
+        this.end_streams();
+        this.print_streams();
+
+        // Test connection passwords
         await this.create_connection_passwords();
+        await this.fetch_database();
+        this.print_collections();
+
+        // Test User - Business connection
+        await this.connect_business();
         await this.fetch_database();
         this.print_collections();
 
