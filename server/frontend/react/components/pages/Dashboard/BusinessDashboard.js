@@ -3,13 +3,9 @@ import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 import axios from 'axios';
 
-import server_business_get_personal_doc from 
-    '../../../functions/business/server_business_get_personal_doc';
-import server_business_create_stream from 
-    '../../../functions/business/server_business_create_stream';
-import server_business_generate_connection_id from 
-    '../../../functions/business/server_business_generate_connection_id';
 import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
+import Endpoint from '../../../functions/endpoint/Endpoint';
+
 
 export function BusinessDashboard(props) {
 
@@ -20,12 +16,14 @@ export function BusinessDashboard(props) {
     const [upcomingStreams, set_upcoming_streams] = useState([]);
     const [currentStreams, set_current_streams] = useState([]);
     const [previousStreams, set_previous_streams] = useState([])
-    const [connectionIds, set_connection_ids] = useState([]);
+    const [connectionPasswords, set_connection_passwords] = useState([]);
     const [connectedUsers, set_connected_users] = useState([]);
 
     // Create stream form data
     const [createStreamForm, set_create_stream_form] = useState(false);
     const [fieldName, set_field_name] = useState('');
+
+    const endpoint = new Endpoint;
     
 
     useEffect(() => {
@@ -36,7 +34,7 @@ export function BusinessDashboard(props) {
     const get_data = () => {
         
         // Get data
-        server_business_get_personal_doc()
+        endpoint.business.get_personal_doc()
 
         .then((personalData) => {
             console.log('Here is personalData', personalData)
@@ -46,7 +44,7 @@ export function BusinessDashboard(props) {
             set_upcoming_streams(personalData.streams.upcoming);
             set_current_streams(personalData.streams.current);
             set_previous_streams(personalData.streams.previous);
-            set_connection_ids(personalData.connection_ids);
+            set_connection_passwords(personalData.connection_passwords);
             set_connected_users(personalData.connected_users);
 
             set_loaded(true);
@@ -60,20 +58,20 @@ export function BusinessDashboard(props) {
         })
     }
 
-    /** Handler for generate_connection_id */
-    const handle_generate_connection_id = () => {
+    /** Handler for generate_connection_password */
+    const handle_generate_connection_password = () => {
         
         // Server endpoint
-        server_business_generate_connection_id()
+        endpoint.business.generate_connection_password()
         
         // Add to state
-        .then((connectionId) => {
-            console.log('generate_connection_id cb dashboard', connectionId);
-            const newIds = [...connectionIds];
-            newIds.push(connectionId);
-            console.log('here is newIds', newIds)
-            set_connection_ids(newIds);
-            return newIds;
+        .then((connectionPassword) => {
+            console.log('generate_connectionPassword cb dashboard', connectionPassword);
+            const newPasswords = [...connectionPasswords];
+            newPasswords.push(connectionPassword);
+            console.log('here is newPasswords', newPasswords)
+            set_connection_passwords(newPasswords);
+            return newPasswords;
         })
 
         .catch((err) => {
@@ -96,7 +94,7 @@ export function BusinessDashboard(props) {
     const handle_create_stream = () => {
 
         // Server endpoint
-        server_business_create_stream({field: fieldName})
+        endpoint.business.create_stream({field: fieldName})
 
         // Add to state
         .then((stream) => {
@@ -261,7 +259,7 @@ export function BusinessDashboard(props) {
                     className="BusinessDashboard__contentInteractive"
                 >
                     <button
-                        onClick={handle_generate_connection_id}
+                        onClick={handle_generate_connection_password}
                     >
                         Create new connection password
                     </button>
