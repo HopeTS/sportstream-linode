@@ -3,7 +3,7 @@ import axios from 'axios';
 
 
 /** interface for localStorage and cookies */
-class ClientStorage {
+export default class ClientStorage {
 
 
     /** Clear localStorage */

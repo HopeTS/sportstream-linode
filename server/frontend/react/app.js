@@ -10,15 +10,18 @@ require("normalize.css/normalize.css");
 require("../sass/main.scss");
 const storeConfig_js_1 = __importDefault(require("./redux/store/storeConfig.js"));
 const Router_js_1 = __importDefault(require("./routers/Router.js"));
+const ClientStorage_1 = __importDefault(require("./functions/clientStorage/ClientStorage"));
 class App {
     constructor() {
         this.$appRoot = document.querySelector('#app');
+        this.clientStorage = new ClientStorage_1.default;
         this.configure_store();
         this.configure_tsx();
     }
     configure_store() {
         this.store = storeConfig_js_1.default();
         this.store.subscribe(() => {
+            this.clientStorage.save(this.store.getState());
         });
     }
     configure_tsx() {

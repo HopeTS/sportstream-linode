@@ -7,6 +7,7 @@ import 'normalize.css/normalize.css';
 import '../sass/main.scss';
 import storeConfig from './redux/store/storeConfig.js';
 import Router from './routers/Router.js';
+import ClientStorage from './functions/clientStorage/ClientStorage';
 
 
 /** React app entry point */
@@ -15,10 +16,12 @@ export default class App {
     store: any;
     tsx: any;
     $appRoot: any;
+    clientStorage: ClientStorage;
     
 
     constructor() {
         this.$appRoot = document.querySelector('#app');
+        this.clientStorage = new ClientStorage;
         this.configure_store();
         this.configure_tsx();
     }
@@ -28,7 +31,7 @@ export default class App {
     private configure_store() {
         this.store = storeConfig();
         this.store.subscribe(() => {
-            // Save local storage
+            this.clientStorage.save(this.store.getState());
         });
     }
 

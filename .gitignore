@@ -84,3 +84,5 @@ server/frontend/react/functions/endpoint/stream/Stream.js
 # React codebase JS files built from TypeScript
 /server/frontend/react/App.js
 /server/frontend/react/routers/Router.js
+/server/frontend/react/components/LoadingSpinner.js
+/server/frontend/react/components/VideoPlayer.js
