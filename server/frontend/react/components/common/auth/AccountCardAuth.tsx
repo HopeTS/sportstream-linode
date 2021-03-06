@@ -1,10 +1,7 @@
-/* External packages */
+export {};
 import React from 'react';
 import { connect } from 'react-redux';
-import { NavLink } from 'react-router-dom';
 
-
-/* Internal packages */
 import {
     navMenu_Mobile__Off, accountMenu__Toggle
 } from '../../../redux/actions/ui';
@@ -12,25 +9,35 @@ import AccountCardAuthMenuUser from './AccountCardAuthMenuUser';
 import AccountCardAuthMenuBusiness from './AccountCardAuthMenuBusiness';
 
 
-/* Component */
+/** Authenticated AccountCard content */
 export class AccountCardAuth extends React.Component {
-    constructor(props) {
+
+    state: {
+        menu: boolean
+    };
+    props: any;
+
+
+    constructor(props: any) {
         super(props);
         this.state = {
             menu: false
-        };
+        }
     }
 
-    accountMenu__Toggle = () => {
+
+    /** Toggle AccountMenu */
+    private accountMenuToggle() {
         this.props.accountMenu__Toggle();
     }
+
 
     render() {
         return (
             <div className="AccountCardAuth">
                 <button 
                     className="AccountCardAuth__profileImage"
-                    onClick={this.accountMenu__Toggle}
+                    onClick={this.accountMenuToggle}
                 >
                     <img src="/dist/images/icons/account.png" alt="" />
                 </button>
@@ -47,12 +54,12 @@ export class AccountCardAuth extends React.Component {
                     }
                 </div>
             </div>
-        )
+        );
     }
 }
 
 
-/* Connect to store */
+// Connect to store
 const mapStateToProps = (state) => {
     return {
         mobile_nav: state.ui.navMenu_Mobile,
@@ -70,5 +77,6 @@ const mapDispatchToProps = (dispatch) => ({
         dispatch(accountMenu__Toggle());
     }
 });
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(AccountCardAuth);

@@ -1,7 +1,7 @@
+export {};
 import React from 'react';
 import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import axios from 'axios';
 
 import {
     navMenu_Mobile__Off, accountMenu__Off
@@ -11,33 +11,36 @@ import ClientStorage from '../../../functions/clientStorage/ClientStorage';
 import Endpoint from '../../../functions/endpoint/Endpoint';
 
 
-/**
- * The account options dropdown list for User accounts. 
- * @prop active: Whether or not the menu is displayed
- */
+/** AccountCard content for User accounts*/
 export class AccountCardAuthMenuUser extends React.Component {
-    constructor(props) {
+
+    clientStorage: ClientStorage;
+    endpoint: Endpoint;
+    props: any;
+
+
+    constructor(props: any) {
         super(props);
         this.clientStorage = new ClientStorage;
         this.endpoint = new Endpoint;
     }
 
-    /**
-     * Logs user out from server and clears local_storage and cookie 
-     * authentication data
-     */
-    logout = () => {
-        this.accountMenu__Off();
 
+    /** Logs user out */
+    private logout(): void {
+        this.accountMenuOff();
         this.clientStorage.clear();
         this.endpoint.user.logout();
         this.props.logout();
+        return;
     }
 
+
     /** Handler for turning accountMenu off */
-    accountMenu__Off = () => {
+    private accountMenuOff(): void {
         this.props.accountMenu__Off();
     }
+
 
     render() {
         return (
@@ -48,7 +51,7 @@ export class AccountCardAuthMenuUser extends React.Component {
                 <ul>
                     <NavLink 
                         to="/Dashboard"
-                        onClick={this.accountMenu__Off}
+                        onClick={this.accountMenuOff}
                     >
                         <li>
                             Dashboard
@@ -70,7 +73,7 @@ export class AccountCardAuthMenuUser extends React.Component {
 }
 
 
-/* Connect to store */
+// Connect to store
 const mapStateToProps = (state) => {
     return {
         mobile_nav: state.ui.navMenu_Mobile,

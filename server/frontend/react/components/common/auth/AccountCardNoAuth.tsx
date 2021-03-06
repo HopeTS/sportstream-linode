@@ -1,21 +1,18 @@
-/* External packages */
+export {};
 import React from 'react';
-import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
 
-/* Internal packages */
-import {navMenu_Mobile__Off} from '../../../redux/actions/ui';
-
-
-/**
- * The React component for the account header menu when the user is not
- * logged in
- */
+/** AccountCard content for unauthenticated users */
 export class AccountCardNoAuth extends React.Component {
+    
+    props: any;
+
+    
     constructor(props) {
         super(props);
     }
+
 
     render() {
         return (
@@ -40,22 +37,9 @@ export class AccountCardNoAuth extends React.Component {
                     </NavLink>
                 </div>
             </div>
-        )
+        );
     }
 }
 
 
-/* Connect to store */
-const mapStateToProps = (state) => {
-    return {
-        mobile_nav: state.ui.navMenu_Mobile,
-    };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    navMenu_Mobile__Off: () => {
-        dispatch(navMenu_Mobile__Off());
-    }
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AccountCardNoAuth);
+export default AccountCardNoAuth;
