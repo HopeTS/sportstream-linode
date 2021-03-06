@@ -72,3 +72,11 @@ server/http/routers/stream.js
 server/http/routers/user.js
 server/http/routers/watch.js
 server/http/routers/wildcard.js
+
+# React endpoint functions and objects JS files built from TypeScript
+server/frontend/react/functions/validation/Validation.js
+server/frontend/react/functions/clientStorage/ClientStorage.js
+server/frontend/react/functions/endpoint/Endpoint.js
+server/frontend/react/functions/endpoint/business/Business.js
+server/frontend/react/functions/endpoint/user/User.js
+server/frontend/react/functions/endpoint/stream/Stream.js

@@ -15,18 +15,6 @@ router.use(bodyParser.urlencoded({extended: true}));
 /**
  * Get all information available to business account.
  * (endpoint for Business.get_personal_doc())
- * 
- * @returns {{
- *      name: String,
- *      email: String,
- *      streams: {
- *          upcoming: [String],
- *          current: [String],
- *          previous: [String]
- *      },
- *      connected_users: [String],
- *      connection_ids: [String]
- * }} 
  */
 router.get('/business/get-personal-doc', ensureLoggedIn(), 
     async (req: any, res: any) => {

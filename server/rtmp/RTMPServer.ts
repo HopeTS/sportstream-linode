@@ -6,9 +6,11 @@ const node_media_server = require('./nms/nms');
 class RTMPServer {
     nms: any;
 
+
     constructor() {
         this.configure_node_media_server();
     }
+
 
     /** Initializes NodeMediaServer object */
     private configure_node_media_server() {
@@ -16,6 +18,7 @@ class RTMPServer {
         return;
     }
 
+    
     /** Run RTMPServer */
     public run() {
         try {
