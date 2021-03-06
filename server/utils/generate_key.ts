@@ -6,9 +6,9 @@ export {};
  * 
  * @returns {string} randomly generated key
  */
-const generate_key = (length: number = 12) => {
+const generate_key = (length: number = 12): string => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let keyArray = [];
+    let keyArray: string[] = [];
 
     for (let i=0; i<length; i++) {
         keyArray.push(

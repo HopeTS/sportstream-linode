@@ -80,3 +80,7 @@ server/frontend/react/functions/endpoint/Endpoint.js
 server/frontend/react/functions/endpoint/business/Business.js
 server/frontend/react/functions/endpoint/user/User.js
 server/frontend/react/functions/endpoint/stream/Stream.js
+
+# React codebase JS files built from TypeScript
+/server/frontend/react/App.js
+/server/frontend/react/routers/Router.js
