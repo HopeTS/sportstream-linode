@@ -86,3 +86,8 @@ server/frontend/react/functions/endpoint/stream/Stream.js
 /server/frontend/react/routers/Router.js
 /server/frontend/react/components/LoadingSpinner.js
 /server/frontend/react/components/VideoPlayer.js
+/server/frontend/react/components/common/auth/AccountCard.js
+/server/frontend/react/components/common/auth/AccountCardAuth.js
+/server/frontend/react/components/common/auth/AccountCardAuthMenuBusiness.js
+/server/frontend/react/components/common/auth/AccountCardAuthMenuUser.js
+/server/frontend/react/components/common/auth/AccountCardNoAuth.js
