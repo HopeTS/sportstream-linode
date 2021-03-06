@@ -1,7 +1,5 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
-import {NavLink} from 'react-router-dom';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import get_stream_link from '../../functions/stream/get_stream_link';
@@ -16,12 +14,14 @@ export function Watch(props) {
     const [streamLinks, set_stream_links] = useState(null);
     const [streamKey, set_stream_key] = useState('');
 
+
     // Initial setup
     useEffect(() => {
         props.page_ID__Set('watch');
         generate_stream_link();
         set_stream_key(window.location.pathname.split('/')[2])
     }, []);
+
 
     /** Get stream link handler */
     const generate_stream_link = () => {
@@ -30,6 +30,7 @@ export function Watch(props) {
         return;
     }
 
+    
     return (
         <div id="Watch">
 

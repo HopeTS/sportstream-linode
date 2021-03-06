@@ -1,20 +1,26 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login, logout} from '../../redux/actions/auth';
-import clear_localStorage from '../../functions/localStorage/clear_localStorage';
-import cookie_logout from '../../functions/logout/cookie_logout';
-import server_login_user from '../../functions/login/server_login_user';
-import server_login_business from '../../functions/login/server_login_business';
-import validate_email from '../../functions/validation/validate_email';
-import validate_password from '../../functions/validation/validate_password';
 
+import Validation from '../../functions/validation/Validation';
+import ClientStorage from '../../functions/clientStorage/ClientStorage';
+import Endpoint from '../../functions/endpoint/Endpoint';
+
+
+/** Login page */
 export class Login extends React.Component {
+
+
     constructor(props) {
         super(props);
+
+        this.validation = new Validation;
+        this.endpoint = new Endpoint;
+        this.clientStorage = new ClientStorage;
+        
         this.state = {
             email: '',
             password: '',
@@ -25,11 +31,12 @@ export class Login extends React.Component {
         this.handle_logout();
     };
 
+
     componentWillMount() {
         this.props.page_ID__Set('Login');
-        clear_localStorage();
-        cookie_logout();
+        this.endpoint.clear();
     };
+
 
     /** Handler for account type input field */
     set_account_type = (type) => {
@@ -40,6 +47,7 @@ export class Login extends React.Component {
         });
     }
 
+
     /** Handler for email input field */
     set_email = (email) => {
         this.setState({
@@ -49,6 +57,7 @@ export class Login extends React.Component {
         });
     }
 
+
     /** Handler for password input field */
     set_password = (password) => {
         this.setState({
@@ -57,6 +66,7 @@ export class Login extends React.Component {
             password: password
         });
     }
+
 
     /** Handle login form submission */
     handle_login = () => {
@@ -74,12 +84,13 @@ export class Login extends React.Component {
         }
     }
 
+
     /** Handles login for User account */
     handle_login_user = () => {
 
         // Validation
-        const validEmail = validate_email(this.state.email);
-        const validPassword = validate_password(this.state.password);
+        const validEmail = this.validation.email(this.state.email);
+        const validPassword = this.validation.password(this.state.password);
 
         if (!validEmail || !validPassword) {
             this.handle_form_error('Invalid email or password.');
@@ -87,7 +98,7 @@ export class Login extends React.Component {
         }
 
         else {
-            server_login_user({
+            this.endpoint.user.login({
                 email: this.state.email, password: this.state.password
             })
     
@@ -120,11 +131,12 @@ export class Login extends React.Component {
         }
     }
 
+
     /** Handles login for Business account */
     handle_login_business = () => {
 
-        const validEmail = validate_email(this.state.email);
-        const validPassword = validate_password(this.state.password);
+        const validEmail = this.validation.email(this.state.email);
+        const validPassword = this.validation.password(this.state.password);
 
         if (!validEmail || !validPassword) {
             this.handle_form_error('Invalid email or password');
@@ -133,7 +145,7 @@ export class Login extends React.Component {
 
         // Validation
         else {
-            server_login_business({
+            this.endpoint.business.login({
                 email: this.state.email, password: this.state.password
             })
     
@@ -166,6 +178,7 @@ export class Login extends React.Component {
         }
     }
 
+
     /** Handles form error */
     handle_form_error = (errorMessage) => {
         console.log('Handle form error called')
@@ -179,6 +192,7 @@ export class Login extends React.Component {
         }, 2000)
     }
 
+
     /** Clears form error */
     clear_form_error = () => {
         console.log('Clear form error called')
@@ -190,15 +204,16 @@ export class Login extends React.Component {
         }
     }
 
+
     /**
      *  A User cannot access the login route unless they are not logged into
      *  the server, so the cookies and local_storage must be cleared.
      */
     handle_logout = () => {
         this.props.logout();
-        cookie_logout();
-        clear_localStorage();
+        this.clientStorage.clear();
     }
+
 
     render() {
         return (

@@ -1,28 +1,24 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
-import axios from 'axios';
 
 import {page_ID__Set} from '../../redux/actions/page';
 import {login} from '../../redux/actions/auth';
 
-import clear_localStorage from '../../functions/localStorage/clear_localStorage';
-import cookie_logout from '../../functions/logout/cookie_logout';
+import Validation from '../../functions/validation/Validation';
+import Endpoint from '../../functions/endpoint/Endpoint';
+import ClientStorage from '../../functions/clientStorage/ClientStorage';
 
-import server_login_user from '../../functions/login/server_login_user';
-import server_login_business from '../../functions/login/server_login_business';
-import server_register_user from '../../functions/register/server_register_user';
-import server_register_business from 
-    '../../functions/register/server_register_business';
-
-import validate_email from '../../functions/validation/validate_email';
-import validate_password from '../../functions/validation/validate_password';
-import validate_name from '../../functions/validation/validate_name';
 
 /* Component */
 export class Register extends React.Component {
     constructor(props) {
         super(props);
+
+        this.validation = new Validation;
+        this.endpoint = new Endpoint;
+        this.clientStorage = new ClientStorage;
+
         this.state = {
             name: '',
             email: '',
@@ -36,8 +32,7 @@ export class Register extends React.Component {
 
     componentWillMount() {
         this.props.page_ID__Set('Register');
-        clear_localStorage();
-        cookie_logout();
+        this.clientStorage.clear();
     };
 
     /**
@@ -130,16 +125,16 @@ export class Register extends React.Component {
         }
 
         // Validate fields
-        const validName = validate_name(this.state.name);
-        const validEmail = validate_email(this.state.email);
-        const validPassword = validate_password(this.state.password);
+        const validName = this.validation.name(this.state.name);
+        const validEmail = this.validation.email(this.state.email);
+        const validPassword = this.validation.password(this.state.password);
         if (!validName || !validEmail || !validPassword) { 
             this.handle_form_error('Invalid name, email or password');
             return;
         }
 
         else {
-            server_register_business({
+            this.endpoint.business.register({
                 name: this.state.name,
                 email: this.state.email,
                 password: this.state.password,
@@ -180,7 +175,7 @@ export class Register extends React.Component {
      * 
      */
     handle_login_business = () => {
-        server_login_business({
+        this.endpoint.business.login({
             email: this.state.email, password: this.state.password
         })
 
@@ -221,16 +216,16 @@ export class Register extends React.Component {
         }
 
         // Validate fields
-        const validName = validate_name(this.state.name);
-        const validEmail = validate_email(this.state.email);
-        const validPassword = validate_password(this.state.password);
+        const validName = this.validation.name(this.state.name);
+        const validEmail = this.validation.email(this.state.email);
+        const validPassword = this.validation.password(this.state.password);
         if (!validName || !validEmail || !validPassword) {
             this.handle_form_error('Invalid name, email or password');
             return;
         }
 
         else {
-            server_register_user({
+            this.endpoint.user.register({
                 email: this.state.email,
                 password: this.state.password,
                 name: this.state.name
@@ -269,7 +264,7 @@ export class Register extends React.Component {
      * @param {string} password account password
      */
     handle_login_user = () => {
-        server_login_user({
+        this.endpoint.user.login({
             email: this.state.email, password: this.state.password
         })
 
