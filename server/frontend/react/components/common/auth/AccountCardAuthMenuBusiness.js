@@ -7,9 +7,8 @@ import {
     navMenu_Mobile__Off, accountMenu__Off
 } from '../../../redux/actions/ui';
 import { logout } from '../../../redux/actions/auth';
-import clear_localStorage from '../../../functions/localStorage/clear_localStorage';
-import cookie_logout from '../../../functions/logout/cookie_logout';
-import server_logout from '../../../functions/logout/server_logout';
+import ClientStorage from '../../../functions/clientStorage/ClientStorage';
+import Endpoint from '../../../functions/endpoint/Endpoint';
 
 
 /**
@@ -19,6 +18,8 @@ import server_logout from '../../../functions/logout/server_logout';
 export class AccountCardAuthMenuBusiness extends React.Component {
     constructor(props) {
         super(props);
+        this.clientStorage = new ClientStorage;
+        this.endpoint = new Endpoint;
     }
 
     /**
@@ -28,16 +29,8 @@ export class AccountCardAuthMenuBusiness extends React.Component {
     logout = () => {
         this.accountMenu__Off();
 
-        // server logout
-        axios.get('logout', {}).then((res) => {
-            console.log('Here is the logout response')
-            console.log(res)
-        });
-
-        // client logout
-        clear_localStorage();
-        cookie_logout();
-        server_logout();
+        this.clientStorage.clear();
+        this.endpoint.business.logout();
         this.props.logout();
     }
 

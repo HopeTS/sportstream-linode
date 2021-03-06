@@ -1,3 +1,4 @@
+export {};
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import axios from 'axios';
