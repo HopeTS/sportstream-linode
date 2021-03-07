@@ -8,20 +8,8 @@ import BusinessDashboard from './BusinessDashboard';
 import UserDashboard from './UserDashboard';
 import LoadingSpinner from '../../LoadingSpinner';
 
-export function Dashboard(props) {
-    return (
-        <div className="Dashboard">
-            {props.account.type === 'user' ?
-                <UserDashboard />
-                :
-                <BusinessDashboard />
-            }
-        </div>
-    );
-}
 
-
-/* Connect to store */
+// Store config
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
@@ -35,4 +23,22 @@ const mapDispatchToProps = (dispatch) => ({
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
+
+/** Root dashboard component */
+const Dashboard = connect(
+    mapStateToProps, mapDispatchToProps
+)(function(props: any) {
+
+    return (
+        <div className="Dashboard">
+            {props.account.type === 'user' ?
+                <UserDashboard />
+                :
+                <BusinessDashboard />
+            }
+        </div>
+    );
+});
+
+
+export = Dashboard;

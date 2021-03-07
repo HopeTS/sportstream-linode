@@ -1,60 +1,84 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {NavLink} from 'react-router-dom';
-import axios from 'axios';
 
 import LoadingSpinner from '../../LoadingSpinner';
-import server_user_get_personal_doc from
-    '../../../functions/user/server_user_get_personal_doc';
-import server_user_connect_business from
-    '../../../functions/user/server_user_connect_business';
+import Endpoint from '../../../functions/endpoint/Endpoint';
 
-export function UserDashboard(props) {
 
-    const [loaded, set_loaded] = useState(false);
+// Store config
+const mapStateToProps = (state: any) => {
+    return {
+        account: state.auth.account
+    };
+};
 
-    const [connectedBusinesses, set_connected_businesses] = useState([]);
+
+/** User Dashboard component */
+const UserDashboard = connect(
+    mapStateToProps, undefined
+)(function(props: any) {
+
+    const endpoint = new Endpoint;
+
+    const [loaded, set_loaded] = useState<boolean>(false);
+    const [connectedBusinesses, set_connected_businesses] = useState<any[]>([]);
 
     // Connect business form data
-    const [connectBusinessForm, set_connect_business_form] = useState(false);
-    const [businessKey, set_business_key] = useState('');
+    //const [connectBusinessForm, set_connect_business_form] = useState<boolean>(false);
+    const [businessKey, set_business_key] = useState<string>('');
+
 
     useEffect(() => {
         get_data();
     }, []);
 
+
     useEffect(() => {
         console.log('Connected businesses length', connectedBusinesses);
-    })
+    });
 
-    /** Fetches Account data from server to populate state */
-    const get_data = () => {
+
+    /* Fetch Account data from server to populate state */
+    function get_data(): Promise<boolean> {
 
         // Get data
-        server_user_get_personal_doc()
+        const response = endpoint.user.get_personal_doc()
 
         // Populate state
-        .then((personalData) => {
+        .then((personalData: any) => {
             if (!personalData) throw new Error("Couldn't retrieve User data");
             set_connected_businesses(personalData.connected_businesses);
             set_loaded(true);
+            return true;
         })
 
         .catch((err) => {
             console.log(err);
-        })
+            return false;
+        });
+
+        return response;
     }
 
-    const handle_connect_business_form = () => {
-        set_connect_business_form(!connectBusinessForm);
-    }
 
-    const handle_connect_business = () => {
-        server_user_connect_business(businessKey)
+    /** Handler for connect_business_form */
+    //function handle_connect_business_form(): void {
+    //    set_connect_business_form(!connectBusinessForm);
+    //    return;
+    //}
 
-        .then((res) => {
+
+    /** Handler for connect_business */
+    function handle_connect_business(): Promise<boolean> {
+
+        // Get data
+        const response = endpoint.user.connect_business(businessKey)
+
+        // Populate state
+        .then((res: any) => {
             if (res) {
                 get_data();
+                return true;
             }
 
             else {
@@ -65,8 +89,11 @@ export function UserDashboard(props) {
 
         .catch((err) => {
             console.log(err);
-        })
+        });
+
+        return response;
     }
+
 
     return (
         <div className="UserDashboard">
@@ -138,20 +165,6 @@ export function UserDashboard(props) {
             }
         </div>
     );
-}
-
-
-/* Connect to store */
-const mapStateToProps = (state) => {
-    return {
-        account: state.auth.account
-    };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    page_ID__Set: (id) => {
-        dispatch(page_ID__Set(id));
-    }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserDashboard);
+export = UserDashboard;

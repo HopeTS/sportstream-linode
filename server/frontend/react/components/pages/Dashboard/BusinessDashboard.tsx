@@ -1,42 +1,52 @@
-import React, {cloneElement, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
-import {NavLink} from 'react-router-dom';
-import axios from 'axios';
 
 import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
 import Endpoint from '../../../functions/endpoint/Endpoint';
 
 
-export function BusinessDashboard(props) {
+// Redux store config
+const mapStateToProps = (state) => {
+    return {
+        account: state.auth.account
+    };
+};
+
+
+/** Business Dashboard component */
+const BusinessDashboard = connect(
+    mapStateToProps, undefined
+)(function(props: any) {
 
     const [loaded, set_loaded] = useState(false);
     const [networkError, set_network_error] = useState(false);
-    
+
     // Account data
-    const [upcomingStreams, set_upcoming_streams] = useState([]);
-    const [currentStreams, set_current_streams] = useState([]);
-    const [previousStreams, set_previous_streams] = useState([])
-    const [connectionPasswords, set_connection_passwords] = useState([]);
-    const [connectedUsers, set_connected_users] = useState([]);
+    const [upcomingStreams, set_upcoming_streams] = useState<any[]>([]);
+    const [currentStreams, set_current_streams] = useState<any[]>([]);
+    const [previousStreams, set_previous_streams] = useState<any[]>([])
+    const [connectionPasswords, set_connection_passwords] = useState<string[]>([]);
+    const [connectedUsers, set_connected_users] = useState<any[]>([]);
 
     // Create stream form data
     const [createStreamForm, set_create_stream_form] = useState(false);
     const [fieldName, set_field_name] = useState('');
 
     const endpoint = new Endpoint;
-    
+
 
     useEffect(() => {
         get_data();
     }, []);
 
-    /** Fetches Account data from server to populate state */
-    const get_data = () => {
-        
-        // Get data
-        endpoint.business.get_personal_doc()
 
-        .then((personalData) => {
+    /** Fetches Account data from server to populate state */
+    function get_data(): Promise<boolean> {
+
+        // Get data
+        const result = endpoint.business.get_personal_doc()
+
+        .then((personalData: any) => {
             console.log('Here is personalData', personalData)
             console.log('personalData previous streams', personalData.streams.previous)
 
@@ -47,25 +57,30 @@ export function BusinessDashboard(props) {
             set_connection_passwords(personalData.connection_passwords);
             set_connected_users(personalData.connected_users);
 
+            console.log(connectedUsers);
             set_loaded(true);
-            return;
+            return true;
         })
 
-        .catch((err) => {
+        .catch((err: any) => {
             set_network_error(true);
+            console.log(networkError);
             set_loaded(true);
-            return;
-        })
+            return false;
+        });
+
+        return result;
     }
 
+
     /** Handler for generate_connection_password */
-    const handle_generate_connection_password = () => {
+    function handle_generate_connection_password(): Promise<boolean> {
         
         // Server endpoint
-        endpoint.business.generate_connection_password()
+        const result = endpoint.business.generate_connection_password()
         
         // Add to state
-        .then((connectionPassword) => {
+        .then((connectionPassword: any) => {
             console.log('generate_connectionPassword cb dashboard', connectionPassword);
             const newPasswords = [...connectionPasswords];
             newPasswords.push(connectionPassword);
@@ -78,23 +93,30 @@ export function BusinessDashboard(props) {
             set_network_error(true);
             return false;
         });
+
+        return result;
     }
+
 
     /** Handler for set_create_stream_form */
-    const handle_set_create_stream_form = () => {
+    function handle_set_create_stream_form(): void {
         set_create_stream_form(!createStreamForm);
+        return;
     }
+
 
     /** Handler for set_field_name */
-    const handle_set_field_name = (name) => {
+    function handle_set_field_name(name: string): void {
         set_field_name(name);
+        return;
     }
 
+
     /** Handles creating a stream */
-    const handle_create_stream = () => {
+    function handle_create_stream(): Promise<boolean> {
 
         // Server endpoint
-        endpoint.business.create_stream({field: fieldName})
+        const result = endpoint.business.create_stream({field: fieldName})
 
         // Add to state
         .then((stream) => {
@@ -107,9 +129,11 @@ export function BusinessDashboard(props) {
 
         .catch((err) => {
             return false;
-        })
+        });
 
+        return result;
     }
+    
 
     return (
         <div className="BusinessDashboard">
@@ -146,7 +170,7 @@ export function BusinessDashboard(props) {
                                 <input 
                                     type="text" 
                                     id="field"
-                                    onChange={(e) => {set_field_name(e.target.value)}}
+                                    onChange={(e) => {handle_set_field_name(e.target.value)}}
                                 />
                             </div>
 
@@ -164,7 +188,7 @@ export function BusinessDashboard(props) {
                         <article 
                             className="BusinessDashboard__contentBlock small"
                         >
-                            {upcomingStreams.map((stream) => (
+                            {upcomingStreams.map((stream: any) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
                                     key={stream.key}
@@ -195,7 +219,7 @@ export function BusinessDashboard(props) {
                         <article 
                             className="BusinessDashboard__contentBlock small"
                         >
-                            {currentStreams.map((stream) => (
+                            {currentStreams.map((stream: any) => (
                                 <a
                                     className="BusinessDashboard__contentRow"
                                     key={stream.key}
@@ -227,7 +251,7 @@ export function BusinessDashboard(props) {
                         <article 
                             className="BusinessDashboard__contentBlock small"
                         >
-                            {previousStreams.map((stream) => (
+                            {previousStreams.map((stream: any) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
                                     key={stream.key}
@@ -266,20 +290,20 @@ export function BusinessDashboard(props) {
                 </article>
 
                 <article className="BusinessDashboard__contentSection">
-                    <h3>Available Connection IDs</h3>
+                    <h3>Available Connection Passwords</h3>
 
                     {loaded ?
                         <article 
                             className="BusinessDashboard__contentBlock small"
                         >
-                            {connectionIds.map((connectionId) => (
+                            {connectionPasswords.map((connectionPassword: string) => (
                                 <section 
                                     className="BusinessDashboard__contentRow"
-                                    key={connectionId}
+                                    key={connectionPassword}
                                 >
                                     <div>
                                         <h4>ID:</h4>
-                                        <p>{connectionId}</p>
+                                        <p>{connectionPassword}</p>
                                     </div>
                                 </section>
                             ))}
@@ -293,20 +317,7 @@ export function BusinessDashboard(props) {
             </div>
         </div>
     );
-}
-
-
-/* Connect to store */
-const mapStateToProps = (state) => {
-    return {
-        account: state.auth.account
-    };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-    page_ID__Set: (id) => {
-        dispatch(page_ID__Set(id));
-    }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(BusinessDashboard);
+
+export = BusinessDashboard;

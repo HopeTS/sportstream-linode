@@ -55,7 +55,7 @@ export default class User {
 
 
     /** GET /user/get-personal-doc */
-    public get_personal_doc() {
+    public get_personal_doc(): Promise<any> {
 
         // Make GET
         const response = axios.get(
