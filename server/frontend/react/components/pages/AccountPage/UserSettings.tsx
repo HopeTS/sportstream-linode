@@ -1,14 +1,19 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-export function UserSettings() {
+
+/** Settings section for Business account */
+function component() {
     return (
         <div className="AccountPageSettings">
-
+            {/* TODO */}
         </div>
     );
 }
 
+
+
+// Connect to store
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
@@ -16,4 +21,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, undefined)(UserSettings);
+
+const UserSettings = connect(mapStateToProps, undefined)(component);
+export = UserSettings;

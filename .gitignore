@@ -91,3 +91,8 @@ server/frontend/react/functions/endpoint/stream/Stream.js
 /server/frontend/react/components/common/auth/AccountCardAuthMenuBusiness.js
 /server/frontend/react/components/common/auth/AccountCardAuthMenuUser.js
 /server/frontend/react/components/common/auth/AccountCardNoAuth.js
+/server/frontend/react/components/pages/AccountPage/AccountPage.js
+/server/frontend/react/components/pages/AccountPage/AccountPageAuth.js
+/server/frontend/react/components/pages/AccountPage/AccountPageNoAuth.js
+/server/frontend/react/components/pages/AccountPage/BusinessSettings.js
+/server/frontend/react/components/pages/AccountPage/UserSettings.js

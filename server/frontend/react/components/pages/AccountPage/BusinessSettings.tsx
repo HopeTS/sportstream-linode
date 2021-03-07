@@ -1,37 +1,33 @@
 import React from 'react';
 import {connect} from 'react-redux';
 
-export function BusinessSettings() {
 
-    /**
-     * Handles email change form submission
-     */
-    const handleEmailChange = (e) => {
-        e.preventDefault();
+/** Settings section for Business account */
+export function BusinessSettings(props: any) {
+
+    /** Handles email change form submission */
+    //const handleEmailChange = (e) => {
+        //e.preventDefault();
         // TODO: Validate form details
         // TODO: Reset input and show error response if invalid input
         // TODO: Form axios request
         // TODO: Handle axios error
         // TODO: Handle axios response
-    }
+    //}
 
-    /**
-     * Handles password change form submission
-     */
-    const handlePasswordChange = (e) => {
-        e.preventDefault();
+    /** Handles password change form submission */
+    //const handlePasswordChange = (e) => {
+        //e.preventDefault();
         // TODO: Validate form details
         // TODO: Reset input and show error response if invalid input
         // TODO: Form axios request
         // TODO: Handle axios error
         // TODO: Handle axios response
-    }
+    //}
 
-    /**
-     * Handles stream key change form submission
-     */
-    const handleStreamKeyChange = (e) => {
-        e.preventDefault();
+    /** Handles stream key change form submission */
+    //const handleStreamKeyChange = (e) => {
+        //e.preventDefault();
         // TODO: Validate form details
         // TODO: Reset input and show error response if invalid input
         // TODO: Form axios request for adding stream key
@@ -40,7 +36,7 @@ export function BusinessSettings() {
         // TODO: Form axios request for deleting stream key
         // TODO: Handle axios error for deleting stream key
         // TODO: Handle axios response for deleting stream key
-    }
+    //}
 
     return (
         <div className="AccountPageSettings">
@@ -122,11 +118,14 @@ export function BusinessSettings() {
     );
 }
 
-const mapStateToProps = (state) => {
+
+// Connect to store
+const mapStateToProps = (state: any) => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
         account: state.auth.account
     }
 }
+
 
 export default connect(mapStateToProps, undefined)(BusinessSettings);

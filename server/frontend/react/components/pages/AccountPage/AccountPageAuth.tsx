@@ -1,18 +1,17 @@
+export {};
 import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
-import axios from 'axios';
+import {page_ID__Set} from '../../../redux/actions/page';
 
-/**
- * Content of account settings dashboard for a standard user account
- */
-export function AccountPageAuth(props) {
-    const accountType = props.account.type === 'business' ? 
-            'business':'user';
 
-            useEffect(() => {
-                console.log(props.account.stream_key)
-            })
+/** Content of account settings dashboard for a standard user account */
+export function AccountPageAuth(props: any) {
+
+    useEffect(() => {
+        console.log(props.account.stream_key)
+    })
             
+
     return (
         <div className="AccountPageAuth">
             <div className="innerContent">
@@ -112,7 +111,7 @@ export function AccountPageAuth(props) {
 };
 
 
-/* Connect to store */
+// Connect to store
 const mapStateToProps = (state) => {
     return {
         isAuthenticated: state.auth.isAuthenticated,
