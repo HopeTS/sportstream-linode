@@ -29,7 +29,7 @@ const Watch = connect(
 
     const stream = new Stream;
 
-    const [streamActive, set_stream_active] = useState(false);
+    //const [streamActive, set_stream_active] = useState(false);
     const [streamLinks, set_stream_links] = useState<boolean | null>(null);
     const [streamKey, set_stream_key] = useState('');
 

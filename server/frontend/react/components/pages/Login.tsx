@@ -50,7 +50,7 @@ const Login = connect(
 
     useEffect(() => {
         props.page_ID__Set('Login');
-        endpoint.clear();
+        clientStorage.clear();
     }, []);
 
 
