@@ -2,24 +2,41 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import {page_ID__Set} from '../../redux/actions/page';
-import get_stream_link from '../../functions/stream/get_stream_link';
+import Stream from '../../functions/endpoint/stream/Stream';
 import LoadingSpinner from '../LoadingSpinner';
 import VideoPlayer from '../VideoPlayer';
 
 
-/** Watch page (/watch) */
-export function Watch(props) {
+// Store config
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
+    };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+    page_ID__Set: (id) => {
+        dispatch(page_ID__Set(id));
+    }
+});
+
+
+/** Watch page */
+const Watch = connect(
+    mapStateToProps, mapDispatchToProps
+)(function(props: any) {
+
+    const stream = new Stream;
 
     const [streamActive, set_stream_active] = useState(false);
-    const [streamLinks, set_stream_links] = useState(null);
+    const [streamLinks, set_stream_links] = useState<boolean | null>(null);
     const [streamKey, set_stream_key] = useState('');
 
 
-    // Initial setup
     useEffect(() => {
         props.page_ID__Set('watch');
-        generate_stream_link();
-        set_stream_key(window.location.pathname.split('/')[2])
+        set_stream_key(window.location.pathname.split('/')[2]);
     }, []);
 
 
@@ -41,23 +58,4 @@ export function Watch(props) {
             }
         </div>
     )
-}
-
-
-/* Connect to store */
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.auth.isAuthenticated,
-        account: state.auth.account
-    };
-};
-
-
-const mapDispatchToProps = (dispatch) => ({
-    page_ID__Set: (id) => {
-        dispatch(page_ID__Set(id));
-    }
 });
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(Watch);
