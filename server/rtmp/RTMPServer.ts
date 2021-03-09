@@ -1,4 +1,3 @@
-export {};
 const node_media_server = require('./nms/nms');
 
 
@@ -34,4 +33,4 @@ class RTMPServer {
 }
 
 
-module.exports = RTMPServer;
+export = RTMPServer;

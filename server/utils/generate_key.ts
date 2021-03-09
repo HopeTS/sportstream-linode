@@ -1,12 +1,5 @@
-export {};
-/**
- * Generate random string key
- * 
- * @param {number} length length of string
- * 
- * @returns {string} randomly generated key
- */
-const generate_key = (length: number = 12): string => {
+/** Generate random string key */
+function generate_key(length: number = 12): string {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let keyArray: string[] = [];
 
@@ -19,4 +12,5 @@ const generate_key = (length: number = 12): string => {
     return keyArray.join('');
 }
 
-module.exports = generate_key;
+
+export = generate_key;

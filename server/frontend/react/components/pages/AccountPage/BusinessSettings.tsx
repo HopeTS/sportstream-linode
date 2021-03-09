@@ -2,8 +2,19 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 
+// Store config
+const mapStateToProps = (state: any) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
+    }
+}
+
+
 /** Settings section for Business account */
-export function BusinessSettings(props: any) {
+const BusinessSettings = connect(
+    mapStateToProps, undefined
+)(function BusinessSettings(props: any) {
 
     /** Handles email change form submission */
     //const handleEmailChange = (e) => {
@@ -116,16 +127,7 @@ export function BusinessSettings(props: any) {
             </div>
         </div>
     );
-}
+});
 
 
-// Connect to store
-const mapStateToProps = (state: any) => {
-    return {
-        isAuthenticated: state.auth.isAuthenticated,
-        account: state.auth.account
-    }
-}
-
-
-export default connect(mapStateToProps, undefined)(BusinessSettings);
+export = BusinessSettings;

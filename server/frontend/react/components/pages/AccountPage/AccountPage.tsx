@@ -1,4 +1,3 @@
-export {};
 import React, { useEffect } from 'react';
 import {connect} from 'react-redux';
 
@@ -7,9 +6,25 @@ import AccountPageAuth from './AccountPageAuth';
 import {page_ID__Set} from '../../../redux/actions/page';
 
 
-/** Account dashboard page */
-export function AccountPage(props: any) {
+// Store config
+const mapStateToProps = (state) => {
+    return {
+        isAuthenticated: state.auth.isAuthenticated,
+        account: state.auth.account
+    }
+}
 
+const mapDispatchToProps = (dispatch) => ({
+    page_ID__Set: (id) => {
+        dispatch(page_ID__Set(id));
+    }
+});
+
+
+/** Account dashboard page */
+const AccountPage = connect(
+    mapStateToProps, mapDispatchToProps
+)(function(props: any) {
 
     useEffect(() => {
         props.page_ID__Set('AccountPage');
@@ -32,22 +47,7 @@ export function AccountPage(props: any) {
             </section>
         </div>
     );
-}
-
-
-// Connect to store
-const mapStateToProps = (state) => {
-    return {
-        isAuthenticated: state.auth.isAuthenticated,
-        account: state.auth.account
-    }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-    page_ID__Set: (id) => {
-        dispatch(page_ID__Set(id));
-    }
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountPage);
+export = AccountPage;

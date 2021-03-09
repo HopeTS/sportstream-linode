@@ -1,4 +1,3 @@
-export {};
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
@@ -9,8 +8,7 @@ const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 const publicPath = path.join(__dirname, '../../../public/');
 const appRoute = path.join(publicPath, 'index.html');
 
-
-/* Router */
+// Router config
 const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
@@ -76,4 +74,5 @@ router.get('/login/status', ensureLoggedIn(), (req: any, res: any) => {
     res.status(210).send();
 });
 
-module.exports = router;
+
+export = router;

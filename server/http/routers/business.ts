@@ -1,4 +1,3 @@
-export{};
 const express = require('express');
 const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
@@ -230,4 +229,4 @@ router.post('business/connect-user', ensureLoggedIn(),
 
 
 
-module.exports = router;
+export = router;

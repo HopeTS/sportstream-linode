@@ -5,7 +5,7 @@ import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
 import Endpoint from '../../../functions/endpoint/Endpoint';
 
 
-// Redux store config
+// Store config
 const mapStateToProps = (state) => {
     return {
         account: state.auth.account

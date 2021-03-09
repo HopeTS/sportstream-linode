@@ -1,4 +1,3 @@
-export {};
 const NodeMediaServer = require('node-media-server');
 const chalk = require('chalk');
 
@@ -139,4 +138,4 @@ const get_stream_key_from_stream_path = (path: string) => {
 };  
 
 
-module.exports = node_media_server;
+export = node_media_server;

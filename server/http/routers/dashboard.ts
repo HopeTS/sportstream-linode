@@ -1,4 +1,3 @@
-export{};
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
@@ -13,8 +12,10 @@ const router = express.Router();
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended: true}));
 
+
 router.get('/dashboard', ensureLoggedIn(), (req: any, res: any) => {
     res.sendFile(appRoute);
 });
 
-module.exports = router;
+
+export = router;

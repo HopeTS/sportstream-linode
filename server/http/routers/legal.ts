@@ -1,4 +1,3 @@
-export{};
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
@@ -9,6 +8,7 @@ const legalPath = path.join(publicPath, 'dist', 'legal');
 
 // Router config
 const router = new express.Router();
+
 
 router.get('/legal/privacy-policy', (req: any, res: any) => {
     try {
@@ -39,4 +39,4 @@ router.get('/legal/terms-of-use', (req: any, res: any) => {
 });
 
 
-module.exports = router;
+export = router;
