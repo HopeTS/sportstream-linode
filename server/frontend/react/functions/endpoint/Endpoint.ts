@@ -6,6 +6,7 @@ import User from './user/User';
 import Stream from './stream/Stream';
 
 
+/** Contains all endpoint/API calls */
 export default class Endpoint {
 
     // Endpoint objects
