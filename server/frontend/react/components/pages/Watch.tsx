@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import {page_ID__Set} from '../../redux/actions/page';
-import Stream from '../../functions/endpoint/stream/Stream';
+//import Stream from '../../functions/endpoint/stream/Stream';
 import LoadingSpinner from '../LoadingSpinner';
 import VideoPlayer from '../VideoPlayer';
 
@@ -27,7 +27,7 @@ const Watch = connect(
     mapStateToProps, mapDispatchToProps
 )(function(props: any) {
 
-    const stream = new Stream;
+    //const stream = new Stream;
 
     //const [streamActive, set_stream_active] = useState(false);
     const [streamLinks, set_stream_links] = useState<boolean | null>(null);
@@ -36,6 +36,7 @@ const Watch = connect(
 
     useEffect(() => {
         props.page_ID__Set('watch');
+        generate_stream_link();
         set_stream_key(window.location.pathname.split('/')[2]);
     }, []);
 
@@ -59,3 +60,6 @@ const Watch = connect(
         </div>
     )
 });
+
+
+export = Watch;
