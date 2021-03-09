@@ -1,12 +1,14 @@
-import React from 'react';
-
-export function UserStreamInfoCard(props) {
-    return (
-        <div className="StreamInfoCard" data-type="user">
-            {/* TODO */}
-        </div>
-    )
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-
-
-export default UserStreamInfoCard;
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserStreamInfoCard = void 0;
+const react_1 = __importDefault(require("react"));
+function UserStreamInfoCard(props) {
+    return (react_1.default.createElement("div", { className: "StreamInfoCard", "data-type": "user" }));
+}
+exports.UserStreamInfoCard = UserStreamInfoCard;
+;
+exports.default = UserStreamInfoCard;
+//# sourceMappingURL=UserStreamInfoCard.js.map

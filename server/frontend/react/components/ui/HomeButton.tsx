@@ -39,7 +39,7 @@ const HomeButton = connect(
     return (
         <section 
             id="HomeButton"
-            onClick={props.navMenu_Mobile ? navMenu_Mobile__Toggle : undefined}
+            onClick={props.navMenu_Mobile ? toggle_nav_menu : undefined}
         >
             <NavLink 
                 to="/"
