@@ -57,14 +57,12 @@ const Router = connect(
     /** Handles initial content fade in */
     function fade_in_animation() {
 
-         // Disable loader
-         const $pageLoader = document.querySelector('.page_loader');
-         if ($pageLoader) $pageLoader.setAttribute('data-loading', 'true');
+        // Disable loader
+        const $pageLoader = document.querySelector('.page_loader');
+        if ($pageLoader) $pageLoader.setAttribute('data-loading', 'true');
         set_loading(true);
 
-        console.log('updating!')
-
-         // Fade in React app
+        // Fade in React app
         setTimeout(() => {
             if ($pageLoader) $pageLoader.setAttribute('data-loaded', 'true');
             set_loaded(true);
