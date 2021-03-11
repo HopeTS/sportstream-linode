@@ -52,26 +52,26 @@ class DevDatabase {
         this.userData = [{
             name: 'Test1',
             email: 'user@gmail.com',
-            password: '1234test'
+            password: '123456test'
         }, {
             name: 'Test2',
             email: 'user2@gmail.com',
-            password: '1234test'
+            password: '123456test'
         }, {
             name: 'Test3',
             email: 'user3@gmail.com',
-            password: '1234test'
+            password: '123456test'
         }];
 
         // Test businesses
         this.businessData = [{
             name: 'Test business 1',
             email: 'business@gmail.com',
-            password: '1234test'
+            password: '123456test'
         }, {
             name: 'Test business 2',
             email: 'business2@gmail.com',
-            password: '1234test'
+            password: '123456test'
         }];
 
         // Initialize collections
