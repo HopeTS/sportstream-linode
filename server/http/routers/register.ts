@@ -2,7 +2,6 @@ export {};
 const express = require('express');
 const path = require('path');
 const chalk = require('chalk');
-const bcrypt = require('bcryptjs');
 const bodyParser = require('body-parser');
 const ensureLoggedOut = require('connect-ensure-login').ensureLoggedOut;
 
