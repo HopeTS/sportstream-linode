@@ -1,4 +1,3 @@
-const chalk = require('chalk');
 const path = require('path');
 const exec = require('child_process').exec;
 

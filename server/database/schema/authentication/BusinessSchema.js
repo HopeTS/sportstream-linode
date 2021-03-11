@@ -4,6 +4,7 @@ const bcrypt = require('bcryptjs');
 
 const generate_key = require('../../../utils/generate_key');
 const { Stream, User, ConnectionPassword } = require('../Schema');
+const { string } = require('prop-types');
 
 
 /**

@@ -18,6 +18,7 @@ class ProdDatabase {
     dbpath: string;
     db: any;
 
+
     constructor() {
 
         // Config
@@ -36,6 +37,7 @@ class ProdDatabase {
         this.mongod.create_connection();
     }
 
+
     /** Establishes database connection */
     private async start_database() {
         console.log(chalk.blue('Connecting to database'));
@@ -53,6 +55,7 @@ class ProdDatabase {
         })
     }
 
+    
     /** Initialize and run database */
     public async run() {
         console.log(chalk.green('Running database'));
