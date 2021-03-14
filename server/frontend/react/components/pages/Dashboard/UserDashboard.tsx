@@ -3,6 +3,7 @@ import {connect} from 'react-redux';
 
 import LoadingSpinner from '../../LoadingSpinner';
 import Endpoint from '../../../functions/endpoint/Endpoint';
+import Validation from '../../../functions/validation/Validation';
 
 
 // Store config
@@ -19,13 +20,15 @@ const UserDashboard = connect(
 )(function(props: any) {
 
     const endpoint = new Endpoint;
+    const validation = new Validation;
 
     const [loaded, set_loaded] = useState<boolean>(false);
     const [connectedBusinesses, set_connected_businesses] = useState<any[]>([]);
 
     // Connect business form data
     //const [connectBusinessForm, set_connect_business_form] = useState<boolean>(false);
-    const [businessKey, set_business_key] = useState<string>('');
+    const [connectionPassword, set_connection_password] = useState<string>('');
+    const [connectionPasswordError, set_connection_password_error] = useState<string>('');
 
 
     useEffect(() => {
@@ -69,10 +72,17 @@ const UserDashboard = connect(
 
 
     /** Handler for connect_business */
-    function handle_connect_business(): Promise<boolean> {
+    function handle_connect_business(): Promise<boolean> | boolean {
+
+        // Validate
+        const valid = validation.connection_password(connectionPassword);
+        if (!valid) {
+            handle_connection_password_error('Invalid business key');
+            return false;
+        }
 
         // Get data
-        const response = endpoint.user.connect_business(businessKey)
+        const response = endpoint.user.connect_business(connectionPassword)
 
         // Populate state
         .then((res: any) => {
@@ -95,6 +105,23 @@ const UserDashboard = connect(
     }
 
 
+    /** Set an error message for connectionPassword */
+    function handle_connection_password_error(message: string): void {
+        set_connection_password_error(message);
+        setTimeout(() => {
+            clear_connection_password_error();
+        }, 2000);
+        return;
+    }
+
+
+    /** Clear connectionPassword error */
+    function clear_connection_password_error(): void {
+        set_connection_password_error('');
+        return;
+    }
+
+
     return (
         <div className="UserDashboard">
             <h1>Welcome, {props.account.name}</h1>
@@ -106,7 +133,6 @@ const UserDashboard = connect(
 
                     {connectedBusinesses.length > 0 &&
                         <div className="UserDashboard__contentSection">
-                            <h3>Available Streams</h3>
 
                             {connectedBusinesses.map((business) => (
                                 <article 
@@ -134,16 +160,23 @@ const UserDashboard = connect(
                         <div 
                             className="UserDashboard__contentBlock small clear"
                         >
+
+                            {connectionPasswordError.length > 0 &&
+                                <div className="UserDashboard__formError">
+                                    {connectionPasswordError}
+                                </div>
+                            }
+
                             <div className="UserDashboard__form small">
-                                <label htmlFor="businessKey">
-                                    Business Key:
+                                <label htmlFor="connectionPassword">
+                                    Connection Password:
                                 </label>
 
                                 <input
                                     type="text"
-                                    id="businessKey"
+                                    id="connectionPassword"
                                     onChange={(e) => {
-                                        set_business_key(e.target.value)}
+                                        set_connection_password(e.target.value)}
                                     }
                                 />
 

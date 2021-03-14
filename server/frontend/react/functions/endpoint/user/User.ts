@@ -1,20 +1,19 @@
-export {};
 import axios from 'axios';
 
 
 /** Interface for endpoints related to User accounts */
-export default class User {
+class User {
 
 
     /** POST /user/connect-business
      * 
-     * @param key ConnectionPassword key
+     * @param connectionPassword ConnectionPassword key
      */
-    public connect_business(key: string):Promise<boolean> {
+    public connect_business(connectionPassword: string):Promise<boolean> {
 
         // Make POST
         const response = axios.post('/user/connect-business',
-            {key: key},
+            {connectionPassword: connectionPassword},
             {withCredentials: true}
         )
 
@@ -178,4 +177,4 @@ export default class User {
 }
 
 
-module.exports = User;
+export = User;

@@ -36,6 +36,17 @@ export default class Validation {
 
         return true;
     }
+
+
+    /** Validate connection password */
+    public connection_password(connectionPassword: string): boolean {
+
+        // Validation
+        if (connectionPassword.length < 8) return false;
+        if (connectionPassword.length > 12) return false;
+
+        return true;
+    }
 }
 
 

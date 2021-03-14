@@ -1,9 +1,9 @@
-export {};
 const express = require('express');
 const bodyParser = require('body-parser');
 const ensureLoggedIn = require('connect-ensure-login').ensureLoggedIn;
 
 const User = require('../../database/schema/Schema').User;
+const ConnectionPassword = require('../../database/schema/Schema').ConnectionPassword;
 
 
 // Router config
@@ -16,15 +16,17 @@ router.use(bodyParser.urlencoded({extended: true}));
  * Get all information available to user account 
  * (Endpoint for User.get_personal_doc instance method)
  * 
- * @returns {object} {
- *      name
- *      email
- *      connected businesses (the business public docs)
- * }
+ * @returns {{
+ *      name: string
+ *      email: string
+ *      connected businesses
+ * }} 
+ * 
  */
 router.get('/user/get-personal-doc', ensureLoggedIn(), 
     async (req: any, res: any) => {
         try {
+
             // Find User account
             const user = await User.findOne(
                 {_id: req.user},
@@ -57,6 +59,7 @@ router.get('/user/get-personal-doc', ensureLoggedIn(),
 router.get('/user/get-business-doc', ensureLoggedIn(), 
     async (req: any, res: any) => {
         try {
+
             // Find User account
             const user = await User.findOne(
                 {_id: req.user},
@@ -81,6 +84,7 @@ router.get('/user/get-business-doc', ensureLoggedIn(),
     }
 );
 
+
 /**
  * Get information about all Businesses connected to the User
  * (Endpoint for User.get_connected_businesses instance method)
@@ -88,6 +92,7 @@ router.get('/user/get-business-doc', ensureLoggedIn(),
 router.get('/user/get-connected-businesses', ensureLoggedIn(), 
     async (req: any, res: any) => {
         try {
+
             // Find User account
             const user = await User.findOne(
                 {_id: req.user},
@@ -112,9 +117,16 @@ router.get('/user/get-connected-businesses', ensureLoggedIn(),
     }
 );
 
+
+/**
+ * Endpoint for connecting User and Business with ConnectionPassword
+ */
 router.post('/user/connect-business', ensureLoggedIn(), 
     async (req: any, res: any) => {
         try {
+
+            const password = req.body.connectionPassword;
+            
             // Find User account
             const user = await User.findOne(
                 {_id: req.user},
@@ -124,13 +136,25 @@ router.post('/user/connect-business', ensureLoggedIn(),
                     return false;
                 }
             );
-            if (!user) return res.status(404).send();
+            if (!user) return res.status(403).send();
 
-            // Connect business
-            const businessConnect = await user.connect_business(req.body.key);
+            // Validate connection password
+            const connectionPassword = await ConnectionPassword.findOne(
+                {password: password},
+                async (err: any, doc: any) => {
+                    if (err) throw err;
+                    if (!doc) return false;
+                    return doc;
+                }
+            )
+            if (!connectionPassword) return res.status(404).send();
+            if (connectionPassword.used) return res.status(423).send();
 
-            if (!businessConnect) return res.status(500).send();
-            else return res.status(201).send();
+            // Establish connection
+            const connection = await connectionPassword.use(req.user);
+            if (!connection) return res.status(500).send();
+
+            return res.status(201).send();
         }
 
         catch (e) {
@@ -139,4 +163,4 @@ router.post('/user/connect-business', ensureLoggedIn(),
     }
 );
 
-module.exports = router;
+export = router;
