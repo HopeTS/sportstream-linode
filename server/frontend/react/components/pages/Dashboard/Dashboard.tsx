@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {connect} from 'react-redux';
 
 import {page_ID__Set} from '../../../redux/actions/page';
@@ -26,8 +26,15 @@ const Dashboard = connect(
     mapStateToProps, mapDispatchToProps
 )(function(props: any) {
 
+
+    useEffect(() => {
+        console.log(props.account);
+    }, []);
+
+
     return (
         <div className="Dashboard">
+            {props.account.type}
             {props.account.type === 'user' ?
                 <UserDashboard />
                 :

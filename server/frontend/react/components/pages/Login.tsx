@@ -116,7 +116,7 @@ const Login = connect(
                 // If login successful
                 if (typeof user !== 'string') {
                     console.log('Login successful');
-                    login(user);
+                    props.login(user);
                     props.history.push('/dashboard');
                     return;
                 }
@@ -237,7 +237,7 @@ const Login = connect(
                         id="account_type"
                         onChange={(e) => handle_set_type(e.target.value)}
                     >
-                        <option value="starter" defaultValue='true'>
+                        <option value="starter" defaultValue='starter'>
                             Select an account type...
                         </option>
                         <option value="user">Athlete/Parent</option>

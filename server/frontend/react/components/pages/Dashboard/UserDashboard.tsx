@@ -47,7 +47,7 @@ const UserDashboard = connect(
         // Populate state
         .then((personalData: any) => {
             if (!personalData) throw new Error("Couldn't retrieve User data");
-            set_connected_businesses(personalData.connected_businesses);
+            set_connected_businesses(personalData.connectedBusinesses);
             set_loaded(true);
             return true;
         })
