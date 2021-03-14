@@ -38,12 +38,12 @@ export default class Business {
     ): Promise<{password: string} | false> {
 
         // Make POST
-        const response = axios.post('/business/generate-connection-id', {}, {
+        const response = axios.post('/business/generate-connection-password', {}, {
             withCredentials: true
         })
     
         .then((res) => {
-            console.log('Here is generate connection id response', res.data)
+            console.log('Here is generate connection password response', res.data)
             return res.data;
         })
     
@@ -76,7 +76,7 @@ export default class Business {
         .then((res: any) => {
             return {
                 connected_users: res.data.connected_users,
-                connection_ids: res.data.connection_ids,
+                connectionPasswords: res.data.connectionPasswords,
                 email: res.data.email,
                 name: res.data.name,
                 streams: {

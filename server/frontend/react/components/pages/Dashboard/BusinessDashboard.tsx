@@ -54,7 +54,7 @@ const BusinessDashboard = connect(
             set_upcoming_streams(personalData.streams.upcoming);
             set_current_streams(personalData.streams.current);
             set_previous_streams(personalData.streams.previous);
-            set_connection_passwords(personalData.connection_passwords);
+            set_connection_passwords(personalData.connectionPasswords);
             set_connected_users(personalData.connected_users);
 
             console.log(connectedUsers);

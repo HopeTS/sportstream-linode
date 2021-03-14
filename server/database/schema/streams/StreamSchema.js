@@ -43,12 +43,10 @@ const StreamSchema = new Schema({
  * @param {*} cb  callback function
  */
 StreamSchema.methods.get_user_doc = async function(cb) {
-    console.log('streamschema get userdoc')
     const doc = {
         field: this.field,
         key: this.key
     }
-    console.log('streamschema returning', doc)
     return doc;
 };
 

@@ -423,26 +423,20 @@ class DevDatabase {
         await this.clear_database();
         await this.populate_database();
         await this.fetch_database();
-        this.print_collections();
 
         // Test stream lifecycle
         await this.create_streams();
         await this.fetch_database();
-        this.print_streams();
         await this.start_streams();
-        this.print_streams();
         this.end_streams();
-        this.print_streams();
 
         // Test connection passwords
         await this.create_connection_passwords();
         await this.fetch_database();
-        this.print_collections();
 
         // Test User - Business connection
         await this.connect_business();
         await this.fetch_database();
-        this.print_collections();
 
         return;
     }

@@ -169,7 +169,7 @@ router.post('/business/create-stream', ensureLoggedIn(),
 /**
  * Generates and sends new connection ID
  */
-router.post('/business/generate-connection-id', ensureLoggedIn(), 
+router.post('/business/generate-connection-password', ensureLoggedIn(), 
     async (req: any, res: any) => {
         try {
             // Find Business account
@@ -183,7 +183,7 @@ router.post('/business/generate-connection-id', ensureLoggedIn(),
             );
             if (!business) return res.status(404).send();
 
-            const newId = await business.generate_connection_id();
+            const newId = await business.generate_connection_password();
             if (!newId) return res.status(500).send();
             return res.status(201).send(newId);
         }

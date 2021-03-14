@@ -126,10 +126,6 @@ BusinessSchema.methods.get_available_connection_passwords = async function(cb) {
             )
         )
 
-        console.log('Here are all the connection passwords', 
-            allConnectionPasswords
-        )
-
         // Filter ungiven and unused connection passwords
         const availableConnectionPasswords = allConnectionPasswords.filter(
             (connectionPassword) => {
@@ -138,13 +134,13 @@ BusinessSchema.methods.get_available_connection_passwords = async function(cb) {
                     connectionPassword.used == false
                 );
             }
-        )
-
-        console.log('Here are all the available connection passwords',
-            availableConnectionPasswords
         );
 
-        return availableConnectionPasswords;
+        const passwords = availableConnectionPasswords.map((password) => {
+            return password.password;
+        })
+
+        return passwords;
     }
 
     catch(e) {
@@ -333,6 +329,29 @@ BusinessSchema.methods.get_previous_streams = async function(cb) {
     return previousStreams;
 }
 
+
+/** 
+ * Get connection passwords 
+ * 
+ * @returns {[string]} connection passwords
+ */
+BusinessSchema.methods.get_connection_passwords = async function(cb) {
+    let passwords = await Promise.all(this.connectionPasswords.map(async (id) => {
+        await mongoose.models['ConnectionPassword'].findById(
+            id,
+            (err, doc) => {
+                if (err) return false;
+                if (!doc) return false;
+                return doc.password;
+            }
+        )
+    }));
+
+    console.log('Here are passwords', passwords);
+
+}
+
+
 /**
  * Get Business information only available to the specific business
  * 
@@ -360,12 +379,13 @@ BusinessSchema.methods.get_personal_doc = async function(cb) {
     };
 
     // Get User / connection data
-    personalDoc.connection_ids = this.connection_ids;
+    personalDoc.connectionPasswords = await this.get_available_connection_passwords();
     personalDoc.connected_users =  await this.get_connected_users();
 
     console.log('Here is the business personal doc', personalDoc);
     return personalDoc;
 }
+
 
 /**
  * Get all Stream data available to connected Users
@@ -400,6 +420,7 @@ BusinessSchema.methods.get_user_streams = async function(cb) {
     return userStreams;
 }
 
+
 /**
  * Get business doc information only available to users connected to the
  * business
@@ -428,9 +449,8 @@ BusinessSchema.methods.get_user_doc = async function(id=null, cb) {
     return doc;
 }
 
-/**
- * Get docs of all connected users
- */
+
+/** Get docs of all connected users */
 BusinessSchema.methods.get_connected_users = async function(cb) {
     console.log('get_connected_users called');    
     const users = await Promise.all(
@@ -449,6 +469,7 @@ BusinessSchema.methods.get_connected_users = async function(cb) {
     console.log('Here are the results of get_users', users);
     return users;
 }
+
 
 /**
  * Connect Business to User
