@@ -35,7 +35,7 @@ router.post('/login/user', (req: any, res: any, next: any) => {
             else {
                 console.log('logging user in');
                 
-                req.login(user, (err: any) => {
+                req.logIn(user, (err: any) => {
                     if (err) throw err;
                     res.cookie('user', user.id, {maxAge: 2592000000}); // 1 Month
                     res.status(202).send(user);
