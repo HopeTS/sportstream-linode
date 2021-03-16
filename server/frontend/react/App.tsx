@@ -1,4 +1,3 @@
-export {};
 import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
@@ -11,7 +10,7 @@ import ClientStorage from './functions/clientStorage/ClientStorage';
 
 
 /** React app entry point */
-export default class App {
+class App {
     
     store: any;
     tsx: any;
@@ -58,4 +57,4 @@ const ReactApp = new App();
 ReactApp.start();
 
 
-module.exports = App;
+export = App;
