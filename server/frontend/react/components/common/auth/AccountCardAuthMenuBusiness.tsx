@@ -1,4 +1,3 @@
-export {};
 import React from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
@@ -11,72 +10,8 @@ import ClientStorage from '../../../functions/clientStorage/ClientStorage';
 import Endpoint from '../../../functions/endpoint/Endpoint';
 
 
-/** AccountCard content for Business accounts*/
-export class AccountCardAuthMenuBusiness extends React.Component {
-
-    clientStorage: ClientStorage;
-    endpoint: Endpoint;
-    props: any;
-
-
-    constructor(props: any) {
-        super(props);
-        this.clientStorage = new ClientStorage;
-        this.endpoint = new Endpoint;
-    }
-
-
-    /** Log user out */
-    private logout(): void {
-        this.accountMenuOff();
-        this.clientStorage.clear();
-        this.endpoint.business.logout();
-        this.props.logout();
-        return;
-    }
-
-
-    /** Handler for turning account menu off */
-    private accountMenuOff(): void {
-        this.props.accountMenu__Off();
-        return;
-    }
-
-
-    render() {
-        return (
-            <div 
-                className="AccountCardAuthMenu"
-                data-active={this.props.accountMenu}
-            >
-                <ul>
-                    <NavLink 
-                        to="/dashboard"
-                        onClick={this.accountMenuOff}
-                    >
-                        <li>
-                            Dashboard
-                        </li>
-                    </NavLink>
-
-                    <NavLink
-                        to="/"
-                        onClick={this.logout}
-                    >
-                        <li>
-                            Log out
-                        </li>
-                    </NavLink>
-                </ul>
-            </div>
-        );    
-    }
-}
-
-
-// Connect to store
+// Store config
 const mapStateToProps = (state) => {
-    console.log(state)
     return {
         mobile_nav: state.ui.navMenu_Mobile,
         accountMenu: state.ui.accountMenu,
@@ -98,4 +33,59 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(AccountCardAuthMenuBusiness);
+/** AccountCard content for Business accounts*/
+const AccountCardAuthMenuBusiness = connect(
+    mapStateToProps, mapDispatchToProps
+)(function(props: any) {
+    
+    const clientStorage = new ClientStorage;
+    const endpoint = new Endpoint;
+
+
+    /** Log user out */
+    function logout(): void {
+        accountMenuOff();
+        clientStorage.clear();
+        endpoint.business.logout();
+        props.logout();
+        return;
+    }
+
+
+    /** Handler for turning account menu off */
+    function accountMenuOff(): void {
+        props.accountMenu__Off();
+        return;
+    }
+
+
+    return (
+        <div 
+            className="AccountCardAuthMenu"
+            data-active={props.accountMenu}
+        >
+            <ul>
+                <NavLink 
+                    to="/dashboard"
+                    onClick={accountMenuOff}
+                >
+                    <li>
+                        Dashboard
+                    </li>
+                </NavLink>
+
+                <NavLink
+                    to="/"
+                    onClick={logout}
+                >
+                    <li>
+                        Log out
+                    </li>
+                </NavLink>
+            </ul>
+        </div>
+    );
+});
+
+
+export = AccountCardAuthMenuBusiness;
