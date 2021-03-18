@@ -1,4 +1,3 @@
-export {};
 import React from 'react';
 
 
@@ -25,4 +24,4 @@ export function LoadingSpinner() {
 }
 
 
-export default LoadingSpinner;
+export = LoadingSpinner;

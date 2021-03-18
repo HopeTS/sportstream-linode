@@ -1,13 +1,12 @@
-export {};
 import React, {useEffect, useState} from 'react';
 import {ReactFlvPlayer} from 'react-flv-player';
 import axios from 'axios';
 
 
 /** Video player component */
-export function VideoPlayer(props) {
+function VideoPlayer(props) {
 
-    const [httpVideoError, set_http_video_error] = useState(false);
+    const [httpVideoError, set_http_video_error] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -63,4 +62,4 @@ export function VideoPlayer(props) {
 }
 
 
-export default VideoPlayer;
+export = VideoPlayer;
