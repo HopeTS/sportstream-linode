@@ -5,13 +5,13 @@ import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import Header from '../components/common/Header';
 import Footer from '../components/common/Footer';
 
-import Home from '../components/pages/Home';
-import Login from '../components/pages/Login';
-import Register from '../components/pages/Register';
-import Dashboard from '../components/pages/Dashboard/Dashboard';
-import Wildcard from '../components/pages/Wildcard';
-import Watch from '../components/pages/Watch';
-import AccountPage from '../components/pages/AccountPage/AccountPage';
+import Home from '../pages/Home';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
+import Dashboard from '../pages/Dashboard/Dashboard';
+import Wildcard from '../pages/Wildcard';
+import Watch from '../pages/Watch';
+import AccountPage from '../pages/AccountPage/AccountPage';
 
 import {login} from '../redux/actions/auth';
 import ClientStorage from '../functions/clientStorage/ClientStorage';

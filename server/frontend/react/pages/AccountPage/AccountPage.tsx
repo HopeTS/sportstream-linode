@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 
 import AccountPageNoAuth from './AccountPageNoAuth';
 import AccountPageAuth from './AccountPageAuth';
-import {page_ID__Set} from '../../../redux/actions/page';
+import {page_ID__Set} from '../../redux/actions/page';
 
 
 // Store config

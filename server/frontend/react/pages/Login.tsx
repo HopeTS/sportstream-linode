@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import {connect} from 'react-redux';
 import {NavLink} from 'react-router-dom';
 
-import {page_ID__Set} from '../../redux/actions/page';
-import {login, logout} from '../../redux/actions/auth';
+import {page_ID__Set} from '../redux/actions/page';
+import {login, logout} from '../redux/actions/auth';
 
-import Validation from '../../functions/validation/Validation';
-import ClientStorage from '../../functions/clientStorage/ClientStorage';
-import Endpoint from '../../functions/endpoint/Endpoint';
+import Validation from '../functions/validation/Validation';
+import ClientStorage from '../functions/clientStorage/ClientStorage';
+import Endpoint from '../functions/endpoint/Endpoint';
 
 
 // Store config

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
-import StreamInfoCard from '../../StreamInfoCard/StreamInfoCard';
-import Endpoint from '../../../functions/endpoint/Endpoint';
+import StreamInfoCard from '../../components/StreamInfoCard/StreamInfoCard';
+import Endpoint from '../../functions/endpoint/Endpoint';
 
 
 // Store config

@@ -2,7 +2,7 @@ import React from 'react';
 
 
 /** Loading spinner component */
-export function LoadingSpinner() {
+function LoadingSpinner() {
     return (
         <div className="LoadingSpinner">
             <div className="LoadingSpinner__spinner">

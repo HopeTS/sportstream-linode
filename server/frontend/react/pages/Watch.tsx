@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {connect} from 'react-redux';
 
-import {page_ID__Set} from '../../redux/actions/page';
+import {page_ID__Set} from '../redux/actions/page';
 //import Stream from '../../functions/endpoint/stream/Stream';
-import LoadingSpinner from '../LoadingSpinner';
-import VideoPlayer from '../VideoPlayer';
+import LoadingSpinner from '../components/LoadingSpinner';
+import VideoPlayer from '../components/VideoPlayer';
 
 
 // Store config

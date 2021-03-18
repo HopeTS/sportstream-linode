@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react';
 import {connect} from 'react-redux';
 
-import LoadingSpinner from '../../LoadingSpinner';
-import Endpoint from '../../../functions/endpoint/Endpoint';
-import Validation from '../../../functions/validation/Validation';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import Endpoint from '../../functions/endpoint/Endpoint';
+import Validation from '../../functions/validation/Validation';
 
 
 // Store config
