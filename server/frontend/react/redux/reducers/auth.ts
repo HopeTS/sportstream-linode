@@ -1,8 +1,15 @@
-/*
- *  Reducer for handling authentication in Redux
- */
+interface authState {
+    isAuthenticated: boolean;
+    account: {
+        type: string;
+        name: string;
+        email: string;
+    }
+}
 
-const AuthDefaultState = {
+
+/** Auth reducer default state */
+const AuthDefaultState: authState = {
     isAuthenticated: false,
     account: {
         type: '',
@@ -11,7 +18,11 @@ const AuthDefaultState = {
     }
 };
 
-export default (state = AuthDefaultState, action) => {
+
+/** Auth reducer */
+function AuthReducer(
+    state: authState = AuthDefaultState, action: any
+): authState {
     switch(action.type) {
 
         case 'LOGIN':
@@ -41,3 +52,6 @@ export default (state = AuthDefaultState, action) => {
             return state;
     }
 };
+
+
+export = AuthReducer;

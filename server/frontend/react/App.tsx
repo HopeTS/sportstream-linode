@@ -4,7 +4,7 @@ import {Provider} from 'react-redux';
 import 'normalize.css/normalize.css';
 
 import '../sass/main.scss';
-import storeConfig from './redux/store/storeConfig.js';
+import Store from './redux/store/storeConfig.js';
 import Router from './routers/Router.js';
 import ClientStorage from './functions/clientStorage/ClientStorage';
 
@@ -28,7 +28,7 @@ class App {
 
     /** Initialize and configure Redux store */
     private configure_store() {
-        this.store = storeConfig();
+        this.store = Store();
         this.store.subscribe(() => {
             this.clientStorage.save(this.store.getState());
         });

@@ -1,15 +1,20 @@
-/*
- *  Reducer for handling UI information in Redux
- */
+interface uiState {
+    navMenu_Mobile: boolean;
+    accountMenu: boolean;
+}
 
 
-/* Reducer */
-const UIDefaultState = {
+/** UI reducer default state */
+const UIDefaultState: uiState = {
     navMenu_Mobile: false,
     accountMenu: false
 };
 
-export default (state = UIDefaultState, action) => {
+
+/** UI Reducer */
+function UIReducer(
+    state: uiState = UIDefaultState, action: any
+): uiState {
     switch(action.type) {
         case 'MOBILE_NAV__TOGGLE':
             return {
@@ -52,4 +57,7 @@ export default (state = UIDefaultState, action) => {
         default:
             return state;
     };
-};
+}
+
+
+export = UIReducer;
