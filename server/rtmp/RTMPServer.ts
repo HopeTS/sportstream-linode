@@ -1,19 +1,44 @@
-const node_media_server = require('./nms/nms');
+const rtmpServer = require('rtmp-server');
 
 
 /** RTMP server object */
 class RTMPServer {
-    nms: any;
+    server: any;
 
 
     constructor() {
-        this.configure_node_media_server();
+        this.server = new rtmpServer();
+        this.configure_rtmp_server();
     }
 
 
-    /** Initializes NodeMediaServer object */
-    private configure_node_media_server() {
-        this.nms = node_media_server();
+    /** Configures rtmpServer object */
+    private configure_rtmp_server() {
+        this.server.on('error', err => {
+            throw err;
+        });
+          
+        this.server.on('client', client => {
+            //client.on('command', command => {
+            //  console.log(command.cmd, command);
+            //});
+          
+            client.on('connect', () => {
+                console.log('connect', client.app);
+            });
+            
+            client.on('play', ({ streamName }) => {
+                console.log('PLAY', streamName);
+            });
+            
+            client.on('publish', ({ streamName }) => {
+                console.log('PUBLISH', streamName);
+            });
+            
+            client.on('stop', () => {
+                console.log('client disconnected');
+            });
+        });
         return;
     }
 
@@ -21,7 +46,7 @@ class RTMPServer {
     /** Run RTMPServer */
     public run() {
         try {
-            this.nms.run();
+            this.server.listen(1935);
             return;
         }
 
