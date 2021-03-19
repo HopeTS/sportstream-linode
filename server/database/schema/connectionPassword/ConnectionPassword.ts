@@ -1,3 +1,5 @@
+import { ConnectionPasswordType } from "./types";
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const chalk = require('chalk');
@@ -5,9 +7,7 @@ const chalk = require('chalk');
 const generate_key = require('../../../utils/generate_key');
 
 
-/**
- * Connection Password schema (For connecting User to Business)
- */
+/** Connection Password schema (For connecting User to Business) */
 const ConnectionPasswordSchema = new Schema({
     business: {
         type: String,
@@ -30,22 +30,14 @@ const ConnectionPasswordSchema = new Schema({
 });
 
 
-/**
- * Getter method for given attribute
- * 
- * @param {*} cb callback function
- */
-ConnectionPasswordSchema.methods.is_given = async function(cb) {
+/** Getter method for given attribute */
+ConnectionPasswordSchema.methods.is_given = function(cb): boolean {
     return ConnectionPasswordSchema.given;
 }
 
 
-/**
- * Getter method for used attribute
- * 
- * @param {*} cb callback function
- */
-ConnectionPasswordSchema.methods.is_used = async function(cb) {
+/** Getter method for used attribute */
+ConnectionPasswordSchema.methods.is_used = function(cb): boolean {
     return ConnectionPasswordSchema.used;
 }
 
@@ -57,9 +49,10 @@ ConnectionPasswordSchema.methods.is_used = async function(cb) {
  * 
  * @returns {Boolean} whether give was successful
  */
-ConnectionPasswordSchema.methods.give = async function(cb) {
+ConnectionPasswordSchema.methods.give = async function(cb): Promise<boolean> {
     try {
         if (this.given) throw new Error('Connection Password already given');
+
         this.given = true;
         await this.save(cb);
         return true;
@@ -80,7 +73,9 @@ ConnectionPasswordSchema.methods.give = async function(cb) {
  * 
  * @returns {Boolean} whether use was successful
  */
-ConnectionPasswordSchema.methods.use = async function(userID, cb) {
+ConnectionPasswordSchema.methods.use = async function(
+    userID: string | false = false, cb: any
+): Promise<boolean> {
     try {
 
         // Validation
@@ -135,7 +130,9 @@ ConnectionPasswordSchema.methods.use = async function(userID, cb) {
 }
 
 
-ConnectionPasswordSchema.pre('save', async function(next) {
+ConnectionPasswordSchema.pre('save', async function(
+    this: ConnectionPasswordType, next
+): Promise<void> {
 
     // First time configuration
     if (this.isNew) {
@@ -169,6 +166,7 @@ ConnectionPasswordSchema.pre('save', async function(next) {
     }
 
     next();
-})
+});
 
-module.exports = ConnectionPasswordSchema;
+
+export = ConnectionPasswordSchema;
